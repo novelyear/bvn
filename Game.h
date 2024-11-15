@@ -9,6 +9,10 @@ class Game
 	Enemy enemy;
 	Map map;
 	SoundManager soundManager;
+
+	static constexpr float minimumViewWidth = 1000.0f;
+	static constexpr float maximumViewWidth = 1000.0f;
+	sf::FloatRect getView(sf::Vector2f playerPosition, sf::Vector2f enemyPosition);
 public:
 	sf::View view;
 	sf::RenderWindow window;
@@ -17,6 +21,6 @@ public:
 	void processEvents();
 	void update();
 	void render();
-	float getCenter();
+	
 };
 

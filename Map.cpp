@@ -22,30 +22,27 @@ void Map::loadMap(){
 }
 
 void Map::update(float positionX){
-    // 根据角色的位置动态调整近景的缩放比例
-    float distance = std::abs(positionX - foregroundLayer.getPosition().x);
-    scaleFactor = std::min(maxScale, 1.0f + (1.0f / (distance + 1)));  // 随着距离增大，缩小
-
-    // 更新背景的缩放
-    foregroundLayer.setScale(scaleFactor, scaleFactor);
-
-    // 更新平台的缩放和位置
-    //for (auto& platform : platforms) {
-    //    platform.update(positionX * 0.5f, scaleFactor);  // 使平台和近景一起缩放
-    //}
+    
 }
 
 void Map::checkCollision(Character charactor){
     
 }
 
-void Map::render(sf::RenderWindow& window){
-    if(!foregroundLayer.getTexture()){
+void Map::render(sf::RenderWindow& window, sf::View& view){
+    if(!foregroundLayer.getTexture() || !backgroundLayer.getTexture()){
         loadMap();
     }
-    // 渲染远景（始终不动）
-    window.draw(backgroundLayer);
 
-    // 渲染近景（根据角色与背景的距离缩放）
+    // 获取窗口的视图大小（即可视区域的大小）
+    sf::Vector2f viewSize = view.getSize();
+
+    // 1. 渲染背景层：背景图像始终填充整个窗口，背景层不随视图的移动而变化
+    backgroundLayer.setScale(
+        static_cast<float>(viewSize.x) / backgroundLayer.getLocalBounds().width,
+        static_cast<float>(viewSize.y) / backgroundLayer.getLocalBounds().height
+    );
+
+    window.draw(backgroundLayer);
     window.draw(foregroundLayer);
 }

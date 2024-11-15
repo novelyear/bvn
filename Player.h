@@ -6,7 +6,7 @@ class Player :
 {
 
 public:
-    void handleInput(sf::Event event);
+    void handleInput();
     void useSkill();
 };
 

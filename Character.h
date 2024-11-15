@@ -4,6 +4,7 @@ class Character
 {
 public:
 	int health;
+	sf::Texture texture;
 	sf::Sprite sprite;
 	bool inAir; // дкПежа
 	bool left; // ГЏЯђ
@@ -14,12 +15,12 @@ public:
 
 	sf::Vector2f position;
 	sf::Vector2f velocity;
+	void loadImage();
 	void moveLeft();
 	void moveRight();
 	void jump();
 	void takeDamage(int amount);
 	void update();
 	void render(sf::RenderWindow& window);
-	
 };
 
