@@ -11,9 +11,13 @@ class Map
 	std::vector<Platform> platforms;
 
 public:
+
+	Map();
 	void loadMap();
 	void update(float positionX);
 	void checkCollision(Character charactor);
 	void render(sf::RenderWindow& window, sf::View& view);
 };
+
+
 

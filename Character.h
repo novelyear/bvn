@@ -15,6 +15,9 @@ public:
 
 	sf::Vector2f position;
 	sf::Vector2f velocity;
+
+	Character();
+
 	void loadImage();
 	void moveLeft();
 	void moveRight();

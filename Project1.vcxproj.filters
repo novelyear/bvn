@@ -82,5 +82,8 @@
     <ClInclude Include="Platform.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Constants.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -10,10 +10,11 @@ class Game
 	Map map;
 	SoundManager soundManager;
 
-	static constexpr float minimumViewWidth = 1000.0f;
-	static constexpr float maximumViewWidth = 1000.0f;
+	static constexpr float minimumViewWidth = 320.0f;
+	static constexpr float maximumViewWidth = 800.0f;
 	sf::FloatRect getView(sf::Vector2f playerPosition, sf::Vector2f enemyPosition);
 public:
+	sf::FloatRect testView(sf::Vector2f playerPosition);
 	sf::View view;
 	sf::RenderWindow window;
 	Game(int width, int height, const std::string& title);
@@ -21,6 +22,7 @@ public:
 	void processEvents();
 	void update();
 	void render();
+
 	
 };
 
