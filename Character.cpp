@@ -4,9 +4,7 @@
 
 Character::Character() {
 	health = INIT_HEALTH;
-	inAir = true;
-	defending = false;
-	stuned = false;
+	currentState = CharacterState::Stand;
 	jumpTimes = 0;
 	attackStage = 0;
 }
@@ -14,13 +12,11 @@ Character::Character() {
 
 void Character::moveLeft() {
 	left = true;
-	defending = false;
 	attackStage = 0;
 	velocity.x = -MOVE_VELOCITY;
 }
 void Character::moveRight() {
 	left = false;
-	defending = false;
 	attackStage = 0;
 	velocity.x = MOVE_VELOCITY;
 }
@@ -30,6 +26,7 @@ void Character::jump() {
 	}
 	jumpTimes++;
 	velocity.y = JUMP_VELOCITY;
+	currentState = CharacterState::Jumping;
 	inAir = true;
 }
 
@@ -46,14 +43,15 @@ void Character::update() {
 	}
 
 	//velocity.x = 0;
-	if (inAir && velocity.y <= MAX_FALLING_VELOCITY) {
+	if (currentState == CharacterState::Jumping && velocity.y <= MAX_FALLING_VELOCITY) {
 		velocity.y += GRAVITY;
 	}
 
 	position.y += velocity.y;
 	if (position.y >= CHARACTER_BOTTOM) {  
 		position.y = CHARACTER_BOTTOM;  // 重置位置
-		inAir = false;  // 设置为不在空中
+		inAir = false;
+		currentState = CharacterState::Stand;  // 可能有问题
 		velocity.y = 0.f;  // 清除竖直速度
 		jumpTimes = 0;  // 重置跳跃次数
 	}
@@ -67,13 +65,62 @@ void Character::update() {
 }
 
 void Character::loadImage() {
-	if (!texture.loadFromFile("access\\gaara\\gaara1.png")) {
-		std::cerr << "Failed to load player texture!" << std::endl;
-	}
-	else {
-		sprite.setTexture(texture);
-	}
+	for (int i = 1; i <= 4; ++i) {
+		// 构造文件名
+		std::string filename = "access/gaara/gaara" + std::to_string(i) + ".png";
 
+		sf::Texture texture;
+		if (texture.loadFromFile(filename)) {
+			standTextures.push_back(texture);
+		}
+		else {
+			std::cerr << "Failed to load texture: " << filename << std::endl;
+		}
+	}
+	for (int i = 11; i <= 16; ++i) {
+		std::string filename = "access/gaara/gaara" + std::to_string(i) + ".png";
+
+		sf::Texture texture;
+		if (texture.loadFromFile(filename)) {
+			runningTextures.push_back(texture);
+		}
+		else {
+			std::cerr << "Failed to load texture: " << filename << std::endl;
+		}
+	}
+	for (int i = 18; i <= 21; ++i) {
+		std::string filename = "access/gaara/gaara" + std::to_string(i) + ".png";
+
+		sf::Texture texture;
+		if (texture.loadFromFile(filename)) {
+			jumpingTextures.push_back(texture); 
+		}
+		else {
+			std::cerr << "Failed to load texture: " << filename << std::endl;
+		}
+	}
+	for (int i = 23; i <= 24; ++i) {
+		std::string filename = "access/gaara/gaara" + std::to_string(i) + ".png";
+
+		sf::Texture texture;
+		if (texture.loadFromFile(filename)) {
+			hitTextures.push_back(texture); 
+		}
+		else {
+			std::cerr << "Failed to load texture: " << filename << std::endl;
+		}
+	}
+	for (int i = 25; i <= 28; ++i) {
+		std::string filename = "access/gaara/gaara" + std::to_string(i) + ".png";
+
+		sf::Texture texture;
+		if (texture.loadFromFile(filename)) {
+			kickTextures.push_back(texture);
+		}
+		else {
+			std::cerr << "Failed to load texture: " << filename << std::endl;
+		}
+	}
 }
 
 void Character::render(sf::RenderWindow& window) {

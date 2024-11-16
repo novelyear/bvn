@@ -23,8 +23,6 @@ void Game::run() {
     }
 }
 
-
-
 void Game::processEvents() {
     sf::Event event;
     player.handleMove();
