@@ -15,7 +15,7 @@ public:
 	Map();
 	void loadMap();
 	void update(float positionX);
-	void checkCollision(Character charactor);
+	//void checkCollision(Character charactor);
 	void render(sf::RenderWindow& window, sf::View& view);
 };
 

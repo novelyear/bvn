@@ -26,9 +26,9 @@ void Map::update(float positionX){
     
 }
 
-void Map::checkCollision(Character charactor){
-    
-}
+//void Map::checkCollision(Character charactor){
+//    
+//}
 
 void Map::render(sf::RenderWindow& window, sf::View& view){
     if(!foregroundLayer.getTexture() || !backgroundLayer.getTexture()){

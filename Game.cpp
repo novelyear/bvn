@@ -2,30 +2,33 @@
 #include <SFML/Graphics.hpp>
 #include <bits/stdc++.h>
 #include "Constants.h"
+#include "CharacterFactory.h"
 
 Game::Game(int width, int height, const std::string& title)
-    : window(sf::VideoMode(width, height), title), player(), map() {}
+    : window(sf::VideoMode(width, height), title), map() {}
+
+void Game::selectCharacter() { // 后续加上选人逻辑
+    player = CharacterFactory::createCharacter(CharacterType::Gaara);
+}
 
 void Game::run() {
     sf::Clock clock;  // 创建时钟对象，记录时间
-
+    selectCharacter();
     while (window.isOpen()) {
-        //// 记录当前帧开始的时间
-        //sf::Time deltaTime = clock.restart();  // 重置时钟并获取时间差
+        sf::Time deltaTime = clock.restart();  // 重置时钟并获取时间差
         //float fps = 1.0f / deltaTime.asSeconds();  // 计算帧率
-
         //// 输出当前帧率到控制台
         //std::cout << "FPS: " << fps << std::endl;
 
         processEvents();
-        update();
+        update(deltaTime.asSeconds());
         render();
     }
 }
 
 void Game::processEvents() {
     sf::Event event;
-    player.handleMove();
+    player->handleMove();
     while (window.pollEvent(event)) {
         if (event.type == sf::Event::Closed)
             window.close();
@@ -88,19 +91,19 @@ void Game::processEvents() {
                 break;
         }
         // ==================
-        player.handleInput(event);
+        player->handleInput(event);
 
     }
 }
 
-void Game::update() {
+void Game::update(float deltaTime) {
     // 更新游戏状态：玩家位置、视窗位置
-    player.update();
+    player->update(deltaTime);
 
     //view.reset(getView(player.position, enemy.position));
-    view.reset(testView(player.position));
+    view.reset(testView(player->position));
 
-    map.checkCollision(player);
+    //map.checkCollision(player);
 }
 
 void Game::render() {
@@ -110,7 +113,7 @@ void Game::render() {
     map.render(window, view);
 
     // 渲染玩家
-    player.render(window);
+    player->render(window);
 
     window.setView(view);
 
@@ -129,12 +132,12 @@ sf::FloatRect Game::getView(sf::Vector2f playerPosition, sf::Vector2f enemyPosit
 }
 
 sf::FloatRect Game::testView(sf::Vector2f playerPosition) {
-    float Left = player.position.x - minimumViewWidth / 2;
-    float Top = player.position.y - minimumViewWidth * 0.75 / 2;
+    float Left = player->position.x - minimumViewWidth / 2;
+    float Top = player->position.y - minimumViewWidth * 0.75f / 2;
     // 限制视窗底部在地面上，左部不超过左边界，右部不超过有边界
     if (Left < 0.f) Left = 0.f;
     if (Left + minimumViewWidth > RIGHT_BORDER) Left = RIGHT_BORDER - minimumViewWidth;
 
-    if (Top + minimumViewWidth * 0.75f > GROUND) Top = GROUND - minimumViewWidth * 0.75;
-    return sf::FloatRect(Left, Top, minimumViewWidth, minimumViewWidth * 0.75);
+    if (Top + minimumViewWidth * 0.75f > GROUND) Top = GROUND - minimumViewWidth * 0.75f;
+    return sf::FloatRect(Left, Top, minimumViewWidth, minimumViewWidth * 0.75f);
 }

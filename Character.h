@@ -1,17 +1,22 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+enum class CharacterState {
+	Stand,
+	Running,
+	Jumping,
+	Attacking,
+	Hit,
+	Kicked,
+	Defending
+};
+enum class CharacterType {
+	Gaara,
+	Naruto,
+	Itachi,
+};
 class Character
 {
 public:
-	enum class CharacterState{
-		Stand,
-		Running,
-		Jumping,
-		Attacking,
-		Hit,
-		Kicked,
-		Defending
-	};
 	int health;
 	std::vector<sf::Texture> runningTextures; //跑动
 	std::vector<sf::Texture> jumpingTextures; // 跃起
@@ -27,18 +32,26 @@ public:
 	//bool stuned; // 被连招过程中的无法操作状态
 	int jumpTimes; // 跳跃次数
 	int attackStage; // 普攻阶段
+	float elapsedTime; // 计时器
 
 	sf::Vector2f position;
 	sf::Vector2f velocity;
 
-	Character();
 
-	void loadImage();
-	void moveLeft();
+	Character(); 
+	virtual ~Character() = default; 
+
+	void moveLeft(); 
 	void moveRight();
 	void jump();
-	void takeDamage(int amount);
-	void update();
 	void render(sf::RenderWindow& window);
+	void updatePosition();
+
+	virtual void handleMove() = 0;
+	virtual void handleInput(sf::Event event) = 0;
+	virtual void useSkill() = 0;
+	virtual void loadImage() = 0; // 加载图片
+	virtual void takeDamage(int amount) = 0;
+	virtual void update(float deltaTime) = 0;
 };
 

@@ -11,3 +11,7 @@
 #define MAX_FALLING_VELOCITY 0.65f
 
 #define INIT_HEALTH 100
+
+#define PLAYER_STAND_TIME 0.1f
+#define PLAYER_RUN_TIME 0.1f
+#define PLAYER_JUMP_TIME 0.1f

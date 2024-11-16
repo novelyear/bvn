@@ -1,12 +1,10 @@
 #pragma once
-#include "Player.h"
-#include "Enemy.h"
 #include "Map.h"
 #include "SoundManager.h"
 class Game
 {
-	Player player;
-	Enemy enemy;
+	std::unique_ptr<Character> player;
+	std::unique_ptr<Character> enemy;
 	Map map;
 	SoundManager soundManager;
 
@@ -18,9 +16,10 @@ public:
 	sf::View view;
 	sf::RenderWindow window;
 	Game(int width, int height, const std::string& title);
+	void selectCharacter();
 	void run();
 	void processEvents();
-	void update();
+	void update(float Time);
 	void render();
 
 	
