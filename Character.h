@@ -48,14 +48,15 @@ public:
 	void moveRight();
 	void jump();
 	void render(sf::RenderWindow& window);
-	void updatePosition();
+	void updatePosition(sf::View view);
+	void updateDirection(sf::FloatRect enemyPosition);
 	void handleMove();
 	void handleInput(sf::Event event);
 
 	virtual void useSkill() = 0;
 	virtual void loadImage() = 0; // º”‘ÿÕº∆¨
 	virtual void takeDamage(int amount) = 0;
-	virtual void update(float deltaTime) = 0;
+	virtual void update(float deltaTime, sf::View view, sf::FloatRect enemy) = 0;
 	virtual void updateSprite(float deltaTime) = 0;
 };
 

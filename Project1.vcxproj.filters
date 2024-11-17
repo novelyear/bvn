@@ -45,6 +45,9 @@
     <ClCompile Include="CharacterFactory.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Controller.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="access\bg.png">
@@ -83,6 +86,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="CharacterFactory.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Controller.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

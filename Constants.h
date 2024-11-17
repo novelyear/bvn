@@ -4,6 +4,7 @@
 #define CHARACTER_BOTTOM 550.f
 #define LEFT_BORDER 0.f
 #define RIGHT_BORDER 800.f
+#define PUSH_MARGIN 100.f
 
 #define GRAVITY 0.004f
 #define JUMP_VELOCITY -1.f

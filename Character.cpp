@@ -15,7 +15,9 @@ Character::Character(){
 }
 
 void Character::moveLeft() {
-	left = true;
+	if (currentState == CharacterState::Running || currentState == CharacterState::Stand) {
+		left = true;
+	}
 	attackStage = 0;
 	velocity.x = -MOVE_VELOCITY;
 	if (currentState == CharacterState::Stand) {
@@ -24,7 +26,9 @@ void Character::moveLeft() {
 	}
 }
 void Character::moveRight() {
-	left = false;
+	if (currentState == CharacterState::Running || currentState == CharacterState::Stand) {
+		left = false;
+	}
 	attackStage = 0;
 	velocity.x = MOVE_VELOCITY;
 	if (currentState == CharacterState::Stand) {
@@ -54,13 +58,21 @@ void Character::render(sf::RenderWindow& window) {
 	window.draw(sprite);
 }
 
-void Character::updatePosition() {
+void Character::updatePosition(sf::View view) {
+	sf::Vector2f center = view.getCenter();
+	sf::Vector2f size = view.getSize();
+
+	// 获取视图的当前边界
+	float left = center.x - size.x / 2.f;
+	float right = center.x + size.x / 2.f;
+
+
 	position.x += velocity.x;
-	if (position.x <= LEFT_BORDER) {
-		position.x = LEFT_BORDER;
+	if (position.x <= left) {
+		position.x = left;
 	}
-	else if (position.x >= RIGHT_BORDER) {
-		position.x = RIGHT_BORDER;
+	else if (position.x >= right) {
+		position.x = right;
 	}
 
 	if (currentState == CharacterState::Jumping && velocity.y <= MAX_FALLING_VELOCITY) {
@@ -73,13 +85,25 @@ void Character::updatePosition() {
 		position.y = CHARACTER_BOTTOM;  // 重置位置
 		inAir = false;
 		if (currentState != CharacterState::Running) {
-
 			currentState = CharacterState::Stand;  // run和stand都需要platform
 		}
 		velocity.y = 0.f;  // 清除竖直速度
 		jumpTimes = 0;  // 重置跳跃次数
 	}
 }
+
+bool XOR(bool a, bool b) {
+	return (a + b) % 2;
+}
+
+void Character::updateDirection(sf::FloatRect enemyPosition) {
+	if (currentState != CharacterState::Stand) return;
+	// 站立时，自动转向敌人所在方向
+	if (XOR(left, enemyPosition.left < this->position.x)) {
+		left = !left;
+	}
+}
+
 
 void Character::handleMove() {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {

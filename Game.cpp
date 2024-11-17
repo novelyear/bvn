@@ -10,6 +10,8 @@ Game::Game(int width, int height, const std::string& title)
 void Game::selectCharacter() { // 后续加上选人逻辑
     player = CharacterFactory::createCharacter(CharacterType::Gaara, false);
     enemy = CharacterFactory::createCharacter(CharacterType::Gaara, true);
+
+    enemyAI = std::make_unique<Controller>(enemy.get(), player.get());
 }
 
 void Game::run() {
@@ -29,10 +31,8 @@ void Game::run() {
 
 void Game::processEvents() {
     sf::Event event;
-    // 处理键盘事件
+    // 真人控制
     player->handleMove();
-    
-
     while (window.pollEvent(event)) {
         if (event.type == sf::Event::Closed)
             window.close();
@@ -89,45 +89,62 @@ void Game::processEvents() {
         // ==================
         player->handleInput(event);
     }
+
+    // 拟人控制
+    enemyAI->process(&map);
 }
 
 void Game::update(float deltaTime) {
     // 更新游戏状态：玩家位置、视窗位置
-    player->update(deltaTime);
+    sf::FloatRect playerRect = player->sprite.getLocalBounds();
+    sf::FloatRect enemyRect = enemy->sprite.getLocalBounds();
+    playerRect.left = player->position.x - playerRect.width / 2.f;
+    enemyRect.left = enemy->position.x - enemyRect.width / 2.f;
+    playerRect.top = player->position.y - playerRect.height / 2.f;
+    enemyRect.top = enemy->position.y - enemyRect.height / 2.f;
+
+    player->update(deltaTime, view, enemyRect);
+    enemy->update(deltaTime, view, playerRect);
+
     // 更新敌人状态：敌人位置，
-    //view.reset(getView(player.position, enemy.position));
-    view.reset(testView(player->position));
+    view.reset(getView(player->position, enemy->position));
+    //view.reset(testView(player->position));
 
     //map.checkCollision(player);
 }
 
 void Game::render() {
     window.clear();
-
-    // 渲染背景
     map.render(window, view);
-
     // 渲染玩家
     player->render(window);
     // 渲染敌人
     enemy->render(window);
-
     window.setView(view);
-
     window.display();
 }
 
 sf::FloatRect Game::getView(sf::Vector2f playerPosition, sf::Vector2f enemyPosition) {
+    // 以角色连线中点为中心，四周间距100.f
     float centerX = (playerPosition.x - enemyPosition.x) / 2 + enemyPosition.x;
     float centerY = (playerPosition.y - enemyPosition.y) / 2 + enemyPosition.y;
     float width, height;
-    float disX = fabs(playerPosition.x - enemyPosition.x);
-    float disY = fabs(playerPosition.y - enemyPosition.y);
+    float disX = fabs(playerPosition.x - enemyPosition.x) + PUSH_MARGIN * 2.f;
+    float disY = fabs(playerPosition.y - enemyPosition.y) + PUSH_MARGIN * 1.5f;
+    // 获取连线的外接矩形宽
+    disX = std::max(disX, disY / 0.75f);
+    // 控制视图缩放比
     width = std::max(std::min(disX, maximumViewWidth), minimumViewWidth);
     height = width * 0.75f;
-    return sf::FloatRect(centerX, centerY, width, height);
+    // 限制视图
+    float Left = centerX - width / 2;
+    float Top = centerY - height / 2;
+    if (Left < 0.f) Left = 0.f;
+    if (Left + width > RIGHT_BORDER) Left = RIGHT_BORDER - width;
+    if (Top + height > GROUND) Top = GROUND - height;
+    return sf::FloatRect(Left, Top, width, height);
 }
-
+// 仅以自己为视图中心，锁定镜头缩放比
 sf::FloatRect Game::testView(sf::Vector2f playerPosition) {
     float Left = player->position.x - minimumViewWidth / 2;
     float Top = player->position.y - minimumViewWidth * 0.75f / 2;

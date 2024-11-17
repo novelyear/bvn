@@ -3,13 +3,13 @@
 #include "Constants.h"
 
 Gaara::Gaara() : Character() {
-	left = true;
+	left = false;
 	position = { 100.f, GROUND };
 	loadImage();
 }
 
 Gaara::Gaara(int flag) : Character() {
-	left = false;
+	left = true;
 	position = { 300.f, GROUND };
 	loadImage();
 }
@@ -77,9 +77,10 @@ void Gaara::loadImage() {
 	}
 }
 
-void Gaara::update(float deltaTime) {
-	updatePosition();
+void Gaara::update(float deltaTime, sf::View view, sf::FloatRect enemyPosition) {
+	updatePosition(view);
 	updateSprite(deltaTime);
+	updateDirection(enemyPosition);
 }
 
 void Gaara::updateSprite(float deltaTime) {
@@ -105,6 +106,11 @@ void Gaara::updateSprite(float deltaTime) {
 		// 设置纹理矩形为当前纹理的完整区域
 		sf::Vector2u textureSize = sprite.getTexture()->getSize(); // 获取纹理尺寸
 		sprite.setTextureRect(sf::IntRect(0, 0, textureSize.x, textureSize.y));
+		if(left)
+			sprite.setScale(-1.f, 1.f); // 水平镜像，垂直保持不变
+		else {
+			sprite.setScale(1.f, 1.f); 
+		}
 	}
 	// 设置原点到底部中心
 	sf::FloatRect bounds = sprite.getLocalBounds();
