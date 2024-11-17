@@ -4,13 +4,12 @@ class Gaara :
     public Character {
 public:
 	Gaara();
+	Gaara(int flag);
 
-
+	void updateSprite(float deltaTime) override;
 	void loadImage() override; // ¼ÓÔØÍ¼Æ¬
 	void takeDamage(int amount) override;
 	void update(float deltaTime) override;
-	void handleMove() override;
-	void handleInput(sf::Event event) override;
 	void useSkill() override;
 };
 

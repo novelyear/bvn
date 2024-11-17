@@ -5,24 +5,32 @@
 
 Character::Character(){
 	attackStage = 0;
-	currentState = CharacterState::Jumping;
+	currentState = CharacterState::Stand;
 	health = INIT_HEALTH;
 	inAir = true;
 	jumpTimes = 0;
 	left = true;
-	position = { 100.f, GROUND };
-	elapsedTime = 0.f;
+	elapsedTime = PLAYER_FRAME;
+	currentFrame = 0;
 }
 
 void Character::moveLeft() {
 	left = true;
 	attackStage = 0;
 	velocity.x = -MOVE_VELOCITY;
+	if (currentState == CharacterState::Stand) {
+		currentFrame = 0;
+		currentState = CharacterState::Running;
+	}
 }
 void Character::moveRight() {
 	left = false;
 	attackStage = 0;
 	velocity.x = MOVE_VELOCITY;
+	if (currentState == CharacterState::Stand) {
+		currentFrame = 0;
+		currentState = CharacterState::Running;
+	}
 }
 void Character::jump() {
 	if(jumpTimes >= 2) {
@@ -30,15 +38,19 @@ void Character::jump() {
 	}
 	jumpTimes++;
 	velocity.y = JUMP_VELOCITY;
-	currentState = CharacterState::Jumping;
 	inAir = true;
+	if (currentState != CharacterState::Jumping) {
+		currentFrame = 0;
+		currentState = CharacterState::Jumping;
+	}
 }
 
 
 void Character::render(sf::RenderWindow& window) {
-	if (!sprite.getTexture()) {
-		loadImage();
-	}
+	sf::Sprite test;
+	test.setTexture(standTextures[0]);
+	test.setPosition({ LEFT_BORDER + 100.f, GROUND });
+	window.draw(test);
 	window.draw(sprite);
 }
 
@@ -60,7 +72,10 @@ void Character::updatePosition() {
 	if (position.y >= CHARACTER_BOTTOM) {
 		position.y = CHARACTER_BOTTOM;  // 重置位置
 		inAir = false;
-		currentState = CharacterState::Stand;  // 可能有问题
+		if (currentState != CharacterState::Running) {
+
+			currentState = CharacterState::Stand;  // run和stand都需要platform
+		}
 		velocity.y = 0.f;  // 清除竖直速度
 		jumpTimes = 0;  // 重置跳跃次数
 	}
@@ -69,12 +84,19 @@ void Character::updatePosition() {
 void Character::handleMove() {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
 		moveLeft();
+		return;
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
 		moveRight();
+		return;
 	}
 	if (!sf::Keyboard::isKeyPressed(sf::Keyboard::D) && !sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
 		velocity.x = 0;  // 停止水平移动
+		if (currentState == CharacterState::Running) {
+			currentState = CharacterState::Stand;
+			currentFrame = 0;
+		}
+		return;
 	}
 }
 

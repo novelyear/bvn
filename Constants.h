@@ -12,6 +12,4 @@
 
 #define INIT_HEALTH 100
 
-#define PLAYER_STAND_TIME 0.1f
-#define PLAYER_RUN_TIME 0.1f
-#define PLAYER_JUMP_TIME 0.1f
+#define PLAYER_FRAME 0.15f

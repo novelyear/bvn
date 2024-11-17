@@ -1,6 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 enum class CharacterState {
+	Default,
 	Stand,
 	Running,
 	Jumping,
@@ -24,8 +25,8 @@ public:
 	std::vector<sf::Texture> standTextures; // Õ¾Á¢
 	std::vector<sf::Texture> hitTextures; // ÊÜ»÷
 	std::vector<sf::Texture> kickTextures; // »÷·É
+
 	CharacterState currentState;
-	sf::Sprite sprite;
 	bool inAir; // ÔÚ¿ÕÖĞ
 	bool left; // ³¯Ïò
 	//bool defending; // ·ÀÓù×´Ì¬
@@ -33,7 +34,9 @@ public:
 	int jumpTimes; // ÌøÔ¾´ÎÊı
 	int attackStage; // ÆÕ¹¥½×¶Î
 	float elapsedTime; // ¼ÆÊ±Æ÷
+	int currentFrame;
 
+	sf::Sprite sprite;
 	sf::Vector2f position;
 	sf::Vector2f velocity;
 
@@ -46,12 +49,13 @@ public:
 	void jump();
 	void render(sf::RenderWindow& window);
 	void updatePosition();
+	void handleMove();
+	void handleInput(sf::Event event);
 
-	virtual void handleMove() = 0;
-	virtual void handleInput(sf::Event event) = 0;
 	virtual void useSkill() = 0;
 	virtual void loadImage() = 0; // ¼ÓÔØÍ¼Æ¬
 	virtual void takeDamage(int amount) = 0;
 	virtual void update(float deltaTime) = 0;
+	virtual void updateSprite(float deltaTime) = 0;
 };
 

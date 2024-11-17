@@ -8,7 +8,8 @@ Game::Game(int width, int height, const std::string& title)
     : window(sf::VideoMode(width, height), title), map() {}
 
 void Game::selectCharacter() { // 后续加上选人逻辑
-    player = CharacterFactory::createCharacter(CharacterType::Gaara);
+    player = CharacterFactory::createCharacter(CharacterType::Gaara, false);
+    enemy = CharacterFactory::createCharacter(CharacterType::Gaara, true);
 }
 
 void Game::run() {
@@ -28,7 +29,10 @@ void Game::run() {
 
 void Game::processEvents() {
     sf::Event event;
+    // 处理键盘事件
     player->handleMove();
+    
+
     while (window.pollEvent(event)) {
         if (event.type == sf::Event::Closed)
             window.close();
@@ -73,18 +77,10 @@ void Game::processEvents() {
                     std::cout << "left button pressed" << std::endl;
                 else if (event.mouseButton.button == sf::Mouse::Middle)
                     std::cout << "middle button pressed" << std::endl;
-                std::cout << "mouse x:" << event.mouseButton.x << std::endl;
-                std::cout << "mouse y:" << event.mouseButton.y << std::endl;
-                break;
-            case sf::Event::MouseButtonReleased:
-                if (event.mouseButton.button == sf::Mouse::Right)
-                    std::cout << "right button Released" << std::endl;
-                else if (event.mouseButton.button == sf::Mouse::Left)
-                    std::cout << "left button Released" << std::endl;
-                else if (event.mouseButton.button == sf::Mouse::Middle)
-                    std::cout << "middle button Released" << std::endl;
-                std::cout << "mouse x:" << event.mouseButton.x << std::endl;
-                std::cout << "mouse y:" << event.mouseButton.y << std::endl;
+         /*       std::cout << "mouse x:" << event.mouseButton.x << std::endl;
+                std::cout << "mouse y:" << event.mouseButton.y << std::endl;*/
+                std::cout << window.mapPixelToCoords({ event.mouseButton.x , event.mouseButton.y }).x << " " << window.mapPixelToCoords({ event.mouseButton.x , event.mouseButton.y }).y;
+                std::cout << std::endl;
                 break;
             case sf::Event::MouseMoved:
             default:
@@ -92,14 +88,13 @@ void Game::processEvents() {
         }
         // ==================
         player->handleInput(event);
-
     }
 }
 
 void Game::update(float deltaTime) {
     // 更新游戏状态：玩家位置、视窗位置
     player->update(deltaTime);
-
+    // 更新敌人状态：敌人位置，
     //view.reset(getView(player.position, enemy.position));
     view.reset(testView(player->position));
 
@@ -114,6 +109,8 @@ void Game::render() {
 
     // 渲染玩家
     player->render(window);
+    // 渲染敌人
+    enemy->render(window);
 
     window.setView(view);
 
