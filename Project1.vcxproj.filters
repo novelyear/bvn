@@ -48,6 +48,12 @@
     <ClCompile Include="Controller.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="MR.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="MapFactory.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="access\bg.png">
@@ -89,6 +95,12 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Controller.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="MR.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="MapFactory.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
