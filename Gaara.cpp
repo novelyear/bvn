@@ -1,6 +1,7 @@
 #include "Gaara.h"
 #include <bits/stdc++.h>
 #include "Constants.h"
+#include "Platform.h"
 
 Gaara::Gaara() : Character() {
 	left = false;
@@ -77,10 +78,21 @@ void Gaara::loadImage() {
 	}
 }
 
-void Gaara::update(float deltaTime, sf::View view, sf::FloatRect enemyPosition) {
+
+
+void Gaara::update(float deltaTime, sf::View view, Character* enemy, std::vector<Platform> platforms) {
+	//sf::FloatRect playerRect = this->sprite.getLocalBounds();
+	//sf::FloatRect enemyRect = enemy->sprite.getLocalBounds();
+	//playerRect.left = this->position.x - playerRect.width / 2.f;
+	//playerRect.top = this->position.y - playerRect.height / 2.f;
+	//enemyRect.left = enemy->position.x - enemyRect.width / 2.f;
+	//enemyRect.top = enemy->position.y - enemyRect.height / 2.f;
+	this;
+	updateCollisionWithEnemy(enemy);
+	updateCollisionWithPlatform(platforms);
+	updateDirection(enemy->position);
 	updatePosition(view);
 	updateSprite(deltaTime);
-	updateDirection(enemyPosition);
 }
 
 void Gaara::updateSprite(float deltaTime) {
@@ -89,11 +101,11 @@ void Gaara::updateSprite(float deltaTime) {
 		switch (currentState) {
 			case CharacterState::Stand:
 				sprite.setTexture(standTextures[currentFrame]);
-				currentFrame = (currentFrame + 1) % standTextures.size();
+				currentFrame = (currentFrame + 1) % (int)standTextures.size();
 				break;
 			case CharacterState::Running:
 				sprite.setTexture(runningTextures[currentFrame]);
-				currentFrame = (currentFrame + 1) % runningTextures.size();
+				currentFrame = (currentFrame + 1) % (int)runningTextures.size();
 				break;
 			case CharacterState::Jumping:
 				sprite.setTexture(jumpingTextures[currentFrame]);
@@ -125,4 +137,5 @@ void Gaara::takeDamage(int amount) {
 }
 
 void Gaara::useSkill() {
+
 }
