@@ -3,9 +3,10 @@
 #include <bits/stdc++.h>
 #include "Constants.h"
 #include "CharacterFactory.h"
+#include "MapFactory.h"
 
 Game::Game(int width, int height, const std::string& title)
-    : window(sf::VideoMode(width, height), title), map() {}
+    : window(sf::VideoMode(width, height), title) {}
 
 void Game::selectCharacter() { // 后续加上选人逻辑
     player = CharacterFactory::createCharacter(CharacterType::Gaara, false);
@@ -14,12 +15,17 @@ void Game::selectCharacter() { // 后续加上选人逻辑
     enemyAI = std::make_unique<Controller>(enemy.get(), player.get());
 }
 
+void Game::selectMap() {
+    map = MapFactory::createMap(MapType::MR);
+}
+
 void Game::run() {
     sf::Clock clock;  // 创建时钟对象，记录时间
     selectCharacter();
+    selectMap();
     while (window.isOpen()) {
         sf::Time deltaTime = clock.restart();  // 重置时钟并获取时间差
-        //float fps = 1.0f / deltaTime.asSeconds();  // 计算帧率
+        //float fps = 0.1f / deltaTime.asSeconds();  // 计算帧率
         //// 输出当前帧率到控制台
         //std::cout << "FPS: " << fps << std::endl;
 
@@ -46,76 +52,39 @@ void Game::processEvents() {
                 std::cout << "height:" << event.size.height << std::endl;
                 std::cout << "weight:" << event.size.width << std::endl;
                 break;
-            case sf::Event::LostFocus:
-                std::cout << "hei! what are you doing!\n";
-                break;
-            case sf::Event::GainedFocus:
-                std::cout << "ok.." << std::endl;
-                break;
             case sf::Event::KeyPressed:
                 std::cout << event.key.code << std::endl;
-                break;
-            case sf::Event::TextEntered:
-                if (event.text.unicode < 128)
-                    std::cout << "ASCII character typed :" << static_cast<char>(event.text.unicode) << std::endl;
-                break;
-            case sf::Event::MouseWheelScrolled:
-                if (event.mouseWheelScroll.wheel == sf::Mouse::VerticalWheel)
-                    std::cout << "wheel type: vertical" << std::endl;
-                else if (event.mouseWheelScroll.wheel == sf::Mouse::HorizontalWheel)
-                    std::cout << "wheel type: Horizontal" << std::endl;
-                else
-                    std::cout << "while type: unknown" << std::endl;
-                std::cout << "wheel delta:" << event.mouseWheelScroll.delta << std::endl;
-                std::cout << "wheel x:" << event.mouseWheelScroll.x << std::endl;
-                std::cout << "wheel y:" << event.mouseWheelScroll.y << std::endl;
                 break;
             case sf::Event::MouseButtonPressed:
                 if (event.mouseButton.button == sf::Mouse::Right)
                     std::cout << "right button pressed" << std::endl;
                 else if (event.mouseButton.button == sf::Mouse::Left)
                     std::cout << "left button pressed" << std::endl;
-                else if (event.mouseButton.button == sf::Mouse::Middle)
-                    std::cout << "middle button pressed" << std::endl;
-         /*       std::cout << "mouse x:" << event.mouseButton.x << std::endl;
-                std::cout << "mouse y:" << event.mouseButton.y << std::endl;*/
                 std::cout << window.mapPixelToCoords({ event.mouseButton.x , event.mouseButton.y }).x << " " << window.mapPixelToCoords({ event.mouseButton.x , event.mouseButton.y }).y;
                 std::cout << std::endl;
                 break;
-            case sf::Event::MouseMoved:
             default:
                 break;
         }
-        // ==================
-        player->handleInput(event);
+        // ================== 
+        //player->handleInput(event);
     }
 
     // 拟人控制
-    enemyAI->process(&map);
+    enemyAI->process(map.get());
 }
 
 void Game::update(float deltaTime) {
-    // 更新游戏状态：玩家位置、视窗位置
-    sf::FloatRect playerRect = player->sprite.getLocalBounds();
-    sf::FloatRect enemyRect = enemy->sprite.getLocalBounds();
-    playerRect.left = player->position.x - playerRect.width / 2.f;
-    enemyRect.left = enemy->position.x - enemyRect.width / 2.f;
-    playerRect.top = player->position.y - playerRect.height / 2.f;
-    enemyRect.top = enemy->position.y - enemyRect.height / 2.f;
-
-    player->update(deltaTime, view, enemyRect);
-    enemy->update(deltaTime, view, playerRect);
+    player->update(deltaTime, view, enemy.get(), map->platforms);
+    enemy->update(deltaTime, view, player.get(), map->platforms);
 
     // 更新敌人状态：敌人位置，
     view.reset(getView(player->position, enemy->position));
-    //view.reset(testView(player->position));
-
-    //map.checkCollision(player);
 }
 
 void Game::render() {
     window.clear();
-    map.render(window, view);
+    map->render(window, view);
     // 渲染玩家
     player->render(window);
     // 渲染敌人
@@ -126,11 +95,13 @@ void Game::render() {
 
 sf::FloatRect Game::getView(sf::Vector2f playerPosition, sf::Vector2f enemyPosition) {
     // 以角色连线中点为中心，四周间距100.f
+    float lowY = std::min(playerPosition.y, enemyPosition.y) - 80.f;
+    float highY = std::max(playerPosition.y, enemyPosition.y);
     float centerX = (playerPosition.x - enemyPosition.x) / 2 + enemyPosition.x;
-    float centerY = (playerPosition.y - enemyPosition.y) / 2 + enemyPosition.y;
+    float centerY = (highY - lowY) / 2 + lowY;
     float width, height;
     float disX = fabs(playerPosition.x - enemyPosition.x) + PUSH_MARGIN * 2.f;
-    float disY = fabs(playerPosition.y - enemyPosition.y) + PUSH_MARGIN * 1.5f;
+    float disY = highY - lowY + PUSH_MARGIN * 1.5f;
     // 获取连线的外接矩形宽
     disX = std::max(disX, disY / 0.75f);
     // 控制视图缩放比

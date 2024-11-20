@@ -159,6 +159,8 @@
     <ClCompile Include="GameClock.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
+    <ClCompile Include="MapFactory.cpp" />
+    <ClCompile Include="MR.cpp" />
     <ClCompile Include="Platform.cpp" />
     <ClCompile Include="SoundManager.cpp" />
   </ItemGroup>
@@ -176,6 +178,8 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameClock.h" />
     <ClInclude Include="Map.h" />
+    <ClInclude Include="MapFactory.h" />
+    <ClInclude Include="MR.h" />
     <ClInclude Include="Platform.h" />
     <ClInclude Include="SoundManager.h" />
   </ItemGroup>
