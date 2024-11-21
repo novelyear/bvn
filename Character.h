@@ -20,12 +20,45 @@ class Character
 {
 public:
 	int health;
-	std::vector<sf::Texture> runningTextures; //跑动
-	std::vector<sf::Texture> jumpingTextures; // 跃起
-	std::vector<sf::Texture> attackTextures; // 普攻
-	std::vector<sf::Texture> standTextures; // 站立
-	std::vector<sf::Texture> hitTextures; // 受击
-	std::vector<sf::Texture> kickTextures; // 击飞
+	std::pair<int, int> animation; // 开场动作
+	std::pair<int, int> animation_win; // 开场动作
+		
+	std::pair<int, int> run; //跑动态
+	std::pair<int, int> jumping; // 跃起上升态
+	std::pair<int, int> fall; // 空中下落态
+	std::pair<int, int> landed; // 着陆态
+	std::pair<int, int> J1; // 一段普攻态
+	std::pair<int, int> J2; // 二段普攻态
+	std::pair<int, int> J3; // 三段普攻态
+	std::pair<int, int> stand; // 站立态
+	std::pair<int, int> hit; // 受击态
+	std::pair<int, int> kick; // 击飞态:暂定
+	std::pair<int, int> flash; // 冲刺态
+		
+	std::pair<int, int> S; // 防御态，正放展开防御，倒放解开防御
+	std::pair<int, int> KJ; // 空中普攻
+	std::pair<int, int> WJ; // 普攻2
+	std::pair<int, int> SJ; // 普攻3
+	std::pair<int, int> KU; // 空中远攻
+	std::pair<int, int> SU; // 远攻3
+	std::pair<int, int> WU; // 远攻2
+	std::pair<int, int> U; // 远攻1
+	std::pair<int, int> SI_before; // 大招3释放
+	std::pair<int, int> WI_before; // 大招2释放
+	std::pair<int, int> I_before; // 大招1释放
+		
+	std::pair<int, int> SI_after; // 大招3命中后
+	std::pair<int, int> WI_after; // 大招2命中后
+	std::pair<int, int> I_after; // 大招1命中后
+		
+	std::pair<int, int> SI_miss; // 大招3未命中
+	std::pair<int, int> WI_miss; // 大招2未命中
+	std::pair<int, int> I_miss; // 大招1未命中
+
+	std::vector<sf::Texture> textures;
+	std::vector<sf::Vector2f> origins;
+	
+
 
 	CharacterState currentState;
 	bool inAir; // 在空中
@@ -59,11 +92,11 @@ public:
 	void handleMove();
 	void handleInput(sf::Event event);
 	void gainVelocity(sf::Vector2f acceleration);
+	void loadResources(const std::string& directory, const std::string& rangeFile, const std::string& originFile);
+	void updateSprite(float deltaTime);
 
 	virtual void useSkill() = 0;
-	virtual void loadImage() = 0; // 加载图片
 	virtual void takeDamage(int amount) = 0;
 	virtual void update(float deltaTime, sf::View view, Character* enemy, std::vector<Platform> platforms) = 0;
-	virtual void updateSprite(float deltaTime) = 0;
 };
 

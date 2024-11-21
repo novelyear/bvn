@@ -3,6 +3,7 @@
 #include "Constants.h"
 
 
+
 Character::Character(){
 	attackStage = 0;
 	currentState = CharacterState::Stand;
@@ -60,10 +61,6 @@ void Character::down() {
 }
 
 void Character::render(sf::RenderWindow& window) {
-	sf::Sprite test;
-	test.setTexture(standTextures[0]);
-	test.setPosition({ LEFT_BORDER + 100.f, GROUND });
-	window.draw(test);
 	window.draw(sprite);
 }
 
@@ -174,6 +171,42 @@ void Character::updateCollisionWithEnemy(Character* enemy) {
 	separate(this, enemy);
 }
 
+void Character::updateSprite(float deltaTime) {
+	if (textures.empty()) return;
+	elapsedTime += deltaTime;
+	if (elapsedTime > PLAYER_FRAME) {
+		switch (currentState) {
+		case CharacterState::Stand:
+			sprite.setTexture(textures[stand.first + currentFrame]);
+			sprite.setOrigin(origins[stand.first + currentFrame]);
+			currentFrame = (currentFrame + 1) % (stand.second - stand.first);
+			break;
+		case CharacterState::Running:
+			sprite.setTexture(textures[run.first + currentFrame]);
+			sprite.setOrigin(origins[run.first + currentFrame]);
+			currentFrame = (currentFrame + 1) % (run.second - run.first);
+			break;
+		case CharacterState::Jumping:
+			sprite.setTexture(textures[jumping.first + currentFrame]);
+			sprite.setOrigin(origins[jumping.first + currentFrame]);
+			currentFrame = (currentFrame + 1) % (jumping.second - jumping.first);
+			break;
+		default:
+			break;
+		}
+		elapsedTime = 0.f;
+		// 设置纹理矩形为当前纹理的完整区域
+		sf::Vector2u textureSize = sprite.getTexture()->getSize(); // 获取纹理尺寸
+		sprite.setTextureRect(sf::IntRect(0, 0, textureSize.x, textureSize.y));
+		if (left)
+			sprite.setScale(-1.f, 1.f); // 水平镜像，垂直保持不变
+		else {
+			sprite.setScale(1.f, 1.f);
+		}
+	}
+	sprite.setPosition(position);
+}
+
 void Character::gainVelocity(sf::Vector2f acceleration) {
 	this->velocity += acceleration;
 }
@@ -227,3 +260,108 @@ void Character::handleInput(sf::Event event) {
 	}
 }
 
+void Character::loadResources(const std::string& directory, const std::string& rangeFile, const std::string& originFile) {
+	// 区间
+	std::map<std::string, std::pair<int, int>> ranges;
+	std::ifstream rangeStream(rangeFile);
+	if (!rangeStream.is_open()) {
+		std::cerr << "Failed to open range file: " << rangeFile << std::endl;
+		return;
+	}
+
+	std::string line;
+	while (std::getline(rangeStream, line)) {
+		std::istringstream iss(line);
+		std::string name, rangeStr;
+		if (std::getline(iss, name, '-') && std::getline(iss, rangeStr)) {
+			int left, right;
+			if (sscanf_s(rangeStr.c_str(), "[%d, %d]", &left, &right) == 2) {
+				ranges[name] = { left, right }; // Convert to 0-based indexing
+			}
+		}
+	}
+
+	rangeStream.close();
+
+	// 图片
+	int maxIndex = 0;
+	for (const auto& rangePair : ranges) {
+		const auto& range = rangePair.second;
+		maxIndex = std::max(maxIndex, range.second);
+	}
+
+	textures.resize(maxIndex + 1);
+	for (int i = 1; i <= maxIndex; ++i) {
+		sf::Texture texture;
+		if (texture.loadFromFile(directory + "\\" + std::to_string(i) + ".png")) {
+			textures[i] = std::move(texture); // 图号即是下标
+		}
+		else {
+			std::cerr << "Failed to load texture: " << directory + "\\" + std::to_string(i) + ".png" << std::endl;
+		}
+	}
+
+	// 分配对应区间
+	auto mapRange = [&](const std::string& key, std::pair<int, int>& member) {
+		if (ranges.find(key) != ranges.end()) {
+			member = ranges[key];
+		}
+		else {
+			std::cerr << "Range not found for: " << key << std::endl;
+		}
+	};
+
+	mapRange("animation", animation);
+	//mapRange("animation_win", animation_win);
+	mapRange("fall", fall);
+	mapRange("flash", flash);
+	mapRange("hit", hit);
+	mapRange("I_after", I_after);
+	mapRange("I_before", I_before);
+	mapRange("I_miss", I_miss);
+	mapRange("J1", J1);
+	mapRange("J2", J2);
+	mapRange("J3", J3);
+	mapRange("jump", jumping);
+	mapRange("kick", kick);
+	mapRange("KJ", KJ);
+	mapRange("KU", KU);
+	mapRange("landed", landed);
+	mapRange("run", run);
+	mapRange("S", S);
+	mapRange("SI_after", SI_after);
+	mapRange("SI_before", SI_before);
+	mapRange("SI_miss", SI_miss);
+	mapRange("SJ", SJ);
+	mapRange("stand", stand);
+	mapRange("SU", SU);
+	mapRange("U", U);
+	mapRange("WI_after", WI_after);
+	mapRange("WI_before", WI_before);
+	mapRange("WI_miss", WI_miss);
+	mapRange("WJ", WJ);
+	mapRange("WU", WU);
+	
+
+	// 原点坐标
+	std::ifstream originStream(originFile);
+	if (!originStream.is_open()) {
+		std::cerr << "Failed to open origin file: " << originFile << std::endl;
+		return;
+	}
+
+	origins.resize(maxIndex + 1);
+	while (std::getline(originStream, line)) {
+		int id, x, y;
+		if (sscanf_s(line.c_str(), "%d-(%d, %d)", &id, &x, &y) == 3) {
+			if (id >= 1 && id <= static_cast<int>(origins.size())) {
+				origins[id] = sf::Vector2f((float)x, (float)y); // 图号即是下标
+			}
+			else {
+				std::cerr << "Origin out of range for ID: " << id << std::endl;
+			}
+		}
+	}
+
+	originStream.close();
+}
