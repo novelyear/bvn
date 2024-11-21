@@ -94,9 +94,9 @@ public:
 	void gainVelocity(sf::Vector2f acceleration);
 	void loadResources(const std::string& directory, const std::string& rangeFile, const std::string& originFile);
 	void updateSprite(float deltaTime);
+	void update(float deltaTime, sf::View view, Character* enemy, std::vector<Platform> platforms);
 
 	virtual void useSkill() = 0;
 	virtual void takeDamage(int amount) = 0;
-	virtual void update(float deltaTime, sf::View view, Character* enemy, std::vector<Platform> platforms) = 0;
 };
 

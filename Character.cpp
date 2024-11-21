@@ -64,6 +64,14 @@ void Character::render(sf::RenderWindow& window) {
 	window.draw(sprite);
 }
 
+void Character::update(float deltaTime, sf::View view, Character* enemy, std::vector<Platform> platforms) {
+	updateCollisionWithEnemy(enemy);
+	updateCollisionWithPlatform(platforms);
+	updateDirection(enemy->position);
+	updatePosition(view);
+	updateSprite(deltaTime);
+}
+
 void Character::updatePosition(sf::View view) {
 	sf::Vector2f center = view.getCenter();
 	sf::Vector2f size = view.getSize();
