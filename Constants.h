@@ -10,15 +10,15 @@
 // 视图双盒子模型间距 margin
 #define PUSH_MARGIN 100.f
 // 重力加速度
-#define GRAVITY 0.0035f
+#define GRAVITY 0.0025f
 // 起跳初速度
-#define JUMP_VELOCITY -0.95f
+#define JUMP_VELOCITY -0.9f
 // AD移动速度
-#define MOVE_VELOCITY 0.3f
+#define MOVE_VELOCITY 0.25f
 // 最大坠落速度
-#define MAX_FALLING_VELOCITY 0.65f
+#define MAX_FALLING_VELOCITY 0.3f
 // 二段跳限制速度
-#define LIMIT_V JUMP_VELOCITY + 0.315f
+#define LIMIT_V JUMP_VELOCITY + 0.45f
 // 互斥力常数
 #define REPULSION 5.f
 // 碰撞检测误差容忍
@@ -26,4 +26,4 @@
 // 人物初始生命值
 #define INIT_HEALTH 100
 // 人物贴图轮换帧率
-#define PLAYER_FRAME 0.07f
+#define PLAYER_FRAME 0.034f
