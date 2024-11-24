@@ -15,13 +15,11 @@ Gaara::Gaara(int flag) : Character() {
 	loadResources("D:\\D1\\code\\bvn\\access\\gaaraS\\gaara", "D:\\D1\\code\\bvn\\access\\gaaraS\\config\\section.txt", "D:\\D1\\code\\bvn\\access\\gaaraS\\config\\origins.txt");
 }
 
-void Gaara::update(float deltaTime, sf::View view, Character* enemy, std::vector<Platform> platforms) {
-	updateCollisionWithEnemy(enemy);
-	updateCollisionWithPlatform(platforms);
-	updateDirection(enemy->position);
-	updatePosition(view);
-	updateSprite(deltaTime);
-}
+
+
+
+
+
 
 void Gaara::takeDamage(int amount) {
 

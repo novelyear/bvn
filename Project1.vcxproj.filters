@@ -103,5 +103,8 @@
     <ClInclude Include="MapFactory.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="fsm.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -2,19 +2,12 @@
 #include <SFML/Graphics.hpp>
 #include "Platform.h"
 enum class CharacterState {
-	Default,
-	Stand,
-	Running,
-	Jumping,
-	Attacking,
-	Hit,
-	Kicked,
-	Defending
+	Default, Stand, Running, Jumping, Fall, Hit, Kick, J1, J2, J3, U, KJ, KU, KI, I_before, I_after,
+	I_miss, WI_before, WI_after, WI_miss, WU, WJ, S, SI_before, SI_after, SI_miss, SJ, SU, Flash
 };
 enum class CharacterType {
 	Gaara,
-	Naruto,
-	Itachi,
+	NarutoS,
 };
 class Character
 {
@@ -33,7 +26,7 @@ public:
 	std::pair<int, int> stand; // 站立态
 	std::pair<int, int> hit; // 受击态
 	std::pair<int, int> kick; // 击飞态:暂定
-	std::pair<int, int> flash; // 冲刺态
+	std::pair<int, int> flashing; // 冲刺态
 		
 	std::pair<int, int> S; // 防御态，正放展开防御，倒放解开防御
 	std::pair<int, int> KJ; // 空中普攻
@@ -63,8 +56,6 @@ public:
 	CharacterState currentState;
 	bool inAir; // 在空中
 	bool left; // 朝向
-	//bool defending; // 防御状态
-	//bool stuned; // 被连招过程中的无法操作状态
 	int jumpTimes; // 跳跃次数
 	int attackStage; // 普攻阶段
 	float elapsedTime; // 计时器
@@ -83,6 +74,7 @@ public:
 	void moveRight();
 	void jump();
 	void down();
+	void flash();
 
 	void render(sf::RenderWindow& window);
 	void updatePosition(sf::View view);
@@ -94,9 +86,9 @@ public:
 	void gainVelocity(sf::Vector2f acceleration);
 	void loadResources(const std::string& directory, const std::string& rangeFile, const std::string& originFile);
 	void updateSprite(float deltaTime);
+	void update(float deltaTime, sf::View view, Character* enemy, std::vector<Platform> platforms);
 
 	virtual void useSkill() = 0;
 	virtual void takeDamage(int amount) = 0;
-	virtual void update(float deltaTime, sf::View view, Character* enemy, std::vector<Platform> platforms) = 0;
 };
 
