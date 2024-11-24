@@ -9,6 +9,5 @@ public:
 	Gaara(int flag);
 
 	void takeDamage(int amount) override;
-	void useSkill() override;
 };
 

@@ -13,46 +13,67 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="源文件\Character">
+      <UniqueIdentifier>{61526a04-79b3-40eb-a5d4-f25ef340eb9e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Character\Gaara">
+      <UniqueIdentifier>{76ed634c-8002-4782-a52c-afbc12f2fd40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Map">
+      <UniqueIdentifier>{42337787-c6d5-441b-a582-746a8b1d0143}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Game">
+      <UniqueIdentifier>{71b49755-4104-4c4f-96d4-c3fa2e6df727}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Game.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Character.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Map.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="Effect.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="SoundManager.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="GameClock.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Platform.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Gaara.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="CharacterFactory.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Controller.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="MR.cpp">
-      <Filter>源文件</Filter>
+    <ClCompile Include="CharacterKeyset.cpp">
+      <Filter>源文件\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="CharacterOp.cpp">
+      <Filter>源文件\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="CharacterCombat.cpp">
+      <Filter>源文件\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="CharacterFactory.cpp">
+      <Filter>源文件\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="CharacterUpdate.cpp">
+      <Filter>源文件\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="Gaara.cpp">
+      <Filter>源文件\Character\Gaara</Filter>
+    </ClCompile>
+    <ClCompile Include="Map.cpp">
+      <Filter>源文件\Map</Filter>
     </ClCompile>
     <ClCompile Include="MapFactory.cpp">
-      <Filter>源文件</Filter>
+      <Filter>源文件\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="MR.cpp">
+      <Filter>源文件\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="Platform.cpp">
+      <Filter>源文件\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>源文件\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="GameClock.cpp">
+      <Filter>源文件\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>源文件\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="SoundManager.cpp">
+      <Filter>源文件\Game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -101,9 +122,6 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="MapFactory.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="fsm.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

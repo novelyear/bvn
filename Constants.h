@@ -14,13 +14,13 @@
 // 起跳初速度
 #define JUMP_VELOCITY -0.9f
 // AD移动速度
-#define MOVE_VELOCITY 0.25f
+#define MOVE_VELOCITY 0.35f
 // 最大坠落速度
-#define MAX_FALLING_VELOCITY 0.3f
+#define MAX_FALLING_VELOCITY 0.48f
 // 二段跳限制速度
 #define LIMIT_V JUMP_VELOCITY + 0.45f
 // 冲刺速度
-#define FLASH_VELOCITY 2.5f
+#define FLASH_VELOCITY 0.7f
 // 互斥力常数
 #define REPULSION 5.f
 // 碰撞检测误差容忍

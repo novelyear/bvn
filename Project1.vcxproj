@@ -156,8 +156,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Character.cpp" />
+    <ClCompile Include="CharacterKeyset.cpp" />
+    <ClCompile Include="CharacterOp.cpp" />
+    <ClCompile Include="CharacterCombat.cpp" />
     <ClCompile Include="CharacterFactory.cpp" />
+    <ClCompile Include="CharacterUpdate.cpp" />
     <ClCompile Include="Controller.cpp" />
     <ClCompile Include="Effect.cpp" />
     <ClCompile Include="Gaara.cpp" />
@@ -182,7 +185,6 @@
     <ClInclude Include="Constants.h" />
     <ClInclude Include="Controller.h" />
     <ClInclude Include="Effect.h" />
-    <ClInclude Include="fsm.hpp" />
     <ClInclude Include="Gaara.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameClock.h" />

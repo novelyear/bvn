@@ -88,7 +88,15 @@ public:
 	void updateSprite(float deltaTime);
 	void update(float deltaTime, sf::View view, Character* enemy, std::vector<Platform> platforms);
 
-	virtual void useSkill() = 0;
+	virtual void j1();
+	virtual void j2();
+	virtual void j3();
+	virtual void kj();
+	virtual void sj();
+	virtual void su();
+	virtual void s();
+
+
 	virtual void takeDamage(int amount) = 0;
 };
 

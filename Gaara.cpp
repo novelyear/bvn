@@ -15,16 +15,6 @@ Gaara::Gaara(int flag) : Character() {
 	loadResources("D:\\D1\\code\\bvn\\access\\gaaraS\\gaara", "D:\\D1\\code\\bvn\\access\\gaaraS\\config\\section.txt", "D:\\D1\\code\\bvn\\access\\gaaraS\\config\\origins.txt");
 }
 
-
-
-
-
-
-
 void Gaara::takeDamage(int amount) {
-
-}
-
-void Gaara::useSkill() {
 
 }
