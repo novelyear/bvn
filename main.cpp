@@ -1,11 +1,11 @@
 #include "Game.h" // 包含 Game 类的头文件
 #include <bits/stdc++.h>
 
-//extern "C" {
-//    // 换用独显
-//    __declspec(dllexport) unsigned long NvOptimusEnablement = 0x00000001;
-//}
 
+extern "C" {
+    // 换用独显
+    __declspec(dllexport) unsigned long NvOptimusEnablement = 0x00000001;
+}
 
 int main() {
     try {
@@ -23,3 +23,5 @@ int main() {
 
     return EXIT_SUCCESS;
 }
+
+

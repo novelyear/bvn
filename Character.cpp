@@ -2,8 +2,6 @@
 #include <bits/stdc++.h>
 #include "Constants.h"
 
-
-
 Character::Character(){
 	attackStage = 0;
 	currentState = CharacterState::Stand;
@@ -60,6 +58,19 @@ void Character::down() {
 	}
 }
 
+void Character::flash() {
+	// 只有Onboard和空中一段跳时可以冲刺，消耗气，调用时已经判断气和跳跃
+	if (currentState == CharacterState::Stand ||
+		currentState == CharacterState::Jumping ||
+		currentState == CharacterState::Fall) {
+		velocity.x = left ? -FLASH_VELOCITY : FLASH_VELOCITY;
+		currentState = CharacterState::Flash;
+		currentFrame = 0;
+		jumpTimes++;
+		// TODO 减少气
+	}
+}
+
 void Character::render(sf::RenderWindow& window) {
 	window.draw(sprite);
 }
@@ -90,7 +101,10 @@ void Character::updatePosition(sf::View view) {
 		position.x = right;
 	}
 
-	if (currentState == CharacterState::Jumping && velocity.y <= MAX_FALLING_VELOCITY) {
+	if ((currentState == CharacterState::Jumping ||
+		currentState == CharacterState::Fall ||
+		currentState == CharacterState::Flash)
+		&& velocity.y <= MAX_FALLING_VELOCITY) {
 		velocity.y += GRAVITY;
 	}
 
@@ -199,6 +213,22 @@ void Character::updateSprite(float deltaTime) {
 			sprite.setOrigin(origins[jumping.first + currentFrame]);
 			currentFrame = (currentFrame + 1) % (jumping.second - jumping.first);
 			break;
+		case CharacterState::Flash:
+			sprite.setTexture(textures[flashing.first + currentFrame]);
+			sprite.setOrigin(origins[flashing.first + currentFrame]);
+			currentFrame++;
+			if (currentFrame + flashing.first > flashing.second) {
+				currentState = CharacterState::Fall;
+				currentFrame = 0;
+			}
+			else {
+
+			}
+			break;
+		case CharacterState::Fall:
+			sprite.setTexture(textures[fall.first + currentFrame]);
+			sprite.setOrigin(origins[fall.first + currentFrame]);
+			if (currentFrame + fall.first < fall.second) currentFrame++;
 		default:
 			break;
 		}
@@ -222,6 +252,11 @@ void Character::gainVelocity(sf::Vector2f acceleration) {
 
 
 void Character::handleMove() {
+	if (currentState == CharacterState::Flash) {
+		return;
+	}
+
+
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
 		moveLeft();
 		//return;
@@ -238,6 +273,12 @@ void Character::handleMove() {
 		}
 		//return;
 	} 
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::L)) { // 冲刺
+		if(jumpTimes > 1) { //之后补充chakra机制限制冲刺次数，同时空中只能冲刺一次
+			return;
+		}
+		flash();
+	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) { // S：防御、下落、普攻3、大招3、远攻3
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::K)) {
 			down();
@@ -322,7 +363,7 @@ void Character::loadResources(const std::string& directory, const std::string& r
 	mapRange("animation", animation);
 	//mapRange("animation_win", animation_win);
 	mapRange("fall", fall);
-	mapRange("flash", flash);
+	mapRange("flash", flashing);
 	mapRange("hit", hit);
 	mapRange("I_after", I_after);
 	mapRange("I_before", I_before);

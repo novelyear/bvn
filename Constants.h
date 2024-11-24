@@ -19,6 +19,8 @@
 #define MAX_FALLING_VELOCITY 0.3f
 // 二段跳限制速度
 #define LIMIT_V JUMP_VELOCITY + 0.45f
+// 冲刺速度
+#define FLASH_VELOCITY 2.5f
 // 互斥力常数
 #define REPULSION 5.f
 // 碰撞检测误差容忍

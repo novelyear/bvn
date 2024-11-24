@@ -16,6 +16,11 @@ Gaara::Gaara(int flag) : Character() {
 }
 
 
+
+
+
+
+
 void Gaara::takeDamage(int amount) {
 
 }
