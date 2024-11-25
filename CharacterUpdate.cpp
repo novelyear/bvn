@@ -2,19 +2,13 @@
 #include <bits/stdc++.h>
 #include "Constants.h"
 
-void Character::update(float deltaTime, sf::View view, Character* enemy, std::vector<Platform> platforms) {
-	//updateCollisionWithEnemy(enemy);
-	updateCollisionWithPlatform(platforms);
-	updatePosition(view);
-	updateDirection(enemy->position);
-	updateSprite(deltaTime);
-}
+
 
 void Character::updatePosition(sf::View view) {
 	sf::Vector2f center = view.getCenter();
 	sf::Vector2f size = view.getSize();
 
-	// »ñÈ¡ÊÓÍ¼µÄµ±Ç°±ß½ç
+	// è·å–è§†å›¾çš„å½“å‰è¾¹ç•Œ
 	float left = center.x - size.x / 2.f;
 	float right = center.x + size.x / 2.f;
 
@@ -42,15 +36,15 @@ void Character::updatePosition(sf::View view) {
 	}
 
 	position.y += velocity.y;
-	// ¶µµ×»úÖÆ
+	// å…œåº•æœºåˆ¶
 	if (position.y >= CHARACTER_BOTTOM) {
-		position.y = CHARACTER_BOTTOM;  // ÖØÖÃÎ»ÖÃ
+		position.y = CHARACTER_BOTTOM;  // é‡ç½®ä½ç½®
 		inAir = false;
 		//if (currentState != CharacterState::Running) {
-		//	currentState = CharacterState::Stand;  // runºÍstand¶¼ĞèÒªplatform
+		//	currentState = CharacterState::Stand;  // runå’Œstandéƒ½éœ€è¦platform
 		//}
-		velocity.y = 0.f;  // Çå³ıÊúÖ±ËÙ¶È
-		jumpTimes = 0;  // ÖØÖÃÌøÔ¾´ÎÊı
+		velocity.y = 0.f;  // æ¸…é™¤ç«–ç›´é€Ÿåº¦
+		jumpTimes = 0;  // é‡ç½®è·³è·ƒæ¬¡æ•°
 	}
 }
 
@@ -60,7 +54,7 @@ bool XOR(bool a, bool b) {
 
 void Character::updateDirection(sf::Vector2f enemyPosition) {
 	if (currentState != CharacterState::Stand) return;
-	// Õ¾Á¢Ê±£¬×Ô¶¯×ªÏòµĞÈËËùÔÚ·½Ïò
+	// ç«™ç«‹æ—¶ï¼Œè‡ªåŠ¨è½¬å‘æ•Œäººæ‰€åœ¨æ–¹å‘
 	if (XOR(left, enemyPosition.x < this->position.x)) {
 		left = !left;
 	}
@@ -69,26 +63,26 @@ void Character::updateDirection(sf::Vector2f enemyPosition) {
 void Character::updateCollisionWithPlatform(std::vector<Platform> platforms) {
 	if (platforms.empty() || velocity.y < 0) return;
 	bool onBoard = false;
-	// ±éÀúËùÓĞplatform£¬ÅĞ¶ÏÊÇ·ñÔÚÉÏÃæ
+	// éå†æ‰€æœ‰platformï¼Œåˆ¤æ–­æ˜¯å¦åœ¨ä¸Šé¢
 	for (const auto& platform : platforms) {
 		sf::Vector2f platformStart = platform.startPosition;
 		float platformWidth = platform.width;
 
-		// ¼ì²âÊÇ·ñÕ¾ÔÚÆ½Ì¨ÉÏ
-		if (position.y >= platformStart.y &&  // Î»ÓÚÆ½Ì¨¸ß¶È
-			position.y <= platformStart.y + TOLERANCE && // ÔÊĞíĞ¡·¶Î§Îó²î
-			position.x >= platformStart.x && // ÔÚÆ½Ì¨·¶Î§ÄÚ
+		// æ£€æµ‹æ˜¯å¦ç«™åœ¨å¹³å°ä¸Š
+		if (position.y >= platformStart.y &&  // ä½äºå¹³å°é«˜åº¦
+			position.y <= platformStart.y + TOLERANCE && // å…è®¸å°èŒƒå›´è¯¯å·®
+			position.x >= platformStart.x && // åœ¨å¹³å°èŒƒå›´å†…
 			position.x <= platformStart.x + platformWidth) {
 			onBoard = true;
 
-			position.y = platformStart.y;  // Õ¾ÔÚÉÏÃæ
+			position.y = platformStart.y;  // ç«™åœ¨ä¸Šé¢
 			inAir = false;
-			if (currentState == CharacterState::Jumping || // ×¢ÒâÓëÉÏÃæµÄ¶µµ×»úÖÆ±£³ÖÒ»ÖÂ
+			if (currentState == CharacterState::Jumping || // æ³¨æ„ä¸ä¸Šé¢çš„å…œåº•æœºåˆ¶ä¿æŒä¸€è‡´
 				currentState == CharacterState::Fall) {
 				currentState = CharacterState::Stand;
 			}
-			velocity.y = 0.f;  // Çå³ıÊúÖ±ËÙ¶È
-			jumpTimes = 0;  // ÖØÖÃÌøÔ¾´ÎÊı
+			velocity.y = 0.f;  // æ¸…é™¤ç«–ç›´é€Ÿåº¦
+			jumpTimes = 0;  // é‡ç½®è·³è·ƒæ¬¡æ•°
 
 			break;
 		}
@@ -100,9 +94,9 @@ void Character::updateCollisionWithPlatform(std::vector<Platform> platforms) {
 }
 
 void separate(Character* p1, Character* p2) {
-	// Ä¬ÈÏÒÑ¾­ÖØºÏ
+	// é»˜è®¤å·²ç»é‡åˆ
 	float r = std::fabs(p1->position.x - p2->position.x);
-	bool left = p1->position.x < p2->position.x; // p1ÔÚ×ó±ß¾Í»ñµÃ¸ºµÄ¼ÓËÙ¶È
+	bool left = p1->position.x < p2->position.x; // p1åœ¨å·¦è¾¹å°±è·å¾—è´Ÿçš„åŠ é€Ÿåº¦
 	float acceleration = REPULSION / r;
 	p1->gainVelocity({ acceleration * left ? -0.2f : 0.2f, 0 });
 	p2->gainVelocity({ acceleration * left ? 0.2f : -0.2f, 0 });
@@ -112,168 +106,21 @@ void Character::updateCollisionWithEnemy(Character* enemy) {
 	if (currentState == CharacterState::Flash || enemy->currentState == CharacterState::Flash) {
 		return;
 	}
-	// ËØ²Ä³ß´ç²»Ò»£¬Èç¹ûÉèÎªÊôĞÔ±ÜÃâÖØ¸´¼ÆËã£¬ÄÇÔÚ¸üĞÂ¾«ÁéÊ±ĞèÒª¼ÓÅĞ¶Ï£¬Ä¿Ç°Ö¡ÂÊÒç³ö£¬¿É²»ÓÅ»¯
+	// ç´ æå°ºå¯¸ä¸ä¸€ï¼Œå¦‚æœè®¾ä¸ºå±æ€§é¿å…é‡å¤è®¡ç®—ï¼Œé‚£åœ¨æ›´æ–°ç²¾çµæ—¶éœ€è¦åŠ åˆ¤æ–­ï¼Œç›®å‰å¸§ç‡æº¢å‡ºï¼Œå¯ä¸ä¼˜åŒ–
 	sf::FloatRect playerRect = this->sprite.getLocalBounds();
 	sf::FloatRect enemyRect = enemy->sprite.getLocalBounds();
 	playerRect.left = this->position.x - playerRect.width / 2.f;
 	playerRect.top = this->position.y - playerRect.height / 2.f;
 	enemyRect.left = enemy->position.x - enemyRect.width / 2.f;
 	enemyRect.top = enemy->position.y - enemyRect.height / 2.f;
-	// Ç°Ìá£º²»¿ÉÄÜÍêÈ«ÖØºÏ==>ÖØºÏµã¹éÈëÒ»±ß¼´¿É
-	// ËÆºõÔ­ÓÎÏ·´æÔÚÖØÁ¿£¬ÈËÎïÏàÍÆËÙ¶È±ä»¯²»Ò»ÖÂ£¬ÓĞµÄ¼õ°ë£¬ÓĞµÄ¸üÂı
-	// ÕâÀï¶¼ÉèÖÃÎªÒ»ÑùµÄÖØÁ¿£¬Èç¹ûÓĞÈËÎïµ²µÀ£¬ÔòËÙ¶È¼õ°ë
+	// å‰æï¼šä¸å¯èƒ½å®Œå…¨é‡åˆ==>é‡åˆç‚¹å½’å…¥ä¸€è¾¹å³å¯
+	// ä¼¼ä¹åŸæ¸¸æˆå­˜åœ¨é‡é‡ï¼Œäººç‰©ç›¸æ¨é€Ÿåº¦å˜åŒ–ä¸ä¸€è‡´ï¼Œæœ‰çš„å‡åŠï¼Œæœ‰çš„æ›´æ…¢
+	// è¿™é‡Œéƒ½è®¾ç½®ä¸ºä¸€æ ·çš„é‡é‡ï¼Œå¦‚æœæœ‰äººç‰©æŒ¡é“ï¼Œåˆ™é€Ÿåº¦å‡åŠ
 	if (!playerRect.intersects(enemyRect)) return;
-	if (std::fabs(this->position.y - enemy->position.y) < TOLERANCE && this->velocity.x != 0.f) { // Í¬¸ß¶È£¬Ë®Æ½Åö×²
+	if (std::fabs(this->position.y - enemy->position.y) < TOLERANCE && this->velocity.x != 0.f) { // åŒé«˜åº¦ï¼Œæ°´å¹³ç¢°æ’
 		this->velocity.x /= 4.f;
 		enemy->gainVelocity({ this->velocity.x, 0.f });
 	}
 	separate(this, enemy);
 }
 
-void Character::updateSprite(float deltaTime) {
-	if (textures.empty()) return;
-	elapsedTime += deltaTime;
-	if (elapsedTime > PLAYER_FRAME) {
-		switch (currentState) {
-		case CharacterState::Stand:
-			sprite.setTexture(textures[stand.first + currentFrame]);
-			sprite.setOrigin(origins[stand.first + currentFrame]);
-			currentFrame = (currentFrame + 1) % (stand.second - stand.first);
-			break;
-		case CharacterState::Running:
-			sprite.setTexture(textures[run.first + currentFrame]);
-			sprite.setOrigin(origins[run.first + currentFrame]);
-			currentFrame = (currentFrame + 1) % (run.second - run.first);
-			break;
-		case CharacterState::Jumping:
-			sprite.setTexture(textures[jumping.first + currentFrame]);
-			sprite.setOrigin(origins[jumping.first + currentFrame]);
-			currentFrame = (currentFrame + 1) % (jumping.second - jumping.first);
-			break;
-		case CharacterState::Flash:
-			sprite.setTexture(textures[flashing.first + currentFrame]);
-			sprite.setOrigin(origins[flashing.first + currentFrame]);
-			currentFrame++;
-			if (currentFrame + flashing.first > flashing.second) {
-				currentState = CharacterState::Fall;
-				currentFrame = 0;
-			}
-			break;
-		case CharacterState::Fall:
-			sprite.setTexture(textures[fall.first + currentFrame]);
-			sprite.setOrigin(origins[fall.first + currentFrame]);
-			if (currentFrame + fall.first < fall.second) currentFrame++;
-			break;
-		case CharacterState::J1:
-			sprite.setTexture(textures[J1.first + currentFrame]);
-			sprite.setOrigin(origins[J1.first + currentFrame]);
-			currentFrame++;
-			if (currentFrame + J1.first > J1.second) {
-				if (attackStage > 1) {
-					currentState = CharacterState::J2;
-					currentFrame = 0;
-				}
-				else {
-					currentState = CharacterState::Stand;
-					currentFrame = 0;
-					attackStage = 0;
-				}
-			}
-			break;
-		case CharacterState::J2:
-			sprite.setTexture(textures[J2.first + currentFrame]);
-			sprite.setOrigin(origins[J2.first + currentFrame]);
-			currentFrame++;
-			if (currentFrame + J2.first > J2.second) {
-				if (attackStage > 2) {
-					currentState = CharacterState::J3;
-					currentFrame = 0;
-				}
-				else {
-					currentState = CharacterState::Stand;
-					currentFrame = 0;
-					attackStage = 0;
-				}
-			}
-			break;
-		case CharacterState::J3:
-			sprite.setTexture(textures[J3.first + currentFrame]);
-			sprite.setOrigin(origins[J3.first + currentFrame]);
-			currentFrame++;
-			if (currentFrame + J3.first > J3.second) {
-				attackStage = 0;
-				currentState = CharacterState::Stand;
-				currentFrame = 0;
-			}
-			break;
-		case CharacterState::KJ:
-			sprite.setTexture(textures[KJ.first + currentFrame]);
-			sprite.setOrigin(origins[KJ.first + currentFrame]);
-			currentFrame++;
-			if (currentFrame + KJ.first > KJ.second) {
-				currentState = CharacterState::Fall;
-				currentFrame = 0;
-			}
-			break;
-		case CharacterState::SJ:
-			sprite.setTexture(textures[SJ.first + currentFrame]);
-			sprite.setOrigin(origins[SJ.first + currentFrame]);
-			currentFrame++;
-			if (currentFrame + SJ.first > SJ.second) {
-				currentState = CharacterState::Stand;
-				currentFrame = 0;
-			}
-			break;
-		case CharacterState::SU:
-			sprite.setTexture(textures[SU.first + currentFrame]);
-			sprite.setOrigin(origins[SU.first + currentFrame]);
-			currentFrame++;
-			if (currentFrame + SU.first > SU.second) {
-				currentState = CharacterState::Stand;
-				currentFrame = 0;
-			}
-			break;
-		case CharacterState::S:
-			sprite.setTexture(textures[S.first + currentFrame]);
-			sprite.setOrigin(origins[S.first + currentFrame]);
-			if(currentFrame + S.first < S.second) {
-				currentFrame++;
-			}
-			break;
-		case CharacterState::S_Release:
-			sprite.setTexture(textures[S.second - currentFrame]);
-			sprite.setOrigin(origins[S.second - currentFrame]);
-			currentFrame++;
-			if (S.second - currentFrame < S.first) {
-				currentState = CharacterState::Stand;
-				currentFrame = 0;
-			}
-			break;
-		case CharacterState::WJ:
-			sprite.setTexture(textures[WJ.first + currentFrame]);
-			sprite.setOrigin(origins[WJ.first + currentFrame]);
-			currentFrame++;
-			if (currentFrame + WJ.first > WJ.second) {
-				currentState = CharacterState::Stand;
-				currentFrame = 0;
-			}
-			break;
-		case CharacterState::WI_before:
-			sprite.setTexture(textures[WI_before.first + currentFrame]);
-			sprite.setOrigin(origins[WI_before.first + currentFrame]);
-
-		default:
-			break;
-		}
-		elapsedTime = 0.f;
-		// ÉèÖÃÎÆÀí¾ØĞÎÎªµ±Ç°ÎÆÀíµÄÍêÕûÇøÓò
-		sf::Vector2u textureSize = sprite.getTexture()->getSize(); // »ñÈ¡ÎÆÀí³ß´ç
-		sprite.setTextureRect(sf::IntRect(0, 0, textureSize.x, textureSize.y));
-		if (left)
-			sprite.setScale(-1.f, 1.f); // Ë®Æ½¾µÏñ£¬´¹Ö±±£³Ö²»±ä
-		else {
-			sprite.setScale(1.f, 1.f);
-		}
-	}
-	sprite.setPosition(position);
-}

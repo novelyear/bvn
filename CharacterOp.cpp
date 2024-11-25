@@ -51,7 +51,10 @@ void Character::jump() {
 }
 
 void Character::down() {
-	if (currentState == CharacterState::Stand || currentState == CharacterState::Running) {
+	if (currentState == CharacterState::Stand ||
+        currentState == CharacterState::Running ||
+        currentState == CharacterState::S) 
+    {
 		currentState = CharacterState::Jumping;
 		currentFrame = 0;
 		position.y += TOLERANCE + 0.01f;
@@ -59,7 +62,7 @@ void Character::down() {
 }
 
 void Character::flash() {
-	// Ö»ÓÐOnboardºÍ¿ÕÖÐÒ»¶ÎÌøÊ±¿ÉÒÔ³å´Ì£¬ÏûºÄÆø£¬µ÷ÓÃÊ±ÒÑ¾­ÅÐ¶ÏÆøºÍÌøÔ¾
+	// åªæœ‰Onboardå’Œç©ºä¸­ä¸€æ®µè·³æ—¶å¯ä»¥å†²åˆºï¼Œæ¶ˆè€—æ°”ï¼Œè°ƒç”¨æ—¶å·²ç»åˆ¤æ–­æ°”å’Œè·³è·ƒ
 	if (currentState == CharacterState::Stand ||
 		currentState == CharacterState::Jumping ||
 		currentState == CharacterState::Fall ||
@@ -68,7 +71,7 @@ void Character::flash() {
 		currentState = CharacterState::Flash;
 		currentFrame = 0;
 		jumpTimes++;
-		// TODO ¼õÉÙÆø
+		// TODO å‡å°‘æ°”
 	}
 }
 
@@ -80,108 +83,4 @@ void Character::gainVelocity(sf::Vector2f acceleration) {
 	this->velocity += acceleration;
 }
 
-void Character::loadResources(const std::string& directory, const std::string& rangeFile, const std::string& originFile) {
-	// Çø¼ä
-	std::map<std::string, std::pair<int, int>> ranges;
-	std::ifstream rangeStream(rangeFile);
-	if (!rangeStream.is_open()) {
-		std::cerr << "Failed to open range file: " << rangeFile << std::endl;
-		return;
-	}
 
-	std::string line;
-	while (std::getline(rangeStream, line)) {
-		std::istringstream iss(line);
-		std::string name, rangeStr;
-		if (std::getline(iss, name, '-') && std::getline(iss, rangeStr)) {
-			int left, right;
-			if (sscanf_s(rangeStr.c_str(), "[%d, %d]", &left, &right) == 2) {
-				ranges[name] = { left, right }; // Convert to 0-based indexing
-			}
-		}
-	}
-
-	rangeStream.close();
-
-	// Í¼Æ¬
-	int maxIndex = 0;
-	for (const auto& rangePair : ranges) {
-		const auto& range = rangePair.second;
-		maxIndex = std::max(maxIndex, range.second);
-	}
-
-	textures.resize(maxIndex + 1);
-	for (int i = 1; i <= maxIndex; ++i) {
-		sf::Texture texture;
-		if (texture.loadFromFile(directory + "\\" + std::to_string(i) + ".png")) {
-			textures[i] = std::move(texture); // Í¼ºÅ¼´ÊÇÏÂ±ê
-		}
-		else {
-			std::cerr << "Failed to load texture: " << directory + "\\" + std::to_string(i) + ".png" << std::endl;
-		}
-	}
-
-	// ·ÖÅä¶ÔÓ¦Çø¼ä
-	auto mapRange = [&](const std::string& key, std::pair<int, int>& member) {
-		if (ranges.find(key) != ranges.end()) {
-			member = ranges[key];
-		}
-		else {
-			std::cerr << "Range not found for: " << key << std::endl;
-		}
-	};
-
-	mapRange("animation", animation);
-	//mapRange("animation_win", animation_win);
-	mapRange("fall", fall);
-	mapRange("flash", flashing);
-	mapRange("hit", hit);
-	mapRange("I_after", I_after);
-	mapRange("I_before", I_before);
-	mapRange("I_miss", I_miss);
-	mapRange("J1", J1);
-	mapRange("J2", J2);
-	mapRange("J3", J3);
-	mapRange("jump", jumping);
-	mapRange("kick", kick);
-	mapRange("KJ", KJ);
-	mapRange("KU", KU);
-	mapRange("landed", landed);
-	mapRange("run", run);
-	mapRange("S", S);
-	mapRange("SI_after", SI_after);
-	mapRange("SI_before", SI_before);
-	mapRange("SI_miss", SI_miss);
-	mapRange("SJ", SJ);
-	mapRange("stand", stand);
-	mapRange("SU", SU);
-	mapRange("U", U);
-	mapRange("WI_after", WI_after);
-	mapRange("WI_before", WI_before);
-	mapRange("WI_miss", WI_miss);
-	mapRange("WJ", WJ);
-	mapRange("WU", WU);
-	
-
-	// Ô­µã×ø±ê
-	std::ifstream originStream(originFile);
-	if (!originStream.is_open()) {
-		std::cerr << "Failed to open origin file: " << originFile << std::endl;
-		return;
-	}
-
-	origins.resize(maxIndex + 1);
-	while (std::getline(originStream, line)) {
-		int id, x, y;
-		if (sscanf_s(line.c_str(), "%d-(%d, %d)", &id, &x, &y) == 3) {
-			if (id >= 1 && id <= static_cast<int>(origins.size())) {
-				origins[id] = sf::Vector2f((float)x, (float)y); // Í¼ºÅ¼´ÊÇÏÂ±ê
-			}
-			else {
-				std::cerr << "Origin out of range for ID: " << id << std::endl;
-			}
-		}
-	}
-
-	originStream.close();
-}

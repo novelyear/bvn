@@ -8,7 +8,7 @@
 Game::Game(int width, int height, const std::string& title)
     : window(sf::VideoMode(width, height), title) {}
 
-void Game::selectCharacter() { // ºóĞø¼ÓÉÏÑ¡ÈËÂß¼­
+void Game::selectCharacter() { // åç»­åŠ ä¸Šé€‰äººé€»è¾‘
     player = CharacterFactory::createCharacter(CharacterType::Gaara, false);
     enemy = CharacterFactory::createCharacter(CharacterType::Gaara, true);
 
@@ -20,13 +20,13 @@ void Game::selectMap() {
 }
 
 void Game::run() {
-    sf::Clock clock;  // ´´½¨Ê±ÖÓ¶ÔÏó£¬¼ÇÂ¼Ê±¼ä
+    sf::Clock clock;  // åˆ›å»ºæ—¶é’Ÿå¯¹è±¡ï¼Œè®°å½•æ—¶é—´
     selectCharacter();
     selectMap();
     while (window.isOpen()) {
-        sf::Time deltaTime = clock.restart();  // ÖØÖÃÊ±ÖÓ²¢»ñÈ¡Ê±¼ä²î
-        //float fps = 0.1f / deltaTime.asSeconds();  // ¼ÆËãÖ¡ÂÊ
-        //// Êä³öµ±Ç°Ö¡ÂÊµ½¿ØÖÆÌ¨
+        sf::Time deltaTime = clock.restart();  // é‡ç½®æ—¶é’Ÿå¹¶è·å–æ—¶é—´å·®
+        //float fps = 0.1f / deltaTime.asSeconds();  // è®¡ç®—å¸§ç‡
+        //// è¾“å‡ºå½“å‰å¸§ç‡åˆ°æ§åˆ¶å°
         //std::cout << "FPS: " << fps << std::endl;
 
         processEvents();
@@ -37,7 +37,7 @@ void Game::run() {
 
 void Game::processEvents() {
     sf::Event event;
-    // ÕæÈË¿ØÖÆ
+    // çœŸäººæ§åˆ¶
     player->handleMove();
     while (window.pollEvent(event)) {
         if (event.type == sf::Event::Closed)
@@ -70,7 +70,7 @@ void Game::processEvents() {
         //player->handleInput(event);
     }
 
-    // ÄâÈË¿ØÖÆ
+    // æ‹Ÿäººæ§åˆ¶
     enemyAI->process(map.get());
 }
 
@@ -78,23 +78,23 @@ void Game::update(float deltaTime) {
     player->update(deltaTime, view, enemy.get(), map->platforms);
     enemy->update(deltaTime, view, player.get(), map->platforms);
 
-    // ¸üĞÂµĞÈË×´Ì¬£ºµĞÈËÎ»ÖÃ£¬
+    // æ›´æ–°æ•ŒäººçŠ¶æ€ï¼šæ•Œäººä½ç½®ï¼Œ
     view.reset(getView(player->position, enemy->position));
 }
 
 void Game::render() {
     window.clear();
     map->render(window, view);
-    // äÖÈ¾Íæ¼Ò
+    // æ¸²æŸ“ç©å®¶
     player->render(window);
-    // äÖÈ¾µĞÈË
+    // æ¸²æŸ“æ•Œäºº
     enemy->render(window);
     window.setView(view);
     window.display();
 }
 
 sf::FloatRect Game::getView(sf::Vector2f playerPosition, sf::Vector2f enemyPosition) {
-    // ÒÔ½ÇÉ«Á¬ÏßÖĞµãÎªÖĞĞÄ£¬ËÄÖÜ¼ä¾à100.f
+    // ä»¥è§’è‰²è¿çº¿ä¸­ç‚¹ä¸ºä¸­å¿ƒï¼Œå››å‘¨é—´è·100.f
     float lowY = std::min(playerPosition.y, enemyPosition.y) - 80.f;
     float highY = std::max(playerPosition.y, enemyPosition.y);
     float centerX = (playerPosition.x - enemyPosition.x) / 2 + enemyPosition.x;
@@ -102,12 +102,12 @@ sf::FloatRect Game::getView(sf::Vector2f playerPosition, sf::Vector2f enemyPosit
     float width, height;
     float disX = fabs(playerPosition.x - enemyPosition.x) + PUSH_MARGIN * 2.f;
     float disY = highY - lowY + PUSH_MARGIN * 1.5f;
-    // »ñÈ¡Á¬ÏßµÄÍâ½Ó¾ØĞÎ¿í
+    // è·å–è¿çº¿çš„å¤–æ¥çŸ©å½¢å®½
     disX = std::max(disX, disY / 0.75f);
-    // ¿ØÖÆÊÓÍ¼Ëõ·Å±È
+    // æ§åˆ¶è§†å›¾ç¼©æ”¾æ¯”
     width = std::max(std::min(disX, maximumViewWidth), minimumViewWidth);
     height = width * 0.75f;
-    // ÏŞÖÆÊÓÍ¼
+    // é™åˆ¶è§†å›¾
     float Left = centerX - width / 2;
     float Top = centerY - height / 2;
     if (Left < 0.f) Left = 0.f;
@@ -115,11 +115,11 @@ sf::FloatRect Game::getView(sf::Vector2f playerPosition, sf::Vector2f enemyPosit
     if (Top + height > GROUND) Top = GROUND - height;
     return sf::FloatRect(Left, Top, width, height);
 }
-// ½öÒÔ×Ô¼ºÎªÊÓÍ¼ÖĞĞÄ£¬Ëø¶¨¾µÍ·Ëõ·Å±È
+// ä»…ä»¥è‡ªå·±ä¸ºè§†å›¾ä¸­å¿ƒï¼Œé”å®šé•œå¤´ç¼©æ”¾æ¯”
 sf::FloatRect Game::testView(sf::Vector2f playerPosition) {
     float Left = player->position.x - minimumViewWidth / 2;
     float Top = player->position.y - minimumViewWidth * 0.75f / 2;
-    // ÏŞÖÆÊÓ´°µ×²¿ÔÚµØÃæÉÏ£¬×ó²¿²»³¬¹ı×ó±ß½ç£¬ÓÒ²¿²»³¬¹ıÓĞ±ß½ç
+    // é™åˆ¶è§†çª—åº•éƒ¨åœ¨åœ°é¢ä¸Šï¼Œå·¦éƒ¨ä¸è¶…è¿‡å·¦è¾¹ç•Œï¼Œå³éƒ¨ä¸è¶…è¿‡æœ‰è¾¹ç•Œ
     if (Left < 0.f) Left = 0.f;
     if (Left + minimumViewWidth > RIGHT_BORDER) Left = RIGHT_BORDER - minimumViewWidth;
 
