@@ -75,6 +75,12 @@
     <ClCompile Include="SoundManager.cpp">
       <Filter>源文件\Game</Filter>
     </ClCompile>
+    <ClCompile Include="GaaraKeySet.cpp">
+      <Filter>源文件\Character\Gaara</Filter>
+    </ClCompile>
+    <ClCompile Include="GaaraUpdate.cpp">
+      <Filter>源文件\Character\Gaara</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="access\bg.png">

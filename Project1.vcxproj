@@ -164,6 +164,8 @@
     <ClCompile Include="Controller.cpp" />
     <ClCompile Include="Effect.cpp" />
     <ClCompile Include="Gaara.cpp" />
+    <ClCompile Include="GaaraKeySet.cpp" />
+    <ClCompile Include="GaaraUpdate.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameClock.cpp" />
     <ClCompile Include="main.cpp">

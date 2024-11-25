@@ -5,8 +5,8 @@
 class Controller
 {
 private:
-    Character* role; // 敌人角色
-    Character* target;     // 玩家角色
+    Character* role; // 鏁屼汉瑙掕壊
+    Character* target;     // 鐜╁瑙掕壊
 public:
     Controller(Character* enemy, Character* player);
 

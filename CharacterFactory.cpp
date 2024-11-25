@@ -4,10 +4,10 @@ std::unique_ptr<Character> CharacterFactory::createCharacter(CharacterType type,
     switch (type) {
     case CharacterType::Gaara:
         if (forEnemy) {
-            return std::make_unique<Gaara>((int)1); // µ÷ÓÃ´ø²ÎÊıµÄ¹¹Ôìº¯Êı
+            return std::make_unique<Gaara>((int)1); // è°ƒç”¨å¸¦å‚æ•°çš„æ„é€ å‡½æ•°
         }
         else {
-            return std::make_unique<Gaara>();  // µ÷ÓÃÄ¬ÈÏ¹¹Ôìº¯Êı
+            return std::make_unique<Gaara>();  // è°ƒç”¨é»˜è®¤æ„é€ å‡½æ•°
         }
     default:
         throw std::invalid_argument("Unknown character type");
