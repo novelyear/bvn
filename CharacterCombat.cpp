@@ -34,6 +34,23 @@ void Character::su() {
 }
 
 void Character::s() {
-	currentState = CharacterState::S;
+	if (currentState != CharacterState::S) {
+		currentFrame = 0;
+		currentState = CharacterState::S;
+	}
+}
+
+void Character::s_release() {
+	currentState = CharacterState::S_Release;
+	currentFrame = 0;
+}
+
+void Character::wj() {
+	currentState = CharacterState::WJ;
+	currentFrame = 0;
+}
+
+void Character::wi() {
+	currentState = CharacterState::WI_before;
 	currentFrame = 0;
 }

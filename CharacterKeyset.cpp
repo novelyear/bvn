@@ -18,6 +18,7 @@ void Character::handleMove() {
 		flash();
 		return;
 	}
+
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) { // S：防御、下落、普攻3、大招3、远攻3
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::K)) {
 			down();
@@ -39,12 +40,27 @@ void Character::handleMove() {
 		}
 		else { // 单独的S
 			s();
-			return; // 防御状态不能ADK和L
+			return; // 防御状态不能ADK和Ls
 		}
+	}
+	else if (currentState == CharacterState::S) { // 没按S，但在防御，表明松开S
+		s_release(); // 不加return，可被打断
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::K)) { // 没按S 有K 则跳跃
 		jump();
 	}
+	// W系列
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::J)) {
+			wj();
+		}
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::I)) {
+			wi();
+		}
+	}
+
+
+
 	if (!sf::Keyboard::isKeyPressed(sf::Keyboard::S) &&
 		!sf::Keyboard::isKeyPressed(sf::Keyboard::W) &&
 		sf::Keyboard::isKeyPressed(sf::Keyboard::J) &&
@@ -94,7 +110,9 @@ void Character::handleMove() {
 		currentState != CharacterState::Stand &&
 		currentState != CharacterState::Running &&
 		currentState != CharacterState::Jumping &&
-		currentState != CharacterState::Fall
+		currentState != CharacterState::Fall &&
+		currentState != CharacterState::S &&
+		currentState != CharacterState::S_Release
 		) 
 		return;
 

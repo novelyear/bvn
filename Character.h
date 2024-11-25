@@ -3,7 +3,7 @@
 #include "Platform.h"
 enum class CharacterState {
 	Default, Stand, Running, Jumping, Fall, Hit, Kick, J1, J2, J3, U, KJ, KU, KI, I_before, I_after,
-	I_miss, WI_before, WI_after, WI_miss, WU, WJ, S, SI_before, SI_after, SI_miss, SJ, SU, Flash
+	I_miss, WI_before, WI_after, WI_miss, WU, WJ, S, SI_before, SI_after, SI_miss, SJ, SU, Flash, S_Release
 };
 enum class CharacterType {
 	Gaara,
@@ -95,6 +95,9 @@ public:
 	virtual void sj();
 	virtual void su();
 	virtual void s();
+	virtual void s_release();
+	virtual void wj();
+	virtual void wi();
 
 
 	virtual void takeDamage(int amount) = 0;

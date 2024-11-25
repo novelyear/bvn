@@ -233,6 +233,34 @@ void Character::updateSprite(float deltaTime) {
 				currentFrame = 0;
 			}
 			break;
+		case CharacterState::S:
+			sprite.setTexture(textures[S.first + currentFrame]);
+			sprite.setOrigin(origins[S.first + currentFrame]);
+			if(currentFrame + S.first < S.second) {
+				currentFrame++;
+			}
+			break;
+		case CharacterState::S_Release:
+			sprite.setTexture(textures[S.second - currentFrame]);
+			sprite.setOrigin(origins[S.second - currentFrame]);
+			currentFrame++;
+			if (S.second - currentFrame < S.first) {
+				currentState = CharacterState::Stand;
+				currentFrame = 0;
+			}
+			break;
+		case CharacterState::WJ:
+			sprite.setTexture(textures[WJ.first + currentFrame]);
+			sprite.setOrigin(origins[WJ.first + currentFrame]);
+			currentFrame++;
+			if (currentFrame + WJ.first > WJ.second) {
+				currentState = CharacterState::Stand;
+				currentFrame = 0;
+			}
+			break;
+		case CharacterState::WI_before:
+			sprite.setTexture(textures[WI_before.first + currentFrame]);
+			sprite.setOrigin(origins[WI_before.first + currentFrame]);
 
 		default:
 			break;
