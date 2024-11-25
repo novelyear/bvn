@@ -20,7 +20,7 @@ void Character::kj() {
 	currentState = CharacterState::KJ;
 	currentFrame = 0;
 	velocity.y = 0;
-	jumpTimes = 3; // ¿ÕÖĞ¹¥»÷ºóÎŞ·¨ÔÙ¶ş¶ÎÌø
+	jumpTimes = 3; // ç©ºä¸­æ”»å‡»åæ— æ³•å†äºŒæ®µè·³
 }
 
 void Character::sj() {

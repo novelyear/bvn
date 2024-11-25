@@ -1,27 +1,28 @@
-#include "Game.h" // °üº¬ Game ÀàµÄÍ·ÎÄ¼ş
+#include "Game.h" // åŒ…å« Game ç±»çš„å¤´æ–‡ä»¶
 #include <bits/stdc++.h>
 
 
-extern "C" {
-    // »»ÓÃ¶ÀÏÔ
-    __declspec(dllexport) unsigned long NvOptimusEnablement = 0x00000001;
-}
+//extern "C" {
+//    // æ¢ç”¨ç‹¬æ˜¾
+//    __declspec(dllexport) unsigned long NvOptimusEnablement = 0x00000001;
+//}
 
 int main() {
     try {
-        // ´´½¨ Game ÊµÀı£¬´«Èë´°¿ÚµÄ¿í¶È¡¢¸ß¶ÈºÍ±êÌâ
+        // åˆ›å»º Game å®ä¾‹ï¼Œä¼ å…¥çª—å£çš„å®½åº¦ã€é«˜åº¦å’Œæ ‡é¢˜
         Game game(1600, 1200, "My Fighting Game");
-        //game.window.setFramerateLimit(70);// ÏŞÖÆÖ¡ÂÊ
-        // Æô¶¯ÓÎÏ·Ö÷Ñ­»·
+        //game.window.setFramerateLimit(70);// é™åˆ¶å¸§ç‡
+        // å¯åŠ¨æ¸¸æˆä¸»å¾ªç¯
         game.run();
     }
     catch (const std::exception& e) {
-        // Èç¹û·¢ÉúÒì³££¬Êä³ö´íÎóĞÅÏ¢
+        // å¦‚æœå‘ç”Ÿå¼‚å¸¸ï¼Œè¾“å‡ºé”™è¯¯ä¿¡æ¯
         std::cerr << "Error: " << e.what() << std::endl;
         return EXIT_FAILURE;
     }
 
     return EXIT_SUCCESS;
 }
+
 
 

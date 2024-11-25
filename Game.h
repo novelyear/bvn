@@ -11,8 +11,8 @@ public:
 	std::unique_ptr<Map> map;
 
 
-	static constexpr float minimumViewWidth = 320.0f; // ×îĞ¡ÊÓÍ¼
-	static constexpr float maximumViewWidth = 660.0f; // ×î´óÊÓÍ¼
+	static constexpr float minimumViewWidth = 320.0f; // æœ€å°è§†å›¾
+	static constexpr float maximumViewWidth = 660.0f; // æœ€å¤§è§†å›¾
 
 	sf::FloatRect getView(sf::Vector2f playerPosition, sf::Vector2f enemyPosition); // 
 	sf::FloatRect testView(sf::Vector2f playerPosition);

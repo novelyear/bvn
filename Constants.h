@@ -1,31 +1,31 @@
 #pragma once
-// ÊÀ½çµ×²¿
+// ä¸–ç•Œåº•éƒ¨
 #define GROUND 600.f
-// ½ÇÉ«¶µµ×Ïß
+// è§’è‰²å…œåº•çº¿
 #define CHARACTER_BOTTOM 550.f
-// ÊÀ½ç×ó²¿
+// ä¸–ç•Œå·¦éƒ¨
 #define LEFT_BORDER 0.f
-// ÊÀ½çÓÒ²¿
+// ä¸–ç•Œå³éƒ¨
 #define RIGHT_BORDER 800.f
-// ÊÓÍ¼Ë«ºÐ×ÓÄ£ÐÍ¼ä¾à margin
+// è§†å›¾åŒç›’å­æ¨¡åž‹é—´è· margin
 #define PUSH_MARGIN 100.f
-// ÖØÁ¦¼ÓËÙ¶È
+// é‡åŠ›åŠ é€Ÿåº¦
 #define GRAVITY 0.0025f
-// ÆðÌø³õËÙ¶È
+// èµ·è·³åˆé€Ÿåº¦
 #define JUMP_VELOCITY -0.9f
-// ADÒÆ¶¯ËÙ¶È
+// ADç§»åŠ¨é€Ÿåº¦
 #define MOVE_VELOCITY 0.35f
-// ×î´ó×¹ÂäËÙ¶È
+// æœ€å¤§å è½é€Ÿåº¦
 #define MAX_FALLING_VELOCITY 0.48f
-// ¶þ¶ÎÌøÏÞÖÆËÙ¶È
+// äºŒæ®µè·³é™åˆ¶é€Ÿåº¦
 #define LIMIT_V JUMP_VELOCITY + 0.45f
-// ³å´ÌËÙ¶È
+// å†²åˆºé€Ÿåº¦
 #define FLASH_VELOCITY 0.7f
-// »¥³âÁ¦³£Êý
+// äº’æ–¥åŠ›å¸¸æ•°
 #define REPULSION 5.f
-// Åö×²¼ì²âÎó²îÈÝÈÌ
+// ç¢°æ’žæ£€æµ‹è¯¯å·®å®¹å¿
 #define TOLERANCE 2.f
-// ÈËÎï³õÊ¼ÉúÃüÖµ
+// äººç‰©åˆå§‹ç”Ÿå‘½å€¼
 #define INIT_HEALTH 100
-// ÈËÎïÌùÍ¼ÂÖ»»Ö¡ÂÊ
+// äººç‰©è´´å›¾è½®æ¢å¸§çŽ‡
 #define PLAYER_FRAME 0.034f

@@ -6,7 +6,7 @@ MR::MR() : Map() {
 }
 
 void MR::loadMap() {
-    // ¼ÓÔØÔ¶¾°ºÍ½ü¾°ÎÆÀí
+    // åŠ è½½è¿œæ™¯å’Œè¿‘æ™¯çº¹ç†
     if (!backgroundLayerTexture.loadFromFile("access\\bg2.png")) {
         std::cerr << "Failed to load background texture!" << std::endl;
     }
@@ -23,10 +23,10 @@ void MR::loadMap() {
 }
 
 void MR::loadPlatform() {
-    // Ó²±àÂë¸ÃµØÍ¼ÉÏµÄÆ½°å
+    // ç¡¬ç¼–ç è¯¥åœ°å›¾ä¸Šçš„å¹³æ¿
     // 0   45  80  75 160  175 x
     // 550 470 380 280 200 105 y
-    // 800 715 637 635 470 435 ³¤¶È
+    // 800 715 637 635 470 435 é•¿åº¦
     platforms.push_back(Platform({0, 550}, 800));
     platforms.push_back(Platform({45, 470}, 715));
     platforms.push_back(Platform({80, 380}, 637));

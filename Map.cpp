@@ -14,10 +14,10 @@ void Map::render(sf::RenderWindow& window, sf::View& view){
     }
     backgroundLayer.setPosition(window.mapPixelToCoords({0, 0}));
 
-    // »ñÈ¡´°¿ÚµÄÊÓÍ¼´óĞ¡£¨¼´¿ÉÊÓÇøÓòµÄ´óĞ¡£©
+    // è·å–çª—å£çš„è§†å›¾å¤§å°ï¼ˆå³å¯è§†åŒºåŸŸçš„å¤§å°ï¼‰
     sf::Vector2f viewSize = view.getSize();
 
-    // ´ó±³¾°×óÉÏ½ÇÊ¼ÖÕÎªÊÓÍ¼µÄ×óÉÏ½Ç
+    // å¤§èƒŒæ™¯å·¦ä¸Šè§’å§‹ç»ˆä¸ºè§†å›¾çš„å·¦ä¸Šè§’
     backgroundLayer.setScale(
         static_cast<float>(viewSize.x) / backgroundLayer.getLocalBounds().width,
         static_cast<float>(viewSize.y) / backgroundLayer.getLocalBounds().height

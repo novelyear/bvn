@@ -13,52 +13,51 @@ class Character
 {
 public:
 	int health;
-	std::pair<int, int> animation; // ¿ª³¡¶¯×÷
-	std::pair<int, int> animation_win; // ¿ª³¡¶¯×÷
-		
-	std::pair<int, int> run; //ÅÜ¶¯Ì¬
-	std::pair<int, int> jumping; // Ô¾ÆğÉÏÉıÌ¬
-	std::pair<int, int> fall; // ¿ÕÖĞÏÂÂäÌ¬
-	std::pair<int, int> landed; // ×ÅÂ½Ì¬
-	std::pair<int, int> J1; // Ò»¶ÎÆÕ¹¥Ì¬
-	std::pair<int, int> J2; // ¶ş¶ÎÆÕ¹¥Ì¬
-	std::pair<int, int> J3; // Èı¶ÎÆÕ¹¥Ì¬
-	std::pair<int, int> stand; // Õ¾Á¢Ì¬
-	std::pair<int, int> hit; // ÊÜ»÷Ì¬
-	std::pair<int, int> kick; // »÷·ÉÌ¬:Ôİ¶¨
-	std::pair<int, int> flashing; // ³å´ÌÌ¬
-		
-	std::pair<int, int> S; // ·ÀÓùÌ¬£¬Õı·ÅÕ¹¿ª·ÀÓù£¬µ¹·Å½â¿ª·ÀÓù
-	std::pair<int, int> KJ; // ¿ÕÖĞÆÕ¹¥
-	std::pair<int, int> WJ; // ÆÕ¹¥2
-	std::pair<int, int> SJ; // ÆÕ¹¥3
-	std::pair<int, int> KU; // ¿ÕÖĞÔ¶¹¥
-	std::pair<int, int> SU; // Ô¶¹¥3
-	std::pair<int, int> WU; // Ô¶¹¥2
-	std::pair<int, int> U; // Ô¶¹¥1
-	std::pair<int, int> SI_before; // ´óÕĞ3ÊÍ·Å
-	std::pair<int, int> WI_before; // ´óÕĞ2ÊÍ·Å
-	std::pair<int, int> I_before; // ´óÕĞ1ÊÍ·Å
-		
-	std::pair<int, int> SI_after; // ´óÕĞ3ÃüÖĞºó
-	std::pair<int, int> WI_after; // ´óÕĞ2ÃüÖĞºó
-	std::pair<int, int> I_after; // ´óÕĞ1ÃüÖĞºó
-		
-	std::pair<int, int> SI_miss; // ´óÕĞ3Î´ÃüÖĞ
-	std::pair<int, int> WI_miss; // ´óÕĞ2Î´ÃüÖĞ
-	std::pair<int, int> I_miss; // ´óÕĞ1Î´ÃüÖĞ
-
-	std::vector<sf::Texture> textures;
+	sf::Texture texture;
+	std::vector<sf::IntRect> anchors;
 	std::vector<sf::Vector2f> origins;
-	
+	std::pair<int, int> animation; // å¼€åœºåŠ¨ä½œ
+	std::pair<int, int> animation_win; // å¼€åœºåŠ¨ä½œ
+		
+	std::pair<int, int> run; //è·‘åŠ¨æ€
+	std::pair<int, int> jumping; // è·ƒèµ·ä¸Šå‡æ€
+	std::pair<int, int> fall; // ç©ºä¸­ä¸‹è½æ€
+	std::pair<int, int> landed; // ç€é™†æ€
+	std::pair<int, int> J1; // ä¸€æ®µæ™®æ”»æ€
+	std::pair<int, int> J2; // äºŒæ®µæ™®æ”»æ€
+	std::pair<int, int> J3; // ä¸‰æ®µæ™®æ”»æ€
+	std::pair<int, int> stand; // ç«™ç«‹æ€
+	std::pair<int, int> hit; // å—å‡»æ€
+	std::pair<int, int> kick; // å‡»é£æ€:æš‚å®š
+	std::pair<int, int> flashing; // å†²åˆºæ€
+		
+	std::pair<int, int> S; // é˜²å¾¡æ€ï¼Œæ­£æ”¾å±•å¼€é˜²å¾¡ï¼Œå€’æ”¾è§£å¼€é˜²å¾¡
+	std::pair<int, int> KJ; // ç©ºä¸­æ™®æ”»
+	std::pair<int, int> WJ; // æ™®æ”»2
+	std::pair<int, int> SJ; // æ™®æ”»3
+	std::pair<int, int> KU; // ç©ºä¸­è¿œæ”»
+	std::pair<int, int> SU; // è¿œæ”»3
+	std::pair<int, int> WU; // è¿œæ”»2
+	std::pair<int, int> U; // è¿œæ”»1
+	std::pair<int, int> SI_before; // å¤§æ‹›3é‡Šæ”¾
+	std::pair<int, int> WI_before; // å¤§æ‹›2é‡Šæ”¾
+	std::pair<int, int> I_before; // å¤§æ‹›1é‡Šæ”¾
+		
+	std::pair<int, int> SI_after; // å¤§æ‹›3å‘½ä¸­å
+	std::pair<int, int> WI_after; // å¤§æ‹›2å‘½ä¸­å
+	std::pair<int, int> I_after; // å¤§æ‹›1å‘½ä¸­å
+		
+	std::pair<int, int> SI_miss; // å¤§æ‹›3æœªå‘½ä¸­
+	std::pair<int, int> WI_miss; // å¤§æ‹›2æœªå‘½ä¸­
+	std::pair<int, int> I_miss; // å¤§æ‹›1æœªå‘½ä¸­
 
 
 	CharacterState currentState;
-	bool inAir; // ÔÚ¿ÕÖĞ
-	bool left; // ³¯Ïò
-	int jumpTimes; // ÌøÔ¾´ÎÊı
-	int attackStage; // ÆÕ¹¥½×¶Î
-	float elapsedTime; // ¼ÆÊ±Æ÷
+	bool inAir; // åœ¨ç©ºä¸­
+	bool left; // æœå‘
+	int jumpTimes; // è·³è·ƒæ¬¡æ•°
+	int attackStage; // æ™®æ”»é˜¶æ®µ
+	float elapsedTime; // è®¡æ—¶å™¨
 	int currentFrame;
 
 	sf::Sprite sprite;
@@ -81,12 +80,7 @@ public:
 	void updateDirection(sf::Vector2f enemyPosition);
 	void updateCollisionWithPlatform(std::vector<Platform> platforms);
 	void updateCollisionWithEnemy(Character* enemy);
-	void handleMove();
-	void handleInput(sf::Event event);
 	void gainVelocity(sf::Vector2f acceleration);
-	void loadResources(const std::string& directory, const std::string& rangeFile, const std::string& originFile);
-	void updateSprite(float deltaTime);
-	void update(float deltaTime, sf::View view, Character* enemy, std::vector<Platform> platforms);
 
 	virtual void j1();
 	virtual void j2();
@@ -100,6 +94,11 @@ public:
 	virtual void wi();
 
 
-	virtual void takeDamage(int amount) = 0;
+	virtual void update(float deltaTime, sf::View view, Character* enemy, std::vector<Platform> platforms) =0;
+	virtual void loadResources(const std::string& directory, const std::string& rangeFile,
+							   const std::string& originFile, const std::string& anchorFile) =0;
+	virtual void handleMove()=0;
+	virtual void updateSprite(float deltaTime)=0;
+
 };
 
