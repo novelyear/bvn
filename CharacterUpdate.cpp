@@ -1,8 +1,7 @@
 #include "Character.h"
 #include <bits/stdc++.h>
 #include "Constants.h"
-
-
+#include "Map.h"
 
 void Character::updatePosition(sf::View view) {
 	sf::Vector2f center = view.getCenter();
@@ -88,7 +87,7 @@ void Character::updateCollisionWithPlatform(std::vector<Platform> platforms) {
 		}
 	}
 	if (!onBoard && (currentState == CharacterState::Stand || currentState == CharacterState::Running)) {
-		currentState = CharacterState::Jumping;
+		currentState = CharacterState::Fall;
 		currentFrame = 0;
 	}
 }

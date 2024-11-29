@@ -2,9 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include <bits/stdc++.h>
 #include "Constants.h"
-#include "CharacterFactory.h"
-#include "MapFactory.h"
-
+#include "Factories.h"
 Game::Game(int width, int height, const std::string& title)
     : window(sf::VideoMode(width, height), title) {}
 
@@ -25,9 +23,9 @@ void Game::run() {
     selectMap();
     while (window.isOpen()) {
         sf::Time deltaTime = clock.restart();  // 重置时钟并获取时间差
-        //float fps = 0.1f / deltaTime.asSeconds();  // 计算帧率
-        //// 输出当前帧率到控制台
-        //std::cout << "FPS: " << fps << std::endl;
+        float fps = 0.1f / deltaTime.asSeconds();  // 计算帧率
+        // 输出当前帧率到控制台
+        std::cout << "FPS: " << fps << std::endl;
 
         processEvents();
         update(deltaTime.asSeconds());

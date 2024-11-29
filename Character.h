@@ -1,14 +1,8 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-#include "Platform.h"
-enum class CharacterState {
-	Default, Stand, Running, Jumping, Fall, Hit, Kick, J1, J2, J3, U, KJ, KU, KI, I_before, I_after,
-	I_miss, WI_before, WI_after, WI_miss, WU, WJ, S, SI_before, SI_after, SI_miss, SJ, SU, Flash, S_Release
-};
-enum class CharacterType {
-	Gaara,
-	NarutoS,
-};
+#include "Effect.h"
+#include "Map.h"
+
 class Character
 {
 public:
@@ -65,6 +59,7 @@ public:
 	sf::Vector2f velocity;
 	sf::FloatRect rect;
 
+	std::unique_ptr<EffectPool> effects;
 
 	Character(); 
 	virtual ~Character() = default; 
@@ -93,12 +88,16 @@ public:
 	virtual void wj();
 	virtual void wi();
 
+	virtual void u() = 0;
+	virtual void ku() = 0;
+	virtual void si() = 0;
+	virtual void i() = 0;
+
 
 	virtual void update(float deltaTime, sf::View view, Character* enemy, std::vector<Platform> platforms) =0;
 	virtual void loadResources(const std::string& directory, const std::string& rangeFile,
-							   const std::string& originFile, const std::string& anchorFile) =0;
-	virtual void handleMove()=0;
-	virtual void updateSprite(float deltaTime)=0;
-
+							   const std::string& originFile, const std::string& anchorFile) = 0;
+	virtual void handleMove() =0;
+	virtual void updateSprite(float deltaTime, sf::Vector2f enemyPosition) =0;
 };
 

@@ -11,6 +11,27 @@ public:
 	void loadResources(const std::string& directory, const std::string& rangeFile,
 	const std::string& originFile, const std::string& anchorFile) override;
 	void handleMove() override;
+	void updateSprite(float deltaTime, sf::Vector2f enemyPosition) override;
+
+	void u() override;
+	void ku() override;
+	void si() override;
+	void i() override;
+
+};
+
+class GaaraEffect :
+	public Effect {
+public:
+
+	GaaraEffect();
+
+	void u(sf::Vector2f position, bool left)override;
+	void si_before(sf::Vector2f position) override;
+	void i_before(sf::Vector2f position) override;
+
+
+	void updatePosition(sf::View view) override;
 	void updateSprite(float deltaTime) override;
 };
 

@@ -77,6 +77,11 @@ void Character::flash() {
 
 void Character::render(sf::RenderWindow& window) {
 	window.draw(sprite);
+	//effects->render(window);
+	effects->render(window);
+	//for (auto& e : effects) {
+
+	//}
 }
 
 void Character::gainVelocity(sf::Vector2f acceleration) {

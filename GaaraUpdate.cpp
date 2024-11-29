@@ -1,15 +1,19 @@
 #include "Gaara.h"
 #include "Constants.h"
+#include "Map.h"
 
 void Gaara::update(float deltaTime, sf::View view, Character* enemy, std::vector<Platform> platforms) {
 	//updateCollisionWithEnemy(enemy);
 	updateCollisionWithPlatform(platforms);
 	updatePosition(view);
 	updateDirection(enemy->position);
-	updateSprite(deltaTime);
+	updateSprite(deltaTime, enemy->position);
+	effects->update(deltaTime, view);
 }
 
-void Gaara::updateSprite(float deltaTime) {
+
+
+void Gaara::updateSprite(float deltaTime, sf::Vector2f enemyPosition) {
 	if (origins.empty()) return;
 	elapsedTime += deltaTime;
 	if (elapsedTime > PLAYER_FRAME) {
@@ -140,6 +144,57 @@ void Gaara::updateSprite(float deltaTime) {
 		case CharacterState::WI_before:
 			sprite.setTextureRect(anchors[WI_before.first + currentFrame]);
 			sprite.setOrigin(origins[WI_before.first + currentFrame]);
+			currentFrame++;
+			if (currentFrame + WI_before.first > WI_before.second) {
+				currentState = CharacterState::Stand;
+				currentFrame = 0;
+			}
+			break;
+		case CharacterState::SI_before:
+			sprite.setTextureRect(anchors[SI_before.first + currentFrame]);
+			sprite.setOrigin(origins[SI_before.first + currentFrame]);
+			currentFrame++;
+			if (currentFrame == 5) { // 5帧后触发特效
+				effects->run(enemyPosition, EffectState::SI_before, left);
+			}
+			if (currentFrame + SI_before.first > SI_before.second) {
+				currentState = CharacterState::Stand;
+				currentFrame = 0;
+			}
+			break;
+		case CharacterState::I_before:
+			sprite.setTextureRect(anchors[I_before.first + currentFrame]);
+			sprite.setOrigin(origins[I_before.first + currentFrame]);
+			currentFrame++;
+			if (currentFrame == 1) { // 1帧后触发特效
+				effects->run(enemyPosition, EffectState::I_before, left);
+			}
+			if (currentFrame + I_before.first > I_before.second) {
+				currentState = CharacterState::Stand;
+				currentFrame = 0;
+			}
+			break;
+		case CharacterState::U:
+			sprite.setTextureRect(anchors[U.first + currentFrame]);
+			sprite.setOrigin(origins[U.first + currentFrame]);
+			currentFrame++;
+			if (currentFrame == 11) { // 第11帧后，特效离体
+				sf::Vector2f offset = { left ? -36.f : 36.f, -58.f }; // 水平偏移量左右对称
+				effects->run(position + offset, EffectState::U, left);// 位置偏移量硬编码36，58
+			}
+			if (U.second - currentFrame < U.first) {
+				currentState = CharacterState::Stand;
+				currentFrame = 0;
+			}
+			break;
+		case CharacterState::KU:
+			sprite.setTextureRect(anchors[KU.first + currentFrame]);
+			sprite.setOrigin(origins[KU.first + currentFrame]);
+			currentFrame++;
+			if (currentFrame + KU.first > KU.second) {
+				currentState = CharacterState::Fall;
+				currentFrame = 0;
+			}
 			break;
 		default:
 			break;

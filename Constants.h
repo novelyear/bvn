@@ -29,3 +29,6 @@
 #define INIT_HEALTH 100
 // 人物贴图轮换帧率
 #define PLAYER_FRAME 0.034f
+// 我爱罗U飞行速度
+#define U_VELOCITY 0.35f
+
