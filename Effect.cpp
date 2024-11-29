@@ -1,11 +1,17 @@
 #include "Effect.h"
 #include "Gaara.h"
 
+// 定义静态成员变量
+sf::Texture Effect::sharedTexture;
+std::unordered_map<EffectState, std::pair<int, int>> Effect::sharedRangeMap;
+std::vector<sf::IntRect> Effect::sharedAnchors;
+std::vector<sf::Vector2f> Effect::sharedOrigins;
+
 EffectPool::EffectPool() {}
 
 // 构造函数：初始化特效池，创建指定数量的默认特效对象
 EffectPool::EffectPool(CharacterType c) {
-    for (int i = 0; i < 3; ++i) {
+    for (int i = 0; i < 5; ++i) {
         switch (c) {
             case CharacterType::Gaara:
             effects.push_back(std::make_unique<GaaraEffect>());
@@ -38,6 +44,9 @@ void EffectPool::run(sf::Vector2f position, EffectState e, bool left) {
                     break;
                 case EffectState::SI_before:
                     effect->si_before(position);
+                    break;
+                case EffectState::WU:
+                    effect->wu(position);
                     break;
                 default:
                     break;
@@ -94,7 +103,7 @@ void Effect::render(sf::RenderWindow& window){
 
 void Effect::loadResources(const std::string& directory, const std::string& rangeFile, const std::string& originFile, const std::string& anchorFile) {
     // 读取 originFile
-    origins.resize(1); // 留出0号
+    sharedOrigins.resize(1); // 留出0号
     std::ifstream originInput(originFile);
     if (!originInput.is_open()) {
         std::cerr << "Failed to open origin file: " << originFile << std::endl;
@@ -105,15 +114,15 @@ void Effect::loadResources(const std::string& directory, const std::string& rang
     float x, y;
     char delimiter;
     while (originInput >> index >> delimiter >> delimiter >> x >> delimiter >> y >> delimiter) {
-        if (index >= origins.size()) {
-            origins.resize(index + 1);
+        if (index >= sharedOrigins.size()) {
+            sharedOrigins.resize(index + 1);
         }
-        origins[index] = sf::Vector2f(x, y);
+        sharedOrigins[index] = sf::Vector2f(x, y);
     }
     originInput.close();
 
     // 读取 anchorFile
-    anchors.resize(1); // 留出0号
+    sharedAnchors.resize(1); // 留出0号
     std::ifstream anchorInput(anchorFile);
     if (!anchorInput.is_open()) {
         std::cerr << "Failed to open anchor file: " << anchorFile << std::endl;
@@ -122,10 +131,10 @@ void Effect::loadResources(const std::string& directory, const std::string& rang
 
     int x1, y1, width, height;
     while (anchorInput >> index >> delimiter >> delimiter >> x1 >> delimiter >> y1 >> delimiter >> width >> delimiter >> height >> delimiter) {
-        if (index >= anchors.size()) {
-            anchors.resize(index + 1);
+        if (index >= sharedAnchors.size()) {
+            sharedAnchors.resize(index + 1);
         }
-        anchors[index] = sf::IntRect(x1, y1, width, height);
+        sharedAnchors[index] = sf::IntRect(x1, y1, width, height);
     }
     anchorInput.close();
 
@@ -145,19 +154,19 @@ void Effect::loadResources(const std::string& directory, const std::string& rang
             type = std::string(temp);
 
             // 硬编码绑定到类的成员变量
-            if (type == "SU") rangeMap[EffectState::SU] = std::make_pair(start, end);
-            else if (type == "WU") rangeMap[EffectState::WU] = std::make_pair(start, end);
-            else if (type == "U") rangeMap[EffectState::U] = std::make_pair(start, end);
-            else if (type == "SI_before") rangeMap[EffectState::SI_before] = std::make_pair(start, end);
-            else if (type == "WI_before") rangeMap[EffectState::WI_before] = std::make_pair(start, end);
-            else if (type == "I_before") rangeMap[EffectState::I_before] = std::make_pair(start, end);
-            else if (type == "SI_after") rangeMap[EffectState::SI_after] = std::make_pair(start, end);
-            else if (type == "WI_after") rangeMap[EffectState::WI_after] = std::make_pair(start, end);
-            else if (type == "I_after") rangeMap[EffectState::I_after] = std::make_pair(start, end);
-            else if (type == "SI_miss") rangeMap[EffectState::SI_miss] = std::make_pair(start, end);
-            else if (type == "WI_miss") rangeMap[EffectState::WI_miss] = std::make_pair(start, end);
-            else if (type == "I_miss") rangeMap[EffectState::I_miss] = std::make_pair(start, end);
-            else if (type == "KI") rangeMap[EffectState::KI] = std::make_pair(start, end);
+            if (type == "SU") sharedRangeMap[EffectState::SU] = std::make_pair(start, end);
+            else if (type == "WU") sharedRangeMap[EffectState::WU] = std::make_pair(start, end);
+            else if (type == "U") sharedRangeMap[EffectState::U] = std::make_pair(start, end);
+            else if (type == "SI_before") sharedRangeMap[EffectState::SI_before] = std::make_pair(start, end);
+            else if (type == "WI_before") sharedRangeMap[EffectState::WI_before] = std::make_pair(start, end);
+            else if (type == "I_before") sharedRangeMap[EffectState::I_before] = std::make_pair(start, end);
+            else if (type == "SI_after") sharedRangeMap[EffectState::SI_after] = std::make_pair(start, end);
+            else if (type == "WI_after") sharedRangeMap[EffectState::WI_after] = std::make_pair(start, end);
+            else if (type == "I_after") sharedRangeMap[EffectState::I_after] = std::make_pair(start, end);
+            else if (type == "SI_miss") sharedRangeMap[EffectState::SI_miss] = std::make_pair(start, end);
+            else if (type == "WI_miss") sharedRangeMap[EffectState::WI_miss] = std::make_pair(start, end);
+            else if (type == "I_miss") sharedRangeMap[EffectState::I_miss] = std::make_pair(start, end);
+            else if (type == "KI") sharedRangeMap[EffectState::KI] = std::make_pair(start, end);
         }
         else {
             std::cerr << "Invalid range line: " << line << std::endl;
@@ -166,10 +175,10 @@ void Effect::loadResources(const std::string& directory, const std::string& rang
     rangeInput.close();
 
     // 加载纹理（假设 directory 目录下是一个完整的纹理图集）
-    if (!texture.loadFromFile(directory)) {
-        std::cerr << "Failed to load texture from directory: " << directory << std::endl;
+    if (!sharedTexture.loadFromFile(directory)) {
+        std::cerr << "Failed to load sharedTexture from directory: " << directory << std::endl;
     }
-    sprite.setTexture(texture);
-    sprite.setTextureRect(anchors[20]); // 硬编码，20号图是空，防止首次按下时正好未逻辑换帧导致闪烁全图
+    sprite.setTexture(Effect::sharedTexture);
+    sprite.setTextureRect(Effect::sharedAnchors[20]); // 硬编码，20号图是空，防止首次按下时正好未逻辑换帧导致闪烁全图
 }
 

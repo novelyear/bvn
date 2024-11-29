@@ -92,6 +92,7 @@ public:
 	virtual void ku() = 0;
 	virtual void si() = 0;
 	virtual void i() = 0;
+	virtual void wu() = 0;
 
 
 	virtual void update(float deltaTime, sf::View view, Character* enemy, std::vector<Platform> platforms) =0;

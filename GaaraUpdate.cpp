@@ -3,7 +3,9 @@
 #include "Map.h"
 
 void Gaara::update(float deltaTime, sf::View view, Character* enemy, std::vector<Platform> platforms) {
-	//updateCollisionWithEnemy(enemy);
+	updateCollisionWithEnemy(enemy);
+	// 敌人与攻击特效的碰撞
+	//updateCollisionWithEffect(enemy);
 	updateCollisionWithPlatform(platforms);
 	updatePosition(view);
 	updateDirection(enemy->position);
@@ -137,6 +139,19 @@ void Gaara::updateSprite(float deltaTime, sf::Vector2f enemyPosition) {
 			sprite.setOrigin(origins[WJ.first + currentFrame]);
 			currentFrame++;
 			if (currentFrame + WJ.first > WJ.second) {
+				currentState = CharacterState::Stand;
+				currentFrame = 0;
+			}
+			break;
+		case CharacterState::WU:
+			sprite.setTextureRect(anchors[WU.first + currentFrame]);
+			sprite.setOrigin(origins[WU.first + currentFrame]);
+			currentFrame++;
+			if (currentFrame == 4) { // 第4帧后，特效离体
+				sf::Vector2f offset = { left ? -36.f : 36.f, -58.f }; // 水平偏移量左右对称
+				effects->run(enemyPosition, EffectState::WU, left);// 位置偏移量硬编码36，58
+			}
+			if (currentFrame + WU.first > WU.second) {
 				currentState = CharacterState::Stand;
 				currentFrame = 0;
 			}

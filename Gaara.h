@@ -13,6 +13,7 @@ public:
 	void handleMove() override;
 	void updateSprite(float deltaTime, sf::Vector2f enemyPosition) override;
 
+	void wu() override;
 	void u() override;
 	void ku() override;
 	void si() override;
@@ -27,6 +28,7 @@ public:
 	GaaraEffect();
 
 	void u(sf::Vector2f position, bool left)override;
+	void wu(sf::Vector2f position) override;
 	void si_before(sf::Vector2f position) override;
 	void i_before(sf::Vector2f position) override;
 

@@ -61,10 +61,22 @@ void Gaara::handleMove() {
 	// W系列
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::J)) {
-			wj();
+			if (currentState == CharacterState::Stand ||
+				currentState == CharacterState::Running ||
+				currentState == CharacterState::S_Release)
+				wj();
 		}
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::I)) {
-			wi();
+			if (currentState == CharacterState::Stand ||
+				currentState == CharacterState::Running ||
+				currentState == CharacterState::S_Release)
+				wi();
+		}
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::U)) {
+			if (currentState == CharacterState::Stand ||
+				currentState == CharacterState::Running ||
+				currentState == CharacterState::S_Release)
+				wu();
 		}
 	}
 	else { // 没按W

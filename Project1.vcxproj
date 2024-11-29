@@ -157,7 +157,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="CharacterKeyset.cpp" />
     <ClCompile Include="CharacterOp.cpp" />
     <ClCompile Include="CharacterCombat.cpp" />
     <ClCompile Include="Factories.cpp" />

@@ -34,3 +34,9 @@ void Gaara::i() {
 		currentFrame = 0;
 	}
 }
+void Gaara::wu() {
+	if (currentState != CharacterState::WU) {
+		currentState = CharacterState::WU;
+		currentFrame = 0;
+	}
+}

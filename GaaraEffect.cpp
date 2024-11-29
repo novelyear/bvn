@@ -3,11 +3,17 @@
 #include "Gaara.h"
 
 GaaraEffect::GaaraEffect() : Effect() {
-    loadResources(
+    if(sharedAnchors.empty()) 
+        loadResources(
         "D:\\D1\\code\\bvn\\access\\gaaraS\\texture_effects_atlas.png",
         "D:\\D1\\code\\bvn\\access\\gaaraS\\config\\effect_section.txt",
         "D:\\D1\\code\\bvn\\access\\gaaraS\\config\\effect_origins.txt",
         "D:\\D1\\code\\bvn\\access\\gaaraS\\effects_anchors.txt");
+    texture = sharedTexture;
+    anchors = sharedAnchors;
+    origins = sharedOrigins;
+    rangeMap = sharedRangeMap;
+    sprite.setTexture(texture);
 }
 
 void GaaraEffect::u(sf::Vector2f rolePosition, bool left) {
@@ -15,6 +21,12 @@ void GaaraEffect::u(sf::Vector2f rolePosition, bool left) {
     currentState = EffectState::U;
     currentFrame = 0;
     this->left = left;
+}
+
+void GaaraEffect::wu(sf::Vector2f rolePosition) {
+    position = rolePosition;
+    currentState = EffectState::WU;
+    currentFrame = 0;
 }
 
 void GaaraEffect::si_before(sf::Vector2f tarPosition) {
@@ -58,6 +70,15 @@ void GaaraEffect::updateSprite(float deltaTime) {
             sprite.setTextureRect(anchors[rangeMap[EffectState::U].first + currentFrame]);
             sprite.setOrigin(origins[rangeMap[EffectState::U].first + currentFrame]);
             currentFrame = (currentFrame + 1) % (rangeMap[EffectState::U].second - rangeMap[EffectState::U].first + 1); // TODO 有点问题
+            break;
+        case EffectState::WU:
+            sprite.setTextureRect(anchors[rangeMap[EffectState::WU].first + currentFrame]);
+            sprite.setOrigin(origins[rangeMap[EffectState::WU].first + currentFrame]);
+            currentFrame++;
+            if (currentFrame + rangeMap[EffectState::WU].first > rangeMap[EffectState::WU].second) {
+                currentState = EffectState::Default;
+                currentFrame = 0;
+            }
             break;
         case EffectState::SI_before:
             sprite.setTextureRect(anchors[rangeMap[EffectState::SI_before].first + currentFrame]);

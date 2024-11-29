@@ -23,9 +23,9 @@ void Game::run() {
     selectMap();
     while (window.isOpen()) {
         sf::Time deltaTime = clock.restart();  // 重置时钟并获取时间差
-        float fps = 0.1f / deltaTime.asSeconds();  // 计算帧率
-        // 输出当前帧率到控制台
-        std::cout << "FPS: " << fps << std::endl;
+        //float fps = 1.f / deltaTime.asSeconds();  // 计算帧率
+        //// 输出当前帧率到控制台
+        //std::cout << "FPS: " << fps << std::endl;
 
         processEvents();
         update(deltaTime.asSeconds());

@@ -9,26 +9,31 @@
 #define RIGHT_BORDER 800.f
 // 视图双盒子模型间距 margin
 #define PUSH_MARGIN 100.f
+
 // 重力加速度
-#define GRAVITY 0.0025f
+#define GRAVITY 0.25f
 // 起跳初速度
-#define JUMP_VELOCITY -0.9f
+#define JUMP_VELOCITY -7.f
 // AD移动速度
-#define MOVE_VELOCITY 0.35f
+#define MOVE_VELOCITY 3.5f
 // 最大坠落速度
-#define MAX_FALLING_VELOCITY 0.48f
+#define MAX_FALLING_VELOCITY 4.f
 // 二段跳限制速度
-#define LIMIT_V JUMP_VELOCITY + 0.45f
+#define LIMIT_V JUMP_VELOCITY + 2.5f
 // 冲刺速度
-#define FLASH_VELOCITY 0.7f
-// 互斥力常数
-#define REPULSION 5.f
+#define FLASH_VELOCITY 7.f
+// 我爱罗U飞行速度
+#define U_VELOCITY 5.f
 // 碰撞检测误差容忍
-#define TOLERANCE 2.f
+#define TOLERANCE 4.f
+
+
+// 互斥力常数
+#define REPULSION 10.f
 // 人物初始生命值
 #define INIT_HEALTH 100
+
+
 // 人物贴图轮换帧率
 #define PLAYER_FRAME 0.034f
-// 我爱罗U飞行速度
-#define U_VELOCITY 0.35f
 
