@@ -13,10 +13,13 @@ void Character::updatePosition(sf::View view) {
 
 
 	position.x += velocity.x;
-	if (currentState == CharacterState::Running ||
-		currentState == CharacterState::Jumping ||
-		currentState == CharacterState::Fall ||
-		currentState == CharacterState::Stand)
+	//if (currentState == CharacterState::Running ||
+	//	currentState == CharacterState::Jumping ||
+	//	currentState == CharacterState::Fall ||
+	//	currentState == CharacterState::Stand ||
+	//	currentState == CharacterState::S ||
+	//	currentState == CharacterState::S_Release)
+	if (currentState != CharacterState::Flash)
 	{
 		velocity.x = 0;
 	}
@@ -49,6 +52,10 @@ void Character::updatePosition(sf::View view) {
 
 bool XOR(bool a, bool b) {
 	return (a + b) % 2;
+}
+
+bool SameOr(bool a, bool b) {
+	return (a + b) != true;
 }
 
 void Character::updateDirection(sf::Vector2f enemyPosition) {
@@ -96,30 +103,60 @@ void separate(Character* p1, Character* p2) {
 	// 默认已经重合
 	float r = std::fabs(p1->position.x - p2->position.x);
 	bool left = p1->position.x < p2->position.x; // p1在左边就获得负的加速度
-	float acceleration = REPULSION / r / r;
-	p1->gainVelocity({ acceleration * left ? -0.2f : 0.2f, 0 });
-	p2->gainVelocity({ acceleration * left ? 0.2f : -0.2f, 0 });
+	float acceleration = REPULSION / r;
+	p1->gainVelocity({ acceleration * left ? -1.f : 1.f, 0 });
+	p2->gainVelocity({ acceleration * left ? 1.f : -1.f, 0 });
 }
-
+// 检测自己是否碰到敌人
 void Character::updateCollisionWithEnemy(Character* enemy) {
-	if (currentState == CharacterState::Flash || enemy->currentState == CharacterState::Flash) {
+	// 敌方冲刺状态和击飞状态不检测；
+	// 己方冲刺状态无敌，不检测
+	if (currentState == CharacterState::Flash || currentState == CharacterState::Kick ||
+		enemy->currentState == CharacterState::Flash || enemy->currentState == CharacterState::Kick) {
 		return;
 	}
-	// 素材尺寸不一，如果设为属性避免重复计算，那在更新精灵时需要加判断，目前帧率溢出，可不优化
-	sf::FloatRect playerRect = this->sprite.getLocalBounds();
+	// 自己的Rect应该只包括自己的身体，不能包括特效，比如KU的特效被打到，不能被认定为被打到。
+	sf::FloatRect playerRect;
+	playerRect.width = 40.f;playerRect.height = 50.f;
 	sf::FloatRect enemyRect = enemy->sprite.getLocalBounds();
-	playerRect.left = this->position.x - playerRect.width / 2.f;
-	playerRect.top = this->position.y - playerRect.height / 2.f;
-	enemyRect.left = enemy->position.x - enemyRect.width / 2.f;
-	enemyRect.top = enemy->position.y - enemyRect.height / 2.f;
-	// 前提：不可能完全重合==>重合点归入一边即可
-	// 似乎原游戏存在重量，人物相推速度变化不一致，有的减半，有的更慢
-	// 这里都设置为一样的重量，如果有人物挡道，则速度减半
-	if (!playerRect.intersects(enemyRect)) return;
-	if (std::fabs(this->position.y - enemy->position.y) < TOLERANCE && this->velocity.x != 0.f) { // 同高度，水平碰撞
-		this->velocity.x /= 4.f;
-		enemy->gainVelocity({ this->velocity.x, 0.f });
+	if (this->left) {
+		playerRect.left = this->position.x + sprite.getOrigin().x - playerRect.width;
 	}
-	separate(this, enemy);
+	else playerRect.left = this->position.x - sprite.getOrigin().x;
+	if (enemy->left)
+		enemyRect.left = enemy->position.x + enemy->sprite.getOrigin().x - enemyRect.width;
+	else
+		enemyRect.left = enemy->position.x - enemy->sprite.getOrigin().x;
+	playerRect.top = this->position.y - this->sprite.getOrigin().y;
+	enemyRect.top = enemy->position.y - enemy->sprite.getOrigin().y;
+	// 双方都没有攻击，全判定
+	if (enemy->canTouch() && this->canTouch()) {
+		if (!playerRect.intersects(enemyRect)) return; // 如果根本没有重合，取消后续操作
+		// 非攻击状态碰撞：
+		if (std::fabs(this->position.y - enemy->position.y) < TOLERANCE) { // 同高度，水平碰撞
+			this->velocity.x /= 4.f;
+			enemy->gainVelocity({ this->velocity.x, 0.f });
+		}
+		separate(this, enemy);
+		return;
+	}
+	// 敌人正在攻击，由于是检测自己是否被K，所以排除敌人的本体
+	if (!enemy->canTouch()) {
+		if (!enemy->left) {
+			enemyRect.left += 30.f;
+		}
+		enemyRect.width -= 30.f;
+	}
+
+	if (!playerRect.intersects(enemyRect)) return; // 如果没被K
+    // 被敌方的特效K到了
+	bool beAttacked = SameOr(enemy->left, this->position.x < enemy->position.x) && !enemy->canTouch();
+	if (beAttacked) {
+		this->real ? printf("I'm hited\n") : printf("he is hitted\n");
+	}
+}
+
+void Character::updateCollisionWithEffect(std::unique_ptr<EffectPool> effects) {
+
 }
 

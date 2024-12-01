@@ -87,6 +87,8 @@ void Game::render() {
     player->render(window);
     // 渲染敌人
     enemy->render(window);
+    enemy->effects->render(window);// 后渲染特效，遮住人物
+    player->effects->render(window);
     window.setView(view);
     window.display();
 }

@@ -3,14 +3,21 @@
 #include "Map.h"
 
 void Gaara::update(float deltaTime, sf::View view, Character* enemy, std::vector<Platform> platforms) {
-	updateCollisionWithEnemy(enemy);
+	updateSprite(deltaTime, enemy->position);
 	// 敌人与攻击特效的碰撞
 	//updateCollisionWithEffect(enemy);
 	updateCollisionWithPlatform(platforms);
+	updateCollisionWithEnemy(enemy);
 	updatePosition(view);
 	updateDirection(enemy->position);
-	updateSprite(deltaTime, enemy->position);
 	effects->update(deltaTime, view);
+	// chakra更新，暂时写在这里
+	if (currentState != CharacterState::Flash && currentState != CharacterState::S) {
+		chakra++;
+		if (chakra >= MAX_CHAKRA) {
+			chakra = MAX_CHAKRA;
+		}
+	}
 }
 
 

@@ -25,6 +25,9 @@
     <Filter Include="源文件\Game">
       <UniqueIdentifier>{71b49755-4104-4c4f-96d4-c3fa2e6df727}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\Character\NarutoS">
+      <UniqueIdentifier>{e95f13c8-ac62-4b78-8295-8d5eba2f31ba}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Effect.cpp">
@@ -69,6 +72,9 @@
     <ClCompile Include="GaaraCombat.cpp">
       <Filter>源文件\Character\Gaara</Filter>
     </ClCompile>
+    <ClCompile Include="NarutoS.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="access\bg.png">
@@ -104,6 +110,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Enums.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="NarutoS.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

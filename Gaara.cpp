@@ -3,6 +3,7 @@
 #include "Constants.h"
 
 Gaara::Gaara() : Character() {
+    real = true;
 	left = false;
 	position = { 100.f, GROUND };
     effects = std::make_unique<EffectPool>(CharacterType::Gaara);
@@ -14,6 +15,7 @@ Gaara::Gaara() : Character() {
 }
 
 Gaara::Gaara(int flag) : Character() {
+    real = false;
 	left = true;
 	position = { 300.f, GROUND };
 	loadResources(
@@ -22,6 +24,16 @@ Gaara::Gaara(int flag) : Character() {
 		"D:\\D1\\code\\bvn\\access\\gaaraS\\config\\origins.txt",
 		"D:\\D1\\code\\bvn\\access\\gaaraS\\anchors.txt");
     effects = std::make_unique<EffectPool>(CharacterType::Gaara);
+}
+
+bool Gaara::canTouch() {
+    return (
+        currentState == CharacterState::Stand || currentState == CharacterState::Running ||
+        currentState == CharacterState::WU || currentState == CharacterState::Jumping ||
+        currentState == CharacterState::Fall || currentState == CharacterState::S_Release ||
+        currentState == CharacterState::I_miss || currentState == CharacterState::SI_miss ||
+        currentState == CharacterState::WI_miss
+        );
 }
 
 void Gaara::loadResources(const std::string& directory, const std::string& rangeFile, const std::string& originFile, const std::string& anchorFile) {
@@ -119,12 +131,5 @@ void Gaara::loadResources(const std::string& directory, const std::string& range
         std::cerr << "Failed to load texture from directory: " << directory << std::endl;
     }
     sprite.setTexture(texture);
+    sprite.setTextureRect(anchors[1]);
 }
-
-
-
-
-
-
-
-

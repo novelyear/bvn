@@ -29,7 +29,7 @@
 
 
 // 互斥力常数
-#define REPULSION 10.f
+#define REPULSION 57.f
 // 人物初始生命值
 #define INIT_HEALTH 100
 
@@ -37,3 +37,7 @@
 // 人物贴图轮换帧率
 #define PLAYER_FRAME 0.034f
 
+// 每次冲刺消耗的chakra
+#define CHAKRA_L (40)
+// chakra上限
+#define MAX_CHAKRA (100)

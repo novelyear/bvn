@@ -48,13 +48,13 @@ void GaaraEffect::updatePosition(sf::View view) {
     sf::Vector2f center = view.getCenter();
     sf::Vector2f size = view.getSize();
 
-    // »ñÈ¡ÊÓÍ¼µÄµ±Ç°±ß½ç
+    // è·å–è§†å›¾çš„å½“å‰è¾¹ç•Œ
     float left_border = center.x - size.x / 2.f;
     float right_border = center.x + size.x / 2.f;
 
     if (currentState == EffectState::U) {
-        position.x += left ? -U_VELOCITY : U_VELOCITY; // Ë®Æ½·¢Éä³öÈ¥
-        if (position.x < left_border || position.x > right_border) { // Àë¿ª±ß½çÔòÏûÊ§
+        position.x += left ? -U_VELOCITY : U_VELOCITY; // æ°´å¹³å‘å°„å‡ºå»
+        if (position.x < left_border || position.x > right_border) { // ç¦»å¼€è¾¹ç•Œåˆ™æ¶ˆå¤±
             currentState = EffectState::Default;
             currentFrame = 0;
         }
@@ -69,7 +69,7 @@ void GaaraEffect::updateSprite(float deltaTime) {
         case EffectState::U:
             sprite.setTextureRect(anchors[rangeMap[EffectState::U].first + currentFrame]);
             sprite.setOrigin(origins[rangeMap[EffectState::U].first + currentFrame]);
-            currentFrame = (currentFrame + 1) % (rangeMap[EffectState::U].second - rangeMap[EffectState::U].first + 1); // TODO ÓĞµãÎÊÌâ
+            currentFrame = (currentFrame + 1) % (rangeMap[EffectState::U].second - rangeMap[EffectState::U].first + 1); // TODO æœ‰ç‚¹é—®é¢˜
             break;
         case EffectState::WU:
             sprite.setTextureRect(anchors[rangeMap[EffectState::WU].first + currentFrame]);
@@ -104,7 +104,7 @@ void GaaraEffect::updateSprite(float deltaTime) {
         elapsedTime = 0.f;
     }
     if (left)
-        sprite.setScale(-1.f, 1.f); // Ë®Æ½¾µÏñ£¬´¹Ö±±£³Ö²»±ä
+        sprite.setScale(-1.f, 1.f); // æ°´å¹³é•œåƒï¼Œå‚ç›´ä¿æŒä¸å˜
     else 
         sprite.setScale(1.f, 1.f);
     sprite.setPosition(position);

@@ -6,6 +6,8 @@ Character::Character(){
 	attackStage = 0;
 	currentState = CharacterState::Stand;
 	health = INIT_HEALTH;
+	chakra = 0;
+	qi = 0;
 	inAir = true;
 	jumpTimes = 0;
 	left = true;
@@ -71,17 +73,13 @@ void Character::flash() {
 		currentState = CharacterState::Flash;
 		currentFrame = 0;
 		jumpTimes++;
+		chakra -= CHAKRA_L;
 		// TODO 减少气
 	}
 }
 
 void Character::render(sf::RenderWindow& window) {
 	window.draw(sprite);
-	//effects->render(window);
-	effects->render(window);
-	//for (auto& e : effects) {
-
-	//}
 }
 
 void Character::gainVelocity(sf::Vector2f acceleration) {

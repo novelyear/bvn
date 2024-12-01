@@ -6,7 +6,10 @@
 class Character
 {
 public:
+	bool real;
 	int health;
+	int chakra;
+	int qi;
 	sf::Texture texture;
 	std::vector<sf::IntRect> anchors;
 	std::vector<sf::Vector2f> origins;
@@ -74,6 +77,7 @@ public:
 	void updatePosition(sf::View view);
 	void updateDirection(sf::Vector2f enemyPosition);
 	void updateCollisionWithPlatform(std::vector<Platform> platforms);
+	void updateCollisionWithEffect(std::unique_ptr<EffectPool> e);
 	void updateCollisionWithEnemy(Character* enemy);
 	void gainVelocity(sf::Vector2f acceleration);
 
@@ -94,7 +98,7 @@ public:
 	virtual void i() = 0;
 	virtual void wu() = 0;
 
-
+	virtual bool canTouch() = 0; // 人物本身能够无伤碰触的状态集
 	virtual void update(float deltaTime, sf::View view, Character* enemy, std::vector<Platform> platforms) =0;
 	virtual void loadResources(const std::string& directory, const std::string& rangeFile,
 							   const std::string& originFile, const std::string& anchorFile) = 0;
