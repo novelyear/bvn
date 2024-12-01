@@ -25,6 +25,9 @@
     <Filter Include="源文件\Game">
       <UniqueIdentifier>{71b49755-4104-4c4f-96d4-c3fa2e6df727}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\Character\NarutoS">
+      <UniqueIdentifier>{e95f13c8-ac62-4b78-8295-8d5eba2f31ba}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Effect.cpp">
@@ -33,16 +36,13 @@
     <ClCompile Include="Controller.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="CharacterKeyset.cpp">
-      <Filter>源文件\Character</Filter>
-    </ClCompile>
     <ClCompile Include="CharacterOp.cpp">
       <Filter>源文件\Character</Filter>
     </ClCompile>
     <ClCompile Include="CharacterCombat.cpp">
       <Filter>源文件\Character</Filter>
     </ClCompile>
-    <ClCompile Include="CharacterFactory.cpp">
+    <ClCompile Include="Factories.cpp">
       <Filter>源文件\Character</Filter>
     </ClCompile>
     <ClCompile Include="CharacterUpdate.cpp">
@@ -54,26 +54,26 @@
     <ClCompile Include="Map.cpp">
       <Filter>源文件\Map</Filter>
     </ClCompile>
-    <ClCompile Include="MapFactory.cpp">
-      <Filter>源文件\Map</Filter>
-    </ClCompile>
-    <ClCompile Include="MR.cpp">
-      <Filter>源文件\Map</Filter>
-    </ClCompile>
-    <ClCompile Include="Platform.cpp">
-      <Filter>源文件\Map</Filter>
-    </ClCompile>
     <ClCompile Include="Game.cpp">
-      <Filter>源文件\Game</Filter>
-    </ClCompile>
-    <ClCompile Include="GameClock.cpp">
       <Filter>源文件\Game</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>源文件\Game</Filter>
     </ClCompile>
-    <ClCompile Include="SoundManager.cpp">
-      <Filter>源文件\Game</Filter>
+    <ClCompile Include="GaaraKeySet.cpp">
+      <Filter>源文件\Character\Gaara</Filter>
+    </ClCompile>
+    <ClCompile Include="GaaraUpdate.cpp">
+      <Filter>源文件\Character\Gaara</Filter>
+    </ClCompile>
+    <ClCompile Include="GaaraEffect.cpp">
+      <Filter>源文件\Character\Gaara</Filter>
+    </ClCompile>
+    <ClCompile Include="GaaraCombat.cpp">
+      <Filter>源文件\Character\Gaara</Filter>
+    </ClCompile>
+    <ClCompile Include="NarutoS.cpp">
+      <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="GaaraKeySet.cpp">
       <Filter>源文件\Character\Gaara</Filter>
@@ -103,31 +103,22 @@
     <ClInclude Include="Effect.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="SoundManager.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="GameClock.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Platform.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="Constants.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Gaara.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="CharacterFactory.h">
+    <ClInclude Include="Factories.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Controller.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="MR.h">
+    <ClInclude Include="Enums.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="MapFactory.h">
+    <ClInclude Include="NarutoS.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

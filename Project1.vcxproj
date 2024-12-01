@@ -128,6 +128,7 @@
       <AdditionalIncludeDirectories>
       </AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <DisableSpecificWarnings>4819;26451</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -156,26 +157,23 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="CharacterKeyset.cpp" />
     <ClCompile Include="CharacterOp.cpp" />
     <ClCompile Include="CharacterCombat.cpp" />
-    <ClCompile Include="CharacterFactory.cpp" />
+    <ClCompile Include="Factories.cpp" />
     <ClCompile Include="CharacterUpdate.cpp" />
     <ClCompile Include="Controller.cpp" />
     <ClCompile Include="Effect.cpp" />
     <ClCompile Include="Gaara.cpp" />
+    <ClCompile Include="GaaraCombat.cpp" />
+    <ClCompile Include="GaaraEffect.cpp" />
     <ClCompile Include="GaaraKeySet.cpp" />
     <ClCompile Include="GaaraUpdate.cpp" />
     <ClCompile Include="Game.cpp" />
-    <ClCompile Include="GameClock.cpp" />
     <ClCompile Include="main.cpp">
       <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stdcpp17</LanguageStandard>
     </ClCompile>
     <ClCompile Include="Map.cpp" />
-    <ClCompile Include="MapFactory.cpp" />
-    <ClCompile Include="MR.cpp" />
-    <ClCompile Include="Platform.cpp" />
-    <ClCompile Include="SoundManager.cpp" />
+    <ClCompile Include="NarutoS.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="access\bg.png" />
@@ -183,18 +181,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Character.h" />
-    <ClInclude Include="CharacterFactory.h" />
+    <ClInclude Include="Enums.h" />
+    <ClInclude Include="Factories.h" />
     <ClInclude Include="Constants.h" />
     <ClInclude Include="Controller.h" />
     <ClInclude Include="Effect.h" />
     <ClInclude Include="Gaara.h" />
     <ClInclude Include="Game.h" />
-    <ClInclude Include="GameClock.h" />
     <ClInclude Include="Map.h" />
-    <ClInclude Include="MapFactory.h" />
-    <ClInclude Include="MR.h" />
-    <ClInclude Include="Platform.h" />
-    <ClInclude Include="SoundManager.h" />
+    <ClInclude Include="NarutoS.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

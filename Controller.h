@@ -4,10 +4,10 @@
 #include "Map.h"
 class Controller
 {
-private:
+public:
     Character* role; // 敌人角色
     Character* target;     // 玩家角色
-public:
+    sf::Clock c;
     Controller(Character* enemy, Character* player);
 
     void process(Map* map);
