@@ -6,6 +6,8 @@ Character::Character(){
 	attackStage = 0;
 	currentState = CharacterState::Stand;
 	health = INIT_HEALTH;
+	chakra = 0;
+	qi = 0;
 	inAir = true;
 	jumpTimes = 0;
 	left = true;
@@ -71,6 +73,7 @@ void Character::flash() {
 		currentState = CharacterState::Flash;
 		currentFrame = 0;
 		jumpTimes++;
+		chakra -= CHAKRA_L;
 		// TODO 减少气
 	}
 }

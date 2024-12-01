@@ -1,4 +1,5 @@
 #include "Gaara.h"
+#include "Constants.h"
 
 void Gaara::handleMove() {
 	// 一级屏蔽
@@ -6,7 +7,7 @@ void Gaara::handleMove() {
 		return;
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::L)) { // 冲刺
-		if (jumpTimes > 1) { //之后补充chakra机制限制冲刺次数，同时空中只能冲刺一次
+		if (jumpTimes > 1 || chakra <= CHAKRA_L) { //之后补充chakra机制限制冲刺次数，同时空中只能冲刺一次
 			return;
 		}
 		flash();
@@ -27,6 +28,12 @@ void Gaara::handleMove() {
 		}
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::I)) {
 			// 大招3
+			if (currentState == CharacterState::Stand ||
+				currentState == CharacterState::Running ||
+				currentState == CharacterState::S)
+			{
+				si();
+			}
 		}
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::U)) {
 			if (currentState == CharacterState::Stand ||
@@ -55,13 +62,43 @@ void Gaara::handleMove() {
 	// W系列
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::J)) {
-			wj();
+			if (currentState == CharacterState::Stand ||
+				currentState == CharacterState::Running ||
+				currentState == CharacterState::S_Release)
+				wj();
 		}
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::I)) {
-			wi();
+			if (currentState == CharacterState::Stand ||
+				currentState == CharacterState::Running ||
+				currentState == CharacterState::S_Release)
+				wi();
+		}
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::U)) {
+			if (currentState == CharacterState::Stand ||
+				currentState == CharacterState::Running ||
+				currentState == CharacterState::S_Release)
+				wu();
 		}
 	}
-
+	else { // 没按W
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::U)) {
+			if(currentState == CharacterState::Stand ||
+				currentState == CharacterState::Running || 
+				currentState == CharacterState::S_Release)
+				u();
+			else if(jumpTimes <= 2 &&
+					(currentState == CharacterState::Jumping ||
+					currentState == CharacterState::Fall)){
+				ku();
+			}
+		}
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::I)) {
+			if (currentState == CharacterState::Stand ||
+				currentState == CharacterState::Running ||
+				currentState == CharacterState::S_Release)
+				i();
+		}
+	}
 
 
 	if (!sf::Keyboard::isKeyPressed(sf::Keyboard::S) &&
@@ -77,7 +114,7 @@ void Gaara::handleMove() {
 	{
 		if (jumpTimes <= 2 &&
 			(currentState == CharacterState::Jumping ||
-				currentState == CharacterState::Fall)
+			 currentState == CharacterState::Fall)
 			) { // 空中J
 			kj();
 		}
@@ -108,7 +145,7 @@ void Gaara::handleMove() {
 
 
 
-	// ADK屏蔽
+	// AD屏蔽
 	if (
 		currentState != CharacterState::Stand &&
 		currentState != CharacterState::Running &&
@@ -117,7 +154,7 @@ void Gaara::handleMove() {
 		)
 		return;
 
-	// ADK 经常被屏蔽，放后面
+	// AD 经常被屏蔽，放后面
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
 		moveLeft();
 		//return;

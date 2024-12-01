@@ -1,6 +1,5 @@
 #pragma once
 #include "Map.h"
-#include "SoundManager.h"
 #include "Controller.h"
 class Game
 {

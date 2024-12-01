@@ -11,7 +11,7 @@ int main() {
     try {
         // 创建 Game 实例，传入窗口的宽度、高度和标题
         Game game(1600, 1200, "My Fighting Game");
-        //game.window.setFramerateLimit(70);// 限制帧率
+        game.window.setFramerateLimit(70);// 限制帧率
         // 启动游戏主循环
         game.run();
     }
@@ -20,7 +20,6 @@ int main() {
         std::cerr << "Error: " << e.what() << std::endl;
         return EXIT_FAILURE;
     }
-
     return EXIT_SUCCESS;
 }
 
