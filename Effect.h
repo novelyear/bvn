@@ -37,7 +37,6 @@ public:
 	virtual void si_before(sf::Vector2f position) = 0;
 	virtual void updatePosition(sf::View view) = 0;
 	virtual void updateSprite(float deltaTime) = 0;
-
 };
 
 class EffectPool {

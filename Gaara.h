@@ -2,7 +2,17 @@
 #include "Character.h"
 class Gaara :
     public Character {
+private:
+	//const float slightly_hit_x = 10.f; // ÂýËÙ»÷ÍË
+
+	//const float slightly_hit_y = 10.f; // Ð¡·ù¿Õ»÷
+	//const float slightly_hit_y = 20.f; // ´ó·ù¿Õ»÷
+
+	//const float slightly_kick_x = 20.f; // Ð¡·ù»÷·É
+	//const float heavily_kick_x = 30.f; // ´óÁ¦»÷·É
 public:
+
+
 	Gaara();
 	Gaara(int flag);
 
@@ -12,6 +22,7 @@ public:
 	const std::string& originFile, const std::string& anchorFile) override;
 	void handleMove() override;
 	void updateSprite(float deltaTime, sf::Vector2f enemyPosition) override;
+	void exertEffect(Character* enemy, int type) override;
 
 	void wu() override;
 	void u() override;
@@ -36,4 +47,3 @@ public:
 	void updatePosition(sf::View view) override;
 	void updateSprite(float deltaTime) override;
 };
-

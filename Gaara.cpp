@@ -32,7 +32,8 @@ bool Gaara::canTouch() {
         currentState == CharacterState::WU || currentState == CharacterState::Jumping ||
         currentState == CharacterState::Fall || currentState == CharacterState::S_Release ||
         currentState == CharacterState::I_miss || currentState == CharacterState::SI_miss ||
-        currentState == CharacterState::WI_miss
+        currentState == CharacterState::WI_miss || currentState == CharacterState::Hit ||
+        currentState == CharacterState::Kick
         );
 }
 

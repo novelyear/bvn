@@ -41,3 +41,6 @@
 #define CHAKRA_L (40)
 // chakra上限
 #define MAX_CHAKRA (100)
+
+// 攻击检测间隔时间
+#define HIT_INTERVAL 0.2f

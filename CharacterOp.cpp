@@ -13,6 +13,7 @@ Character::Character(){
 	left = true;
 	elapsedTime = PLAYER_FRAME;
 	currentFrame = 0;
+	onBoard = false;
 }
 
 void Character::moveLeft() {
@@ -74,7 +75,6 @@ void Character::flash() {
 		currentFrame = 0;
 		jumpTimes++;
 		chakra -= CHAKRA_L;
-		// TODO 减少气
 	}
 }
 

@@ -85,6 +85,24 @@ void GaaraEffect::updateSprite(float deltaTime) {
             sprite.setOrigin(origins[rangeMap[EffectState::SI_before].first + currentFrame]);
             currentFrame++;
             if (currentFrame + rangeMap[EffectState::SI_before].first > rangeMap[EffectState::SI_before].second) {
+                currentState = EffectState::SI_miss;
+                currentFrame = 0;
+            }
+            break;
+        case EffectState::SI_miss:
+            sprite.setTextureRect(anchors[rangeMap[EffectState::SI_miss].second - currentFrame]);
+            sprite.setOrigin(origins[rangeMap[EffectState::SI_miss].second - currentFrame]);
+            currentFrame++;
+            if (rangeMap[EffectState::SI_miss].second - currentFrame < rangeMap[EffectState::SI_miss].first) {
+                currentState = EffectState::Default;
+                currentFrame = 0;
+            }
+            break;
+        case EffectState::SI_after:
+            sprite.setTextureRect(anchors[rangeMap[EffectState::SI_after].second - currentFrame]);
+            sprite.setOrigin(origins[rangeMap[EffectState::SI_after].second - currentFrame]);
+            currentFrame++;
+            if (rangeMap[EffectState::SI_after].second - currentFrame < rangeMap[EffectState::SI_after].first) {
                 currentState = EffectState::Default;
                 currentFrame = 0;
             }
@@ -94,6 +112,24 @@ void GaaraEffect::updateSprite(float deltaTime) {
             sprite.setOrigin(origins[rangeMap[EffectState::I_before].second - currentFrame]);
             currentFrame++;
             if (rangeMap[EffectState::I_before].second - currentFrame < rangeMap[EffectState::I_before].first) {
+                currentState = EffectState::I_miss;
+                currentFrame = 0;
+            }
+            break;
+        case EffectState::I_miss:
+            sprite.setTextureRect(anchors[rangeMap[EffectState::I_miss].second - currentFrame]);
+            sprite.setOrigin(origins[rangeMap[EffectState::I_miss].second - currentFrame]);
+            currentFrame++;
+            if (rangeMap[EffectState::I_miss].second - currentFrame < rangeMap[EffectState::I_miss].first) {
+                currentState = EffectState::Default;
+                currentFrame = 0;
+            }
+            break;
+        case EffectState::I_after:
+            sprite.setTextureRect(anchors[rangeMap[EffectState::I_after].second - currentFrame]);
+            sprite.setOrigin(origins[rangeMap[EffectState::I_after].second - currentFrame]);
+            currentFrame++;
+            if (rangeMap[EffectState::I_after].second - currentFrame < rangeMap[EffectState::I_after].first) {
                 currentState = EffectState::Default;
                 currentFrame = 0;
             }

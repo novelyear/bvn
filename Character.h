@@ -10,6 +10,7 @@ public:
 	int health;
 	int chakra;
 	int qi;
+
 	sf::Texture texture;
 	std::vector<sf::IntRect> anchors;
 	std::vector<sf::Vector2f> origins;
@@ -48,13 +49,15 @@ public:
 	std::pair<int, int> WI_miss; // 大招2未命中
 	std::pair<int, int> I_miss; // 大招1未命中
 
-
 	CharacterState currentState;
 	bool inAir; // 在空中
 	bool left; // 朝向
+	bool onBoard;
 	int jumpTimes; // 跳跃次数
 	int attackStage; // 普攻阶段
-	float elapsedTime; // 计时器
+	float elapsedTime; // sprite纹理切换计时器
+	sf::Clock hitTimer; // 受击检测间隔时钟
+	CharacterState lastHit; // 上次被什么攻击打了
 	int currentFrame;
 
 	sf::Sprite sprite;
@@ -77,7 +80,7 @@ public:
 	void updatePosition(sf::View view);
 	void updateDirection(sf::Vector2f enemyPosition);
 	void updateCollisionWithPlatform(std::vector<Platform> platforms);
-	void updateCollisionWithEffect(std::unique_ptr<EffectPool> e);
+	void updateCollisionWithEffect(Character* enemy);
 	void updateCollisionWithEnemy(Character* enemy);
 	void gainVelocity(sf::Vector2f acceleration);
 
@@ -104,5 +107,6 @@ public:
 							   const std::string& originFile, const std::string& anchorFile) = 0;
 	virtual void handleMove() =0;
 	virtual void updateSprite(float deltaTime, sf::Vector2f enemyPosition) =0;
+	virtual void exertEffect(Character * enemy, int type) = 0;
 };
 

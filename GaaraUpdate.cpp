@@ -5,7 +5,7 @@
 void Gaara::update(float deltaTime, sf::View view, Character* enemy, std::vector<Platform> platforms) {
 	updateSprite(deltaTime, enemy->position);
 	// 敌人与攻击特效的碰撞
-	//updateCollisionWithEffect(enemy);
+	updateCollisionWithEffect(enemy);
 	updateCollisionWithPlatform(platforms);
 	updateCollisionWithEnemy(enemy);
 	updatePosition(view);
@@ -216,6 +216,27 @@ void Gaara::updateSprite(float deltaTime, sf::Vector2f enemyPosition) {
 			if (currentFrame + KU.first > KU.second) {
 				currentState = CharacterState::Fall;
 				currentFrame = 0;
+			}
+			break;
+		case CharacterState::Hit:
+			sprite.setTextureRect(anchors[hit.first + currentFrame]);
+			sprite.setOrigin(origins[hit.first + currentFrame]);
+			currentFrame++;
+			if (currentFrame + hit.first > hit.second) {
+				currentFrame = 0;
+				currentState = CharacterState::Fall;
+				lastHit = CharacterState::Default;
+			}
+			break;
+		case CharacterState::Kick:
+			sprite.setTextureRect(anchors[kick.first + currentFrame]);
+			sprite.setOrigin(origins[kick.first + currentFrame]);
+			if (currentFrame + kick.first < kick.second)
+				currentFrame++;	
+			else if (onBoard) {
+				currentState = CharacterState::Stand;
+				currentFrame = 0;
+				lastHit = CharacterState::Default;
 			}
 			break;
 		default:

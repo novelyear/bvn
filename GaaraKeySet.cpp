@@ -3,9 +3,12 @@
 
 void Gaara::handleMove() {
 	// 一级屏蔽
-	if (currentState == CharacterState::Flash) {
+	if (currentState == CharacterState::Flash ||
+		currentState == CharacterState::Hit ||
+		currentState == CharacterState::Kick) {
 		return;
 	}
+
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::L)) { // 冲刺
 		if (jumpTimes > 1 || chakra <= CHAKRA_L) { //之后补充chakra机制限制冲刺次数，同时空中只能冲刺一次
 			return;
