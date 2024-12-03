@@ -2,16 +2,8 @@
 #include "Character.h"
 class Gaara :
     public Character {
-private:
-	//const float slightly_hit_x = 10.f; // ÂıËÙ»÷ÍË
 
-	//const float slightly_hit_y = 10.f; // Ğ¡·ù¿Õ»÷
-	//const float slightly_hit_y = 20.f; // ´ó·ù¿Õ»÷
-
-	//const float slightly_kick_x = 20.f; // Ğ¡·ù»÷·É
-	//const float heavily_kick_x = 30.f; // ´óÁ¦»÷·É
 public:
-
 
 	Gaara();
 	Gaara(int flag);

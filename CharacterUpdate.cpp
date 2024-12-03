@@ -16,7 +16,7 @@ void Character::updatePosition(sf::View view) {
 
 	if (currentState != CharacterState::Flash && 
 		currentState != CharacterState::Hit &&
-		currentState != CharacterState::Kick)
+		(currentState != CharacterState::Kick || currentFrame < 7)) // 7就是落地帧
 	{
 		velocity.x = 0;
 	}
@@ -134,7 +134,7 @@ void Character::updateCollisionWithEnemy(Character* enemy) {
 		if (!playerRect.intersects(enemyRect)) return; // 如果根本没有重合，取消后续操作
 		// 非攻击状态碰撞：
 		if (std::fabs(this->position.y - enemy->position.y) < TOLERANCE) { // 同高度，水平碰撞
-			this->velocity.x /= 4.f;
+			this->velocity.x /= 4.f; // 速度除以4，减速推动
 			enemy->gainVelocity({ this->velocity.x, 0.f });
 		}
 		separate(this, enemy);

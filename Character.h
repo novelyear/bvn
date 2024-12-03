@@ -24,6 +24,7 @@ public:
 	std::pair<int, int> J1; // 一段普攻态
 	std::pair<int, int> J2; // 二段普攻态
 	std::pair<int, int> J3; // 三段普攻态
+	std::pair<int, int> J4; // 四段普攻态
 	std::pair<int, int> stand; // 站立态
 	std::pair<int, int> hit; // 受击态
 	std::pair<int, int> kick; // 击飞态:暂定
@@ -35,11 +36,15 @@ public:
 	std::pair<int, int> SJ; // 普攻3
 	std::pair<int, int> KU; // 空中远攻
 	std::pair<int, int> SU; // 远攻3
+	std::pair<int, int> SUU; // 远攻3，追加
 	std::pair<int, int> WU; // 远攻2
+	std::pair<int, int> WUU; // 远攻2，追加
 	std::pair<int, int> U; // 远攻1
 	std::pair<int, int> SI_before; // 大招3释放
 	std::pair<int, int> WI_before; // 大招2释放
 	std::pair<int, int> I_before; // 大招1释放
+	std::pair<int, int> KI; // 空中大
+
 		
 	std::pair<int, int> SI_after; // 大招3命中后
 	std::pair<int, int> WI_after; // 大招2命中后
@@ -47,7 +52,7 @@ public:
 		
 	std::pair<int, int> SI_miss; // 大招3未命中
 	std::pair<int, int> WI_miss; // 大招2未命中
-	std::pair<int, int> I_miss; // 大招1未命中
+	std::pair<int, int> I_miss; // 大招未命中
 
 	CharacterState currentState;
 	bool inAir; // 在空中
@@ -87,6 +92,7 @@ public:
 	virtual void j1();
 	virtual void j2();
 	virtual void j3();
+	virtual void j4();
 	virtual void kj();
 	virtual void sj();
 	virtual void su();
@@ -95,11 +101,11 @@ public:
 	virtual void wj();
 	virtual void wi();
 
-	virtual void u() = 0;
-	virtual void ku() = 0;
-	virtual void si() = 0;
-	virtual void i() = 0;
-	virtual void wu() = 0;
+	virtual void u();
+	virtual void ku();
+	virtual void si();
+	virtual void i();
+	virtual void wu();
 
 	virtual bool canTouch() = 0; // 人物本身能够无伤碰触的状态集
 	virtual void update(float deltaTime, sf::View view, Character* enemy, std::vector<Platform> platforms) =0;

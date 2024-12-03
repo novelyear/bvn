@@ -14,6 +14,7 @@ Character::Character(){
 	elapsedTime = PLAYER_FRAME;
 	currentFrame = 0;
 	onBoard = false;
+	lastHit = CharacterState::Default;
 }
 
 void Character::moveLeft() {

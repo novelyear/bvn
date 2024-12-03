@@ -2,7 +2,7 @@
 #include "Character.h"
 class NarutoS :
     public Character {
-
+public:
 	NarutoS();
 	NarutoS(int flag);
 
@@ -12,5 +12,5 @@ class NarutoS :
 		const std::string& originFile, const std::string& anchorFile) override;
 	void handleMove() override;
 	void updateSprite(float deltaTime, sf::Vector2f enemyPosition) override;
-
-    };
+	void exertEffect(Character* enemy, int type) override;
+};

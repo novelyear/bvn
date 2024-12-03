@@ -1,17 +1,15 @@
-#include "Gaara.h"
+#include "NarutoS.h"
 #include "Constants.h"
-#include "Map.h"
-
-void Gaara::update(float deltaTime, sf::View view, Character* enemy, std::vector<Platform> platforms) {
+void NarutoS::update(float deltaTime, sf::View view, Character* enemy, std::vector<Platform> platforms) {
 	updateSprite(deltaTime, enemy->position);
-	// 敌人与攻击特效的碰撞
+	// �����빥����Ч����ײ
 	updateCollisionWithEffect(enemy);
 	updateCollisionWithPlatform(platforms);
 	updateCollisionWithEnemy(enemy);
 	updatePosition(view);
 	updateDirection(enemy->position);
 	effects->update(deltaTime, view);
-	// chakra更新，暂时写在这里
+	// chakra���£���ʱд������
 	if (currentState != CharacterState::Flash && currentState != CharacterState::S) {
 		chakra++;
 		if (chakra >= MAX_CHAKRA) {
@@ -20,7 +18,7 @@ void Gaara::update(float deltaTime, sf::View view, Character* enemy, std::vector
 	}
 }
 
-void Gaara::updateSprite(float deltaTime, sf::Vector2f enemyPosition) {
+void NarutoS::updateSprite(float deltaTime, sf::Vector2f enemyPosition) {
 	if (origins.empty()) return;
 	elapsedTime += deltaTime;
 	if (elapsedTime > PLAYER_FRAME) {
@@ -91,6 +89,22 @@ void Gaara::updateSprite(float deltaTime, sf::Vector2f enemyPosition) {
 			sprite.setOrigin(origins[J3.first + currentFrame]);
 			currentFrame++;
 			if (currentFrame + J3.first > J3.second) {
+				if (attackStage > 3) {
+					currentState = CharacterState::J4;
+					currentFrame = 0;
+				}
+				else {
+					currentState = CharacterState::Stand;
+					currentFrame = 0;
+					attackStage = 0;
+				}
+			}
+			break;
+		case CharacterState::J4:
+			sprite.setTextureRect(anchors[J4.first + currentFrame]);
+			sprite.setOrigin(origins[J4.first + currentFrame]);
+			currentFrame++;
+			if (currentFrame + J4.first > J4.second) {
 				attackStage = 0;
 				currentState = CharacterState::Stand;
 				currentFrame = 0;
@@ -110,7 +124,7 @@ void Gaara::updateSprite(float deltaTime, sf::Vector2f enemyPosition) {
 			sprite.setOrigin(origins[SJ.first + currentFrame]);
 			currentFrame++;
 			if (currentFrame + SJ.first > SJ.second) {
-				currentState = CharacterState::Stand;
+				currentState = CharacterState::Fall;
 				currentFrame = 0;
 			}
 			break;
@@ -152,12 +166,8 @@ void Gaara::updateSprite(float deltaTime, sf::Vector2f enemyPosition) {
 			sprite.setTextureRect(anchors[WU.first + currentFrame]);
 			sprite.setOrigin(origins[WU.first + currentFrame]);
 			currentFrame++;
-			if (currentFrame == 4) { // 第4帧后，特效离体
-				sf::Vector2f offset = { left ? -36.f : 36.f, -58.f }; // 水平偏移量左右对称
-				effects->run(enemyPosition, EffectState::WU, left);// 位置偏移量硬编码36，58
-			}
 			if (currentFrame + WU.first > WU.second) {
-				currentState = CharacterState::Stand;
+				currentState = CharacterState::Fall;
 				currentFrame = 0;
 			}
 			break;
@@ -166,7 +176,7 @@ void Gaara::updateSprite(float deltaTime, sf::Vector2f enemyPosition) {
 			sprite.setOrigin(origins[WI_before.first + currentFrame]);
 			currentFrame++;
 			if (currentFrame + WI_before.first > WI_before.second) {
-				currentState = CharacterState::Stand;
+				currentState = CharacterState::Fall;
 				currentFrame = 0;
 			}
 			break;
@@ -174,9 +184,6 @@ void Gaara::updateSprite(float deltaTime, sf::Vector2f enemyPosition) {
 			sprite.setTextureRect(anchors[SI_before.first + currentFrame]);
 			sprite.setOrigin(origins[SI_before.first + currentFrame]);
 			currentFrame++;
-			if (currentFrame == 5) { // 5帧后触发特效
-				effects->run(enemyPosition, EffectState::SI_before, left);
-			}
 			if (currentFrame + SI_before.first > SI_before.second) {
 				currentState = CharacterState::Stand;
 				currentFrame = 0;
@@ -186,11 +193,17 @@ void Gaara::updateSprite(float deltaTime, sf::Vector2f enemyPosition) {
 			sprite.setTextureRect(anchors[I_before.first + currentFrame]);
 			sprite.setOrigin(origins[I_before.first + currentFrame]);
 			currentFrame++;
-			if (currentFrame == 1) { // 1帧后触发特效
-				effects->run(enemyPosition, EffectState::I_before, left);
-			}
 			if (currentFrame + I_before.first > I_before.second) {
 				currentState = CharacterState::Stand;
+				currentFrame = 0;
+			}
+			break;
+		case CharacterState::KI:
+			sprite.setTextureRect(anchors[KI.first + currentFrame]);
+			sprite.setOrigin(origins[KI.first + currentFrame]);
+			currentFrame++;
+			if (currentFrame + KI.first > KI.second) {
+				currentState = CharacterState::Fall;
 				currentFrame = 0;
 			}
 			break;
@@ -198,10 +211,6 @@ void Gaara::updateSprite(float deltaTime, sf::Vector2f enemyPosition) {
 			sprite.setTextureRect(anchors[U.first + currentFrame]);
 			sprite.setOrigin(origins[U.first + currentFrame]);
 			currentFrame++;
-			if (currentFrame == 11) { // 第11帧后，特效离体
-				sf::Vector2f offset = { left ? -36.f : 36.f, -58.f }; // 水平偏移量左右对称
-				effects->run(position + offset, EffectState::U, left);// 位置偏移量硬编码36，58
-			}
 			if (U.second - currentFrame < U.first) {
 				currentState = CharacterState::Stand;
 				currentFrame = 0;
@@ -212,7 +221,7 @@ void Gaara::updateSprite(float deltaTime, sf::Vector2f enemyPosition) {
 			sprite.setOrigin(origins[KU.first + currentFrame]);
 			currentFrame++;
 			if (currentFrame + KU.first > KU.second) {
-				currentState = CharacterState::Fall;
+				currentState = CharacterState::Stand;
 				currentFrame = 0;
 			}
 			break;
@@ -230,7 +239,7 @@ void Gaara::updateSprite(float deltaTime, sf::Vector2f enemyPosition) {
 			sprite.setTextureRect(anchors[kick.first + currentFrame]);
 			sprite.setOrigin(origins[kick.first + currentFrame]);
 			if (currentFrame + kick.first < kick.second)
-				currentFrame++;	
+				currentFrame++;
 			else if (onBoard) {
 				currentState = CharacterState::Stand;
 				currentFrame = 0;
@@ -242,7 +251,7 @@ void Gaara::updateSprite(float deltaTime, sf::Vector2f enemyPosition) {
 		}
 		elapsedTime = 0.f;
 		if (left)
-			sprite.setScale(-1.f, 1.f); // 水平镜像，垂直保持不变
+			sprite.setScale(-1.f, 1.f); // ˮƽ���񣬴�ֱ���ֲ���
 		else {
 			sprite.setScale(1.f, 1.f);
 		}

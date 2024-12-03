@@ -16,6 +16,10 @@ void Character::j3() {
 	attackStage = 3;
 }
 
+void Character::j4() {
+	attackStage = 4;
+}
+
 void Character::kj() {
 	currentState = CharacterState::KJ;
 	currentFrame = 0;
@@ -24,8 +28,11 @@ void Character::kj() {
 }
 
 void Character::sj() {
-	currentState = CharacterState::SJ;
-	currentFrame = 0;
+	if (currentState != CharacterState::SJ) {
+		this->position.x += left ? -5.f : 5.f;
+		currentState = CharacterState::SJ;
+		currentFrame = 0;
+	}
 }
 
 void Character::su() {
@@ -47,6 +54,31 @@ void Character::s_release() {
 
 void Character::wj() {
 	currentState = CharacterState::WJ;
+	currentFrame = 0;
+}
+
+void Character::u() {
+	currentState = CharacterState::U;
+	currentFrame = 0;
+}
+
+void Character::ku() {
+	currentState = CharacterState::KU;
+	currentFrame = 0;
+}
+
+void Character::si() {
+	currentState = CharacterState::SI_before;
+	currentFrame = 0;
+}
+
+void Character::i() {
+	currentState = CharacterState::I_before;
+	currentFrame = 0;
+}
+
+void Character::wu() {
+	currentState = CharacterState::WU;
 	currentFrame = 0;
 }
 

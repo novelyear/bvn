@@ -9,6 +9,7 @@ public:
 	std::unique_ptr<Controller> enemyAI;
 	std::unique_ptr<Map> map;
 
+	GameState state; // 游戏状态
 
 	static constexpr float minimumViewWidth = 320.0f; // 最小视图
 	static constexpr float maximumViewWidth = 660.0f; // 最大视图

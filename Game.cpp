@@ -4,11 +4,13 @@
 #include "Constants.h"
 #include "Factories.h"
 Game::Game(int width, int height, const std::string& title)
-    : window(sf::VideoMode(width, height), title) {}
+    : window(sf::VideoMode(width, height), title) {
+    state = GameState::SelectCharacter;
+}
 
 void Game::selectCharacter() { // 后续加上选人逻辑
     player = CharacterFactory::createCharacter(CharacterType::Gaara, false);
-    enemy = CharacterFactory::createCharacter(CharacterType::Gaara, true);
+    enemy = CharacterFactory::createCharacter(CharacterType::NarutoS, true);
 
     enemyAI = std::make_unique<Controller>(enemy.get(), player.get());
 }
@@ -17,10 +19,15 @@ void Game::selectMap() {
     map = MapFactory::createMap(MapType::MR);
 }
 
+
+
 void Game::run() {
     sf::Clock clock;  // 创建时钟对象，记录时间
+    
     selectCharacter();
     selectMap();
+
+
     while (window.isOpen()) {
         sf::Time deltaTime = clock.restart();  // 重置时钟并获取时间差
         //float fps = 1.f / deltaTime.asSeconds();  // 计算帧率

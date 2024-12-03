@@ -9,7 +9,12 @@ void Controller::process(Map* map) {
         return;
     }
     if (c.getElapsedTime().asSeconds() >= 3.f) {
-        role->su();  // 每隔3秒调用su()
+        if (role->currentState == CharacterState::Stand ||
+            role->currentState == CharacterState::Running ||
+            role->currentState == CharacterState::S)
+        {
+            role->wj();
+        }
         c.restart();  // 重置计时器
     }
 }

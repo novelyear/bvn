@@ -73,7 +73,16 @@
       <Filter>源文件\Character\Gaara</Filter>
     </ClCompile>
     <ClCompile Include="NarutoS.cpp">
-      <Filter>源文件</Filter>
+      <Filter>源文件\Character\NarutoS</Filter>
+    </ClCompile>
+    <ClCompile Include="NarutoSUpdate.cpp">
+      <Filter>源文件\Character\NarutoS</Filter>
+    </ClCompile>
+    <ClCompile Include="NarutoSKeySet.cpp">
+      <Filter>源文件\Character\NarutoS</Filter>
+    </ClCompile>
+    <ClCompile Include="NarutoSCombat.cpp">
+      <Filter>源文件\Character\NarutoS</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
