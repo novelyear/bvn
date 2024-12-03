@@ -33,6 +33,7 @@ public:
 	void u(sf::Vector2f position, bool left)override;
 	void wu(sf::Vector2f position) override;
 	void si_before(sf::Vector2f position) override;
+	void si_after(sf::Vector2f position) override;
 	void i_before(sf::Vector2f position) override;
 
 

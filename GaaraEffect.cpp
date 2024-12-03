@@ -35,6 +35,12 @@ void GaaraEffect::si_before(sf::Vector2f tarPosition) {
     position = tarPosition;
 }
 
+void GaaraEffect::si_after(sf::Vector2f tarPosition) {
+    currentState = EffectState::SI_after;
+    currentFrame = 0;
+    position = tarPosition;
+}
+
 void GaaraEffect::i_before(sf::Vector2f tarPosition) {
     currentState = EffectState::I_before;
     currentFrame = 0;
@@ -99,10 +105,10 @@ void GaaraEffect::updateSprite(float deltaTime) {
             }
             break;
         case EffectState::SI_after:
-            sprite.setTextureRect(anchors[rangeMap[EffectState::SI_after].second - currentFrame]);
-            sprite.setOrigin(origins[rangeMap[EffectState::SI_after].second - currentFrame]);
+            sprite.setTextureRect(anchors[rangeMap[EffectState::SI_after].first + currentFrame]);
+            sprite.setOrigin(origins[rangeMap[EffectState::SI_after].first + currentFrame]);
             currentFrame++;
-            if (rangeMap[EffectState::SI_after].second - currentFrame < rangeMap[EffectState::SI_after].first) {
+            if (currentFrame + rangeMap[EffectState::SI_after].first > rangeMap[EffectState::SI_after].second) {
                 currentState = EffectState::Default;
                 currentFrame = 0;
             }

@@ -43,4 +43,4 @@
 #define MAX_CHAKRA (100)
 
 // 攻击检测间隔时间
-#define HIT_INTERVAL 0.2f
+#define HIT_INTERVAL 0.3f

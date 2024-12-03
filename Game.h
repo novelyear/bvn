@@ -22,13 +22,18 @@ public:
 
 
 	void selectCharacter();
+	void handleCharacterSelection();
+
 	void selectMap();
 	void run();
 	void processEvents();
 	void update(float Time);
 	void render();
 
-
+	std::vector<sf::Sprite> characterSprites;
+	std::vector<CharacterType> characterTypes = { CharacterType::Gaara, CharacterType::NarutoS };
+	int selectedCharacterIndex = 0;
+	sf::Texture characterTextures[2]; // 用于加载选人头像的纹理
 	
 };
 

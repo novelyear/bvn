@@ -8,17 +8,64 @@ Game::Game(int width, int height, const std::string& title)
     state = GameState::SelectCharacter;
 }
 
-void Game::selectCharacter() { // 后续加上选人逻辑
-    player = CharacterFactory::createCharacter(CharacterType::Gaara, false);
-    enemy = CharacterFactory::createCharacter(CharacterType::NarutoS, true);
+void Game::selectCharacter() {
+    // 加载角色头像纹理
+    characterTextures[0].loadFromFile("D:\\D1\\code\\bvn\\access\\avater\\gaara.png");
+    characterTextures[1].loadFromFile("D:\\D1\\code\\bvn\\access\\avater\\naruto_hermit.png");
 
-    enemyAI = std::make_unique<Controller>(enemy.get(), player.get());
+    // 创建对应的Sprite
+    for (int i = 0; i < characterTypes.size(); ++i) {
+        sf::Sprite sprite;
+        sprite.setTexture(characterTextures[i]);
+        sprite.setPosition(200 + i * 150, 300); // 假设每个角色间隔150像素
+        characterSprites.push_back(sprite);
+    }
 }
+
+void Game::handleCharacterSelection() {
+    // 渲染选人界面
+    window.clear(sf::Color::Black);
+
+    //sf::Font font;
+    //font.loadFromFile("path_to_font.ttf");
+    //sf::Text instruction("Press Left/Right to Choose, Enter to Confirm", font, 20);
+    //instruction.setPosition(200, 200);
+    //window.draw(instruction);
+
+    // 绘制角色选项
+    for (size_t i = 0; i < characterSprites.size(); ++i) {
+        if (i == selectedCharacterIndex) {
+            sf::RectangleShape highlightBox(sf::Vector2f(128, 128)); // 假设头像是128x128
+            highlightBox.setPosition(characterSprites[i].getPosition());
+            highlightBox.setFillColor(sf::Color(0, 0, 0, 0));
+            highlightBox.setOutlineColor(sf::Color::Yellow);
+            highlightBox.setOutlineThickness(3);
+            window.draw(highlightBox);
+        }
+        window.draw(characterSprites[i]);
+    }
+
+    window.display();
+
+    // 处理键盘输入
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+        selectedCharacterIndex = (selectedCharacterIndex + 1) % characterSprites.size();
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+        selectedCharacterIndex = (selectedCharacterIndex - 1 + characterSprites.size()) % characterSprites.size();
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)) {
+        player = CharacterFactory::createCharacter(characterTypes[selectedCharacterIndex], false);
+        enemy = CharacterFactory::createCharacter(characterTypes[(selectedCharacterIndex + 1) % characterSprites.size()], true);
+        enemyAI = std::make_unique<Controller>(enemy.get(), player.get());
+        state = GameState::Playing; // 切换到游戏状态
+    }
+}
+
 
 void Game::selectMap() {
     map = MapFactory::createMap(MapType::MR);
 }
-
 
 
 void Game::run() {
@@ -27,17 +74,23 @@ void Game::run() {
     selectCharacter();
     selectMap();
 
-
     while (window.isOpen()) {
-        sf::Time deltaTime = clock.restart();  // 重置时钟并获取时间差
-        //float fps = 1.f / deltaTime.asSeconds();  // 计算帧率
-        //// 输出当前帧率到控制台
-        //std::cout << "FPS: " << fps << std::endl;
+        sf::Time deltaTime = clock.restart();
 
-        processEvents();
-        update(deltaTime.asSeconds());
-        render();
+        switch (state) {
+        case GameState::SelectCharacter:
+            handleCharacterSelection();
+            break;
+        case GameState::Playing:
+            processEvents();
+            update(deltaTime.asSeconds());
+            render();
+            break;
+        }
     }
+    //float fps = 1.f / deltaTime.asSeconds();  // 计算帧率
+    //// 输出当前帧率到控制台
+    //std::cout << "FPS: " << fps << std::endl;
 }
 
 void Game::processEvents() {

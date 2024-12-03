@@ -48,7 +48,7 @@ void Gaara::exertEffect(Character* enemy, int type) {
 		enemy->chakra -= CHAKRA_L;
 		return;
 	}
-	switch (type) { // 不能用自己的状态，U状态结束后特效仍然会在，要么给特效单独写一个？
+	switch (type) { // 不能用自己的状态，U状态结束后特效仍然会在，要么给特效单独写一个
 	case (int)CharacterState::J1:
 		enemy->gainVelocity({ this->left ? -0.3f : 0.3f, 0.f });
 		enemy->lastHit = (CharacterState)type;
@@ -92,6 +92,10 @@ void Gaara::exertEffect(Character* enemy, int type) {
 		enemy->gainVelocity({ 0.f, -2.f });
 		enemy->currentState = CharacterState::Hit;
 		enemy->lastHit = (CharacterState)type;
+		break;
+	case (int)CharacterState::SI_after:
+		//enemy->gainVelocity({ 0.f, 0.f });
+		enemy->currentState = CharacterState::Hit;
 		break;
 	default:
 		break;

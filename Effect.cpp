@@ -45,6 +45,9 @@ void EffectPool::run(sf::Vector2f position, EffectState e, bool left) {
                 case EffectState::SI_before:
                     effect->si_before(position);
                     break;
+                case EffectState::SI_after:
+                    effect->si_after(position);
+                    break;
                 case EffectState::WU:
                     effect->wu(position);
                     break;
@@ -180,5 +183,6 @@ void Effect::loadResources(const std::string& directory, const std::string& rang
     }
     sprite.setTexture(Effect::sharedTexture);
     sprite.setTextureRect(Effect::sharedAnchors[20]); // 硬编码，20号图是空，防止首次按下时正好未逻辑换帧导致闪烁全图
+                                                      // 只适用于我爱罗，后面可改为0号
 }
 

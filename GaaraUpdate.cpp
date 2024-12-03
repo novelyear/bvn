@@ -182,6 +182,18 @@ void Gaara::updateSprite(float deltaTime, sf::Vector2f enemyPosition) {
 				currentFrame = 0;
 			}
 			break;
+		case CharacterState::SI_after:
+			sprite.setTextureRect(anchors[SI_after.first + currentFrame]);
+			sprite.setOrigin(origins[SI_after.first + currentFrame]);
+			currentFrame++;
+			if (currentFrame == 5) { // 5帧后触发特效
+				effects->run(enemyPosition, EffectState::SI_after, left);
+			}
+			if (currentFrame + SI_after.first > SI_after.second) {
+				currentState = CharacterState::Stand;
+				currentFrame = 0;
+			}
+			break;
 		case CharacterState::I_before:
 			sprite.setTextureRect(anchors[I_before.first + currentFrame]);
 			sprite.setOrigin(origins[I_before.first + currentFrame]);
