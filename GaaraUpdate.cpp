@@ -25,6 +25,10 @@ void Gaara::updateSprite(float deltaTime, sf::Vector2f enemyPosition) {
 	elapsedTime += deltaTime;
 	if (elapsedTime > PLAYER_FRAME) {
 		switch (currentState) {
+		case CharacterState::Default:
+			sprite.setTextureRect(anchors[0]);
+			sprite.setOrigin(origins[0]);
+			break;
 		case CharacterState::Stand:
 			sprite.setTextureRect(anchors[stand.first + currentFrame]);
 			sprite.setOrigin(origins[stand.first + currentFrame]);
@@ -170,6 +174,15 @@ void Gaara::updateSprite(float deltaTime, sf::Vector2f enemyPosition) {
 				currentFrame = 0;
 			}
 			break;
+		case CharacterState::WI_after:
+			sprite.setTextureRect(anchors[WI_after.first + currentFrame]);
+			sprite.setOrigin(origins[WI_after.first + currentFrame]);
+			currentFrame++;
+			if (currentFrame + WI_after.first > WI_after.second) {
+				currentState = CharacterState::Stand;
+				currentFrame = 0;
+			}
+			break;
 		case CharacterState::SI_before:
 			sprite.setTextureRect(anchors[SI_before.first + currentFrame]);
 			sprite.setOrigin(origins[SI_before.first + currentFrame]);
@@ -206,6 +219,15 @@ void Gaara::updateSprite(float deltaTime, sf::Vector2f enemyPosition) {
 				currentFrame = 0;
 			}
 			break;
+		case CharacterState::I_after:
+			sprite.setTextureRect(anchors[I_after.first + currentFrame]);
+			sprite.setOrigin(origins[I_after.first + currentFrame]);
+			currentFrame++;
+			if (currentFrame + I_after.first > I_after.second) {
+				currentState = CharacterState::Stand;
+				currentFrame = 0;
+			}
+			break;
 		case CharacterState::U:
 			sprite.setTextureRect(anchors[U.first + currentFrame]);
 			sprite.setOrigin(origins[U.first + currentFrame]);
@@ -232,9 +254,11 @@ void Gaara::updateSprite(float deltaTime, sf::Vector2f enemyPosition) {
 			sprite.setTextureRect(anchors[hit.first + currentFrame]);
 			sprite.setOrigin(origins[hit.first + currentFrame]);
 			currentFrame++;
-			if (currentFrame + hit.first > hit.second) {
+			if (currentFrame + hit.first < hit.second)
+				currentFrame++;
+			else if (onBoard) {
+				currentState = CharacterState::Stand;
 				currentFrame = 0;
-				currentState = CharacterState::Fall;
 				lastHit = CharacterState::Default;
 			}
 			break;

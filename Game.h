@@ -3,6 +3,10 @@
 #include "Controller.h"
 class Game
 {
+	float currentViewLeft = 0.f;
+	float currentViewTop = 0.f;
+	float currentViewWidth = minimumViewWidth;
+	float currentViewHeight = minimumViewWidth * 0.75f;
 public:
 	std::unique_ptr<Character> player;
 	std::unique_ptr<Character> enemy;
@@ -14,7 +18,7 @@ public:
 	static constexpr float minimumViewWidth = 320.0f; // 最小视图
 	static constexpr float maximumViewWidth = 660.0f; // 最大视图
 
-	sf::FloatRect getView(sf::Vector2f playerPosition, sf::Vector2f enemyPosition); // 
+	sf::FloatRect getView(sf::Vector2f playerPosition, sf::Vector2f enemyPosition, float deltaTime); // 
 	sf::FloatRect testView(sf::Vector2f playerPosition);
 	sf::View view;
 	sf::RenderWindow window;

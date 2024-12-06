@@ -47,6 +47,11 @@ void GaaraEffect::i_before(sf::Vector2f tarPosition) {
     position = tarPosition;
 }
 
+void GaaraEffect::i_after(sf::Vector2f tarPosition) {
+    currentState = EffectState::I_after;
+    currentFrame = 0;
+    position = tarPosition;
+}
 
 void GaaraEffect::updatePosition(sf::View view) {
     if (currentState == EffectState::Default) return;
@@ -64,6 +69,9 @@ void GaaraEffect::updatePosition(sf::View view) {
             currentState = EffectState::Default;
             currentFrame = 0;
         }
+    }
+    if (currentState == EffectState::SI_after && currentFrame < 13) {
+        position.y -= 1.5f;
     }
 }
 
@@ -123,19 +131,19 @@ void GaaraEffect::updateSprite(float deltaTime) {
             }
             break;
         case EffectState::I_miss:
-            sprite.setTextureRect(anchors[rangeMap[EffectState::I_miss].second - currentFrame]);
-            sprite.setOrigin(origins[rangeMap[EffectState::I_miss].second - currentFrame]);
+            sprite.setTextureRect(anchors[rangeMap[EffectState::I_miss].first + currentFrame]);
+            sprite.setOrigin(origins[rangeMap[EffectState::I_miss].first + currentFrame]);
             currentFrame++;
-            if (rangeMap[EffectState::I_miss].second - currentFrame < rangeMap[EffectState::I_miss].first) {
+            if (rangeMap[EffectState::I_miss].first + currentFrame < rangeMap[EffectState::I_miss].second) {
                 currentState = EffectState::Default;
                 currentFrame = 0;
             }
             break;
         case EffectState::I_after:
-            sprite.setTextureRect(anchors[rangeMap[EffectState::I_after].second - currentFrame]);
-            sprite.setOrigin(origins[rangeMap[EffectState::I_after].second - currentFrame]);
+            sprite.setTextureRect(anchors[rangeMap[EffectState::I_after].first + currentFrame]);
+            sprite.setOrigin(origins[rangeMap[EffectState::I_after].first + currentFrame]);
             currentFrame++;
-            if (rangeMap[EffectState::I_after].second - currentFrame < rangeMap[EffectState::I_after].first) {
+            if (rangeMap[EffectState::I_after].first + currentFrame > rangeMap[EffectState::I_after].second) {
                 currentState = EffectState::Default;
                 currentFrame = 0;
             }

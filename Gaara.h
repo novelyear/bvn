@@ -14,7 +14,8 @@ public:
 	const std::string& originFile, const std::string& anchorFile) override;
 	void handleMove() override;
 	void updateSprite(float deltaTime, sf::Vector2f enemyPosition) override;
-	void exertEffect(Character* enemy, int type) override;
+	void exertEffect(Character* enemy, Effect * e) override;
+	void exertEffect(Character* enemy) override;
 
 	void wu() override;
 	void u() override;
@@ -35,6 +36,7 @@ public:
 	void si_before(sf::Vector2f position) override;
 	void si_after(sf::Vector2f position) override;
 	void i_before(sf::Vector2f position) override;
+	void i_after(sf::Vector2f position) override;
 
 
 	void updatePosition(sf::View view) override;

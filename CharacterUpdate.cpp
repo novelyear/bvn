@@ -16,7 +16,7 @@ void Character::updatePosition(sf::View view) {
 
 	if (currentState != CharacterState::Flash && 
 		currentState != CharacterState::Hit &&
-		(currentState != CharacterState::Kick || currentFrame < 7)) // 7就是落地帧
+		(currentState != CharacterState::Kick || currentFrame > 7)) // 7就是落地帧，两个人物都差不多
 	{
 		velocity.x = 0;
 	}
@@ -115,7 +115,7 @@ void Character::updateCollisionWithEnemy(Character* enemy) {
 		enemy->currentState == CharacterState::Flash || enemy->currentState == CharacterState::Kick) {
 		return;
 	}
-	// 自己的Rect应该只包括自己的身体，不能包括特效，比如KU的特效被打到，不能被认定为被打到。
+	// 自己的Rect应该只包括自己的身体，不能包括特效，比如特效被打到，不能被认定为被打到。
 	sf::FloatRect playerRect;
 	playerRect.width = 40.f;playerRect.height = 50.f; // 自己的本体宽40高50，原点为中心
 	sf::FloatRect enemyRect = enemy->sprite.getLocalBounds();
@@ -127,7 +127,7 @@ void Character::updateCollisionWithEnemy(Character* enemy) {
 		enemyRect.left = enemy->position.x + enemy->sprite.getOrigin().x - enemyRect.width;
 	else
 		enemyRect.left = enemy->position.x - enemy->sprite.getOrigin().x;
-	playerRect.top = this->position.y - this->sprite.getOrigin().y;
+	playerRect.top = this->position.y - playerRect.height;
 	enemyRect.top = enemy->position.y - enemy->sprite.getOrigin().y;
 	// 双方都没有攻击，全判定
 	if (enemy->canTouch() && this->canTouch()) {
@@ -141,6 +141,7 @@ void Character::updateCollisionWithEnemy(Character* enemy) {
 		return;
 	}
 	// 敌人正在攻击, 且处于攻击帧(宽度大于40，包含特效)，所以排除敌人的本体
+	// TODO 对于Gaara有效，但是NarutoS不适用，想办法特化或者泛化
 	if (!enemy->canTouch()) {
 		if (!enemy->left) {
 			enemyRect.left += 40.f;
@@ -149,7 +150,7 @@ void Character::updateCollisionWithEnemy(Character* enemy) {
 	}
 
 	if (enemyRect.width <= 0.f || !playerRect.intersects(enemyRect)) return; // 如果没被K
-	if (hitTimer.getElapsedTime().asSeconds() < HIT_INTERVAL) { // 每0.2秒受击判断一次
+	if (hitTimer.getElapsedTime().asSeconds() < HIT_INTERVAL) { // 每 HIT_INTERVAL 秒受击判断一次
 		return;
 	}
 	hitTimer.restart(); // 重设计时器
@@ -161,7 +162,7 @@ void Character::updateCollisionWithEnemy(Character* enemy) {
 			return;
 		}
 		this->real ? printf("I'm hited\n") : printf("he is hitted\n");
-		enemy->exertEffect(this, (int)enemy->currentState);
+		enemy->exertEffect(this);
 	}
 }
 // 传入敌人的特效池，从中遍历，判断是否与特效碰撞。
@@ -178,7 +179,6 @@ void Character::updateCollisionWithEffect(Character * enemy) {
 	}
 	else playerRect.left = this->position.x - sprite.getOrigin().x;
 	playerRect.top = this->position.y - this->sprite.getOrigin().y;
-
 	for (auto& e : enemy->effects->effects) {
 		if (e->currentState == EffectState::Default) continue;
 
@@ -186,22 +186,24 @@ void Character::updateCollisionWithEffect(Character * enemy) {
 		eRect.left = e->position.x - e->sprite.getOrigin().x;
 		eRect.top = e->position.y - e->sprite.getOrigin().y;
 		if (!playerRect.intersects(eRect)) continue;
-		// 有碰撞，修改敌人的命中状态，修改特效的命中状态
+		// 有碰撞，修改特效发出者的命中状态，修改特效的命中状态
 		switch (enemy->currentState) {
 			case CharacterState::I_before:
+				if (e->currentFrame < 13) break;
 				e->currentState = EffectState::I_after;
 				e->currentFrame = 0;
 				enemy->currentState = CharacterState::I_after;
 				enemy->currentFrame = 0;
 				break;
 			case CharacterState::WI_before:
-				e->currentState = EffectState::WI_after;
+				e->currentState = EffectState::Default;
 				e->currentFrame = 0;
 				enemy->currentState = CharacterState::WI_after;
 				enemy->currentFrame = 0;
 				break;
 			case CharacterState::SI_before:
-				e->currentState = EffectState::SI_after;
+				if (e->currentFrame < 13) break;
+				e->currentState = EffectState::Default;
 				e->currentFrame = 0;
 				enemy->currentState = CharacterState::SI_after;
 				enemy->currentFrame = 0;
@@ -209,8 +211,14 @@ void Character::updateCollisionWithEffect(Character * enemy) {
 			default:
 				break;
 		}
+
+		if (hitTimer.getElapsedTime().asSeconds() < HIT_INTERVAL) { // 每 HIT_INTERVAL 秒受击判断一次
+			return;
+		}
+		hitTimer.restart(); // 重设计时器
+
 		// 根据特效攻击类型获取效果
-		enemy->exertEffect(this, (int)enemy->currentState);
+		enemy->exertEffect(this, e.get());
 		this->real ? printf("I'm hited\n") : printf("he is hitted\n");
 	}
 }

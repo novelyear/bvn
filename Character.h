@@ -3,6 +3,8 @@
 #include "Effect.h"
 #include "Map.h"
 
+class Effect;
+
 class Character
 {
 public:
@@ -113,6 +115,7 @@ public:
 							   const std::string& originFile, const std::string& anchorFile) = 0;
 	virtual void handleMove() =0;
 	virtual void updateSprite(float deltaTime, sf::Vector2f enemyPosition) =0;
-	virtual void exertEffect(Character * enemy, int type) = 0;
+	virtual void exertEffect(Character * enemy, Effect * e) = 0;
+	virtual void exertEffect(Character * enemy) = 0;
 };
 

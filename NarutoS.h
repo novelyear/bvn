@@ -1,5 +1,7 @@
 #pragma once
 #include "Character.h"
+class Effect;
+
 class NarutoS :
     public Character {
 public:
@@ -12,5 +14,6 @@ public:
 		const std::string& originFile, const std::string& anchorFile) override;
 	void handleMove() override;
 	void updateSprite(float deltaTime, sf::Vector2f enemyPosition) override;
-	void exertEffect(Character* enemy, int type) override;
+	void exertEffect(Character* enemy, Effect * e) override;
+	void exertEffect(Character* enemy) override;
 };

@@ -39,6 +39,9 @@ void EffectPool::run(sf::Vector2f position, EffectState e, bool left) {
                 case EffectState::I_before: 
                     effect->i_before(position);
                     break;
+                case EffectState::I_after:
+                    effect->i_after(position);
+                    break;
                 case EffectState::U:
                     effect->u(position, left);
                     break;
