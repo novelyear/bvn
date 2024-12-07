@@ -96,6 +96,7 @@ void NarutoS::loadResources(const std::string& directory, const std::string& ran
             else if (type == "J1") J1 = std::make_pair(start, end);
             else if (type == "J2") J2 = std::make_pair(start, end);
             else if (type == "J3") J3 = std::make_pair(start, end);
+            else if (type == "J4") J4 = std::make_pair(start, end);
             else if (type == "stand") stand = std::make_pair(start, end);
             else if (type == "hit") hit = std::make_pair(start, end);
             else if (type == "kick") kick = std::make_pair(start, end);
@@ -106,8 +107,11 @@ void NarutoS::loadResources(const std::string& directory, const std::string& ran
             else if (type == "SJ") SJ = std::make_pair(start, end);
             else if (type == "KU") KU = std::make_pair(start, end);
             else if (type == "SU") SU = std::make_pair(start, end);
+            else if (type == "SUU") SUU = std::make_pair(start, end);
             else if (type == "WU") WU = std::make_pair(start, end);
+            else if (type == "WUU") WUU = std::make_pair(start, end);
             else if (type == "U") U = std::make_pair(start, end);
+            else if (type == "U_after") U_after = std::make_pair(start, end);
             else if (type == "SI_before") SI_before = std::make_pair(start, end);
             else if (type == "WI_before") WI_before = std::make_pair(start, end);
             else if (type == "I_before") I_before = std::make_pair(start, end);

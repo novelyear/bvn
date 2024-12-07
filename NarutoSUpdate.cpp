@@ -136,6 +136,10 @@ void NarutoS::updateSprite(float deltaTime, sf::Vector2f enemyPosition) {
 			sprite.setTextureRect(anchors[SJ.first + currentFrame]);
 			sprite.setOrigin(origins[SJ.first + currentFrame]);
 			currentFrame++;
+			if (currentFrame == 5) {
+				float offset = -50.f;
+				this->position = { enemyPosition.x, enemyPosition.y + offset };
+			}
 			if (currentFrame + SJ.first > SJ.second) {
 				currentState = CharacterState::Fall;
 				currentFrame = 0;
@@ -146,6 +150,15 @@ void NarutoS::updateSprite(float deltaTime, sf::Vector2f enemyPosition) {
 			sprite.setOrigin(origins[SU.first + currentFrame]);
 			currentFrame++;
 			if (currentFrame + SU.first > SU.second) {
+				currentState = CharacterState::Stand;
+				currentFrame = 0;
+			}
+			break;
+		case CharacterState::SUU:
+			sprite.setTextureRect(anchors[SUU.first + currentFrame]);
+			sprite.setOrigin(origins[SUU.first + currentFrame]);
+			currentFrame++;
+			if (currentFrame + SUU.first > SUU.second) {
 				currentState = CharacterState::Stand;
 				currentFrame = 0;
 			}
@@ -184,10 +197,23 @@ void NarutoS::updateSprite(float deltaTime, sf::Vector2f enemyPosition) {
 				currentFrame = 0;
 			}
 			break;
+		case CharacterState::WUU:
+			sprite.setTextureRect(anchors[WUU.first + currentFrame]);
+			sprite.setOrigin(origins[WUU.first + currentFrame]);
+			currentFrame++;
+			if (currentFrame + WUU.first > WUU.second) {
+				currentState = CharacterState::Fall;
+				currentFrame = 0;
+			}
+			break;
 		case CharacterState::WI_before:
 			sprite.setTextureRect(anchors[WI_before.first + currentFrame]);
 			sprite.setOrigin(origins[WI_before.first + currentFrame]);
 			currentFrame++;
+			if (currentFrame == 60) {
+				sf::Vector2f offset = { this->left ? 45.f : -45.f, -90.f };
+				this->position = enemyPosition + offset;
+			}
 			if (currentFrame + WI_before.first > WI_before.second) {
 				currentState = CharacterState::Fall;
 				currentFrame = 0;
@@ -225,6 +251,15 @@ void NarutoS::updateSprite(float deltaTime, sf::Vector2f enemyPosition) {
 			sprite.setOrigin(origins[U.first + currentFrame]);
 			currentFrame++;
 			if (U.second - currentFrame < U.first) {
+				currentState = CharacterState::Stand;
+				currentFrame = 0;
+			}
+			break;
+		case CharacterState::U_after:
+			sprite.setTextureRect(anchors[U_after.first + currentFrame]);
+			sprite.setOrigin(origins[U_after.first + currentFrame]);
+			currentFrame++;
+			if (U_after.second - currentFrame < U_after.first) {
 				currentState = CharacterState::Stand;
 				currentFrame = 0;
 			}

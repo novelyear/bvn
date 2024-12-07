@@ -16,4 +16,5 @@ public:
 	void updateSprite(float deltaTime, sf::Vector2f enemyPosition) override;
 	void exertEffect(Character* enemy, Effect * e) override;
 	void exertEffect(Character* enemy) override;
+
 };

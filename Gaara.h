@@ -18,6 +18,7 @@ public:
 	void exertEffect(Character* enemy) override;
 
 	void wu() override;
+	void sj() override;
 	void u() override;
 	void ku() override;
 	void si() override;

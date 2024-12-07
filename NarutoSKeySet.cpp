@@ -50,6 +50,9 @@ void NarutoS::handleMove() {
 			{
 				su();
 			}
+			else if (currentState == CharacterState::SU && currentFrame > 10) { // SU打完才能触发suu
+				suu();
+			}
 		}
 		else { // 单独的S
 			if (currentState == CharacterState::Stand ||
@@ -90,6 +93,9 @@ void NarutoS::handleMove() {
 				currentState == CharacterState::Landed ||
 				currentState == CharacterState::S_Release)
 				wu();
+			else if (currentState == CharacterState::WU && currentFrame > 24) { // WU24帧后才能触发WUU
+				wuu();
+			}
 		}
 	}
 	else { // 没按W
@@ -144,19 +150,19 @@ void NarutoS::handleMove() {
 				printf("J1\n");
 				break;
 			case 1:
-				if (currentFrame > 6) { // 后续加了人物就每个人物定制这个限制，“11”只针对仙鸣，下面同理
+				if (currentFrame > 3) { // 后续加了人物就每个人物定制这个限制
 					j2(); // 二段J, 播放11张图片后才能按，否则忽略
 					printf("J2\n");
 				}
 				break;
 			case 2:
-				if (currentFrame > 6) {// 三段，等二段播了6张才能按
+				if (currentFrame > 4) {// 三段，等二段播了4张才能按
 					printf("J3\n");
 					j3();
 				}
 				break;
 			case 3:
-				if (currentFrame > 10) { // 四段，等三段播了10张才能触发
+				if (currentFrame > 6) { // 四段，等三段播了6张才能触发
 					printf("J4\n");
 					j4();
 				}

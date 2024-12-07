@@ -42,6 +42,7 @@ public:
 	std::pair<int, int> WU; // 远攻2
 	std::pair<int, int> WUU; // 远攻2，追加
 	std::pair<int, int> U; // 远攻1
+	std::pair<int, int> U_after; // 远攻1命中后（适用NarutoS）
 	std::pair<int, int> SI_before; // 大招3释放
 	std::pair<int, int> WI_before; // 大招2释放
 	std::pair<int, int> I_before; // 大招1释放
@@ -98,6 +99,7 @@ public:
 	virtual void kj();
 	virtual void sj();
 	virtual void su();
+	virtual void suu();
 	virtual void s();
 	virtual void s_release();
 	virtual void wj();
@@ -108,6 +110,7 @@ public:
 	virtual void si();
 	virtual void i();
 	virtual void wu();
+	virtual void wuu();
 
 	virtual bool canTouch() = 0; // 人物本身能够无伤碰触的状态集
 	virtual void update(float deltaTime, sf::View view, Character* enemy, std::vector<Platform> platforms) =0;

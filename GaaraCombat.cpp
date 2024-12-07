@@ -1,6 +1,14 @@
 #include "Gaara.h"
 #include "Constants.h"
 
+void Gaara::sj() {
+	if (currentState != CharacterState::SJ) {
+		this->position.x += left ? -5.f : 5.f;
+		currentState = CharacterState::SJ;
+		currentFrame = 0;
+	}
+}
+
 void Gaara::u() {
 	if (currentState != CharacterState::U) {
 		currentState = CharacterState::U;

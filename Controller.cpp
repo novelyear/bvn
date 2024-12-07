@@ -13,7 +13,7 @@ void Controller::process(Map* map) {
             role->currentState == CharacterState::Running ||
             role->currentState == CharacterState::S)
         {
-            role->wj();
+            role->u();
         }
         c.restart();  // ÖØÖÃ¼ÆÊ±Æ÷
     }

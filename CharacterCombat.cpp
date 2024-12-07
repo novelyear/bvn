@@ -36,8 +36,17 @@ void Character::sj() {
 }
 
 void Character::su() {
-	currentState = CharacterState::SU;
-	currentFrame = 0;
+	if (currentState != CharacterState::SU) {
+		currentState = CharacterState::SU;
+		currentFrame = 0;
+	}
+}
+
+void Character::suu() {
+	if (currentState == CharacterState::SU) {
+		currentState = CharacterState::SUU;
+		currentFrame = 0;
+	}
 }
 
 void Character::s() {
@@ -78,8 +87,17 @@ void Character::i() {
 }
 
 void Character::wu() {
-	currentState = CharacterState::WU;
-	currentFrame = 0;
+	if (currentState != CharacterState::WU) {
+		currentState = CharacterState::WU;
+		currentFrame = 0;
+	}
+}
+
+void Character::wuu() {
+	if (currentState == CharacterState::WU) {
+		currentState = CharacterState::WUU;
+		currentFrame = 0;
+	}
 }
 
 void Character::wi() {
