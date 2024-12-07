@@ -42,6 +42,15 @@ void NarutoS::updateSprite(float deltaTime, sf::Vector2f enemyPosition) {
 			sprite.setOrigin(origins[jumping.first + currentFrame]);
 			currentFrame = (currentFrame + 1) % (jumping.second - jumping.first);
 			break;
+		case CharacterState::Landed:
+			sprite.setTextureRect(anchors[landed.first + currentFrame]);
+			sprite.setOrigin(origins[landed.first + currentFrame]);
+			currentFrame++;
+			if (currentFrame + landed.first > landed.second) {
+				currentState = CharacterState::Stand;
+				currentFrame = 0;
+			}
+			break;
 		case CharacterState::Flash:
 			sprite.setTextureRect(anchors[flashing.first + currentFrame]);
 			sprite.setOrigin(origins[flashing.first + currentFrame]);
@@ -54,7 +63,7 @@ void NarutoS::updateSprite(float deltaTime, sf::Vector2f enemyPosition) {
 		case CharacterState::Fall:
 			sprite.setTextureRect(anchors[fall.first + currentFrame]);
 			sprite.setOrigin(origins[fall.first + currentFrame]);
-			if (currentFrame + fall.first < fall.second) currentFrame++;
+			currentFrame = (currentFrame + 1) % (fall.second - fall.first);
 			break;
 		case CharacterState::J1:
 			sprite.setTextureRect(anchors[J1.first + currentFrame]);

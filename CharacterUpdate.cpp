@@ -35,6 +35,11 @@ void Character::updatePosition(sf::View view) {
 		&& velocity.y <= MAX_FALLING_VELOCITY) {
 		velocity.y += GRAVITY;
 	}
+	// 转下落
+	if (currentState == CharacterState::Jumping && velocity.y > 0) {
+		currentState = CharacterState::Fall;
+		currentFrame = 0;
+	}
 
 	position.y += velocity.y;
 	// 兜底机制
@@ -84,7 +89,7 @@ void Character::updateCollisionWithPlatform(std::vector<Platform> platforms) {
 			inAir = false;
 			if (currentState == CharacterState::Jumping ||
 				currentState == CharacterState::Fall) {
-				currentState = CharacterState::Stand;
+				currentState = CharacterState::Landed;
 				currentFrame = 0;
 			}
 			velocity.y = 0.f;  // 清除竖直速度

@@ -22,7 +22,6 @@ public:
 	void ku() override;
 	void si() override;
 	void i() override;
-
 };
 
 class GaaraEffect :

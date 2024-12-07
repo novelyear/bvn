@@ -26,6 +26,7 @@ void NarutoS::handleMove() {
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::J)) {
 			if (currentState == CharacterState::Stand ||
 				currentState == CharacterState::Running ||
+				currentState == CharacterState::Landed ||
 				currentState == CharacterState::S)
 			{
 				sj();
@@ -35,6 +36,7 @@ void NarutoS::handleMove() {
 			// 大招3
 			if (currentState == CharacterState::Stand ||
 				currentState == CharacterState::Running ||
+				currentState == CharacterState::Landed ||
 				currentState == CharacterState::S)
 			{
 				si();
@@ -43,6 +45,7 @@ void NarutoS::handleMove() {
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::U)) {
 			if (currentState == CharacterState::Stand ||
 				currentState == CharacterState::Running ||
+				currentState == CharacterState::Landed ||
 				currentState == CharacterState::S)
 			{
 				su();
@@ -51,6 +54,7 @@ void NarutoS::handleMove() {
 		else { // 单独的S
 			if (currentState == CharacterState::Stand ||
 				currentState == CharacterState::Running ||
+				currentState == CharacterState::Landed ||
 				currentState == CharacterState::S)
 			{
 				s();
@@ -69,18 +73,21 @@ void NarutoS::handleMove() {
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::J)) {
 			if (currentState == CharacterState::Stand ||
 				currentState == CharacterState::Running ||
+				currentState == CharacterState::Landed ||
 				currentState == CharacterState::S_Release)
 				wj();
 		}
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::I)) {
 			if (currentState == CharacterState::Stand ||
 				currentState == CharacterState::Running ||
+				currentState == CharacterState::Landed ||
 				currentState == CharacterState::S_Release)
 				wi();
 		}
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::U)) {
 			if (currentState == CharacterState::Stand ||
 				currentState == CharacterState::Running ||
+				currentState == CharacterState::Landed ||
 				currentState == CharacterState::S_Release)
 				wu();
 		}
@@ -89,6 +96,7 @@ void NarutoS::handleMove() {
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::U)) {
 			if (currentState == CharacterState::Stand ||
 				currentState == CharacterState::Running ||
+				currentState == CharacterState::Landed ||
 				currentState == CharacterState::S_Release)
 				u();
 			else if (jumpTimes <= 2 &&
@@ -100,6 +108,7 @@ void NarutoS::handleMove() {
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::I)) {
 			if (currentState == CharacterState::Stand ||
 				currentState == CharacterState::Running ||
+				currentState == CharacterState::Landed ||
 				currentState == CharacterState::S_Release)
 				i();
 		}
@@ -113,6 +122,7 @@ void NarutoS::handleMove() {
 			currentState == CharacterState::J2 ||
 			currentState == CharacterState::Stand ||
 			currentState == CharacterState::Running ||
+			currentState == CharacterState::Landed ||
 			currentState == CharacterState::Jumping ||
 			currentState == CharacterState::Fall)
 		) // 单独J
@@ -125,6 +135,7 @@ void NarutoS::handleMove() {
 		}
 		else if (currentState == CharacterState::Stand ||
 			currentState == CharacterState::Running ||
+			currentState == CharacterState::Landed ||
 			currentState == CharacterState::J1 ||
 			currentState == CharacterState::J2) { // 限制在地面
 			switch (attackStage) {
@@ -157,6 +168,7 @@ void NarutoS::handleMove() {
 	if (
 		currentState != CharacterState::Stand &&
 		currentState != CharacterState::Running &&
+		currentState != CharacterState::Landed &&
 		currentState != CharacterState::Jumping &&
 		currentState != CharacterState::Fall
 		)

@@ -23,7 +23,7 @@ void Character::moveLeft() {
 	}
 	attackStage = 0;
 	velocity.x = -MOVE_VELOCITY;
-	if (currentState == CharacterState::Stand) {
+	if (currentState == CharacterState::Stand || currentState == CharacterState::Landed) {
 		currentFrame = 0;
 		currentState = CharacterState::Running;
 	}
@@ -34,7 +34,7 @@ void Character::moveRight() {
 	}
 	attackStage = 0;
 	velocity.x = MOVE_VELOCITY;
-	if (currentState == CharacterState::Stand) {
+	if (currentState == CharacterState::Stand || currentState == CharacterState::Landed) {
 		currentFrame = 0;
 		currentState = CharacterState::Running;
 	}

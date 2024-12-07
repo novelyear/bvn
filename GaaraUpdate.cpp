@@ -44,6 +44,15 @@ void Gaara::updateSprite(float deltaTime, sf::Vector2f enemyPosition) {
 			sprite.setOrigin(origins[jumping.first + currentFrame]);
 			currentFrame = (currentFrame + 1) % (jumping.second - jumping.first);
 			break;
+		case CharacterState::Landed:
+			sprite.setTextureRect(anchors[landed.first + currentFrame]);
+			sprite.setOrigin(origins[landed.first + currentFrame]);
+			currentFrame++;
+			if (currentFrame + landed.first > landed.second) {
+				currentState = CharacterState::Stand;
+				currentFrame = 0;
+			}
+			break;
 		case CharacterState::Flash:
 			sprite.setTextureRect(anchors[flashing.first + currentFrame]);
 			sprite.setOrigin(origins[flashing.first + currentFrame]);
