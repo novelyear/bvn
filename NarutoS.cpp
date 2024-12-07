@@ -106,6 +106,7 @@ void NarutoS::loadResources(const std::string& directory, const std::string& ran
             else if (type == "WJ") WJ = std::make_pair(start, end);
             else if (type == "SJ") SJ = std::make_pair(start, end);
             else if (type == "KU") KU = std::make_pair(start, end);
+            else if (type == "KU_down") KU_down = std::make_pair(start, end);
             else if (type == "SU") SU = std::make_pair(start, end);
             else if (type == "SUU") SUU = std::make_pair(start, end);
             else if (type == "WU") WU = std::make_pair(start, end);

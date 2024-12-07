@@ -37,6 +37,7 @@ public:
 	std::pair<int, int> WJ; // 普攻2
 	std::pair<int, int> SJ; // 普攻3
 	std::pair<int, int> KU; // 空中远攻
+	std::pair<int, int> KU_down; // 空中远攻落地
 	std::pair<int, int> SU; // 远攻3
 	std::pair<int, int> SUU; // 远攻3，追加
 	std::pair<int, int> WU; // 远攻2

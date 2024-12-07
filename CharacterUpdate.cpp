@@ -16,6 +16,7 @@ void Character::updatePosition(sf::View view) {
 
 	if (currentState != CharacterState::Flash && 
 		currentState != CharacterState::Hit &&
+		currentState != CharacterState::KU &&
 		(currentState != CharacterState::Kick || currentFrame > 7)) // 7就是落地帧，两个人物都差不多
 	{
 		velocity.x = 0;
@@ -46,9 +47,11 @@ void Character::updatePosition(sf::View view) {
 	if (position.y >= CHARACTER_BOTTOM) {
 		position.y = CHARACTER_BOTTOM;  // 重置位置
 		inAir = false;
-		//if (currentState != CharacterState::Running) {
-		//	currentState = CharacterState::Stand;  // run和stand都需要platform
-		//}
+		onBoard = true;
+		if (currentState == CharacterState::KU) {
+			currentState = CharacterState::KU_down;  // run和stand都需要platform
+			currentFrame = 0;
+		}
 		velocity.y = 0.f;  // 清除竖直速度
 		jumpTimes = 0;  // 重置跳跃次数
 	}
@@ -71,7 +74,8 @@ void Character::updateDirection(sf::Vector2f enemyPosition) {
 }
 
 void Character::updateCollisionWithPlatform(std::vector<Platform> platforms) {
-	if (platforms.empty() || velocity.y < 0) return;
+	if (platforms.empty() || velocity.y < 0 ||
+		this->currentState == CharacterState::KU || this->currentState == CharacterState::KU_down) return;
 	onBoard = false;
 	// 遍历所有platform，判断是否在上面
 	for (const auto& platform : platforms) {

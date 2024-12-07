@@ -17,4 +17,6 @@ public:
 	void exertEffect(Character* enemy, Effect * e) override;
 	void exertEffect(Character* enemy) override;
 
+	void ku() override;
+
 };

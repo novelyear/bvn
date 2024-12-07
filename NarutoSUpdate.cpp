@@ -268,7 +268,19 @@ void NarutoS::updateSprite(float deltaTime, sf::Vector2f enemyPosition) {
 			sprite.setTextureRect(anchors[KU.first + currentFrame]);
 			sprite.setOrigin(origins[KU.first + currentFrame]);
 			currentFrame++;
+			if (currentFrame > 8) {
+				velocity.y = MAX_FALLING_VELOCITY;
+				velocity.x = this->left ? -MOVE_VELOCITY : MOVE_VELOCITY;
+			}
 			if (currentFrame + KU.first > KU.second) {
+				currentFrame -= 6;
+			}
+			break;
+		case CharacterState::KU_down:
+			sprite.setTextureRect(anchors[KU_down.first + currentFrame]);
+			sprite.setOrigin(origins[KU_down.first + currentFrame]);
+			currentFrame++;
+			if (currentFrame + KU_down.first > KU_down.second) {
 				currentState = CharacterState::Stand;
 				currentFrame = 0;
 			}
