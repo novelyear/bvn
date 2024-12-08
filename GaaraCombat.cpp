@@ -50,7 +50,7 @@ void Gaara::wu() {
 		currentFrame = 0;
 	}
 }
-// GaaraµÄ´ò»÷Ð§¹û
+// Gaaraçš„æ‰“å‡»æ•ˆæžœ
 void Gaara::exertEffect(Character* enemy, Effect * e) {
 	if ((int)enemy->lastHit == (int)e->currentState) {
 		return;
@@ -59,7 +59,7 @@ void Gaara::exertEffect(Character* enemy, Effect * e) {
 		enemy->chakra -= CHAKRA_L;
 		return;
 	}
-	switch (e->currentState) { // ²»ÄÜÓÃ×Ô¼ºµÄ×´Ì¬£¬U×´Ì¬½áÊøºóÌØÐ§ÈÔÈ»»áÔÚ£¬ÒªÃ´¸øÌØÐ§µ¥¶ÀÐ´Ò»¸ö
+	switch (e->currentState) { 
 	case EffectState::U:
 		enemy->gainVelocity({ this->left ? -0.5f : 0.5f, 0.f });
 		enemy->currentState = CharacterState::Kick;
@@ -76,7 +76,7 @@ void Gaara::exertEffect(Character* enemy, Effect * e) {
 	case EffectState::SI_after:
 		enemy->currentState = CharacterState::Default;
 		enemy->position.y = e->position.y;
-		if (e->currentFrame > 98) {// ÌØÐ§ÔÚ 98 Ö¡ºó±¬Õ¨£¬´ËÊ±µÐ·½¿É·É³ö£¬×îÖÕ¶ÎÉËº¦
+		if (e->currentFrame > 98) {// ç‰¹æ•ˆåœ¨ 98 å¸§åŽçˆ†ç‚¸ï¼Œæ­¤æ—¶æ•Œæ–¹å¯é£žå‡ºï¼Œæœ€ç»ˆæ®µä¼¤å®³
 			enemy->gainVelocity({ this->left ? -12.f : 12.f, -12.f });
 			enemy->currentState = CharacterState::Kick;
 			enemy->lastHit = (CharacterState)e->currentState;
@@ -88,7 +88,7 @@ void Gaara::exertEffect(Character* enemy, Effect * e) {
 	case EffectState::I_after:
 		enemy->currentState = CharacterState::Default;
 		enemy->position.y = e->position.y - e->sprite.getOrigin().y / 2.f;
-		if (e->currentFrame > 57) { // ÌØÐ§ÔÚ 57 Ö¡ºó±¬Õ¨£¬´ËÊ±µÐ·½¿É·É³ö£¬×îÖÕ¶ÎÉËº¦
+		if (e->currentFrame > 57) { // ç‰¹æ•ˆåœ¨ 57 å¸§åŽçˆ†ç‚¸ï¼Œæ­¤æ—¶æ•Œæ–¹å¯é£žå‡ºï¼Œæœ€ç»ˆæ®µä¼¤å®³
 			enemy->gainVelocity({ this->left ? -6.f : 6.f, -8.5f });
 			enemy->currentState = CharacterState::Kick;
 			enemy->lastHit = (CharacterState)e->currentState;
@@ -108,7 +108,7 @@ void Gaara::exertEffect(Character* enemy) {
 		enemy->chakra -= CHAKRA_L;
 		return;
 	}
-	switch (this->currentState) { // ²»ÄÜÓÃ×Ô¼ºµÄ×´Ì¬£¬U×´Ì¬½áÊøºóÌØÐ§ÈÔÈ»»áÔÚ£¬ÒªÃ´¸øÌØÐ§µ¥¶ÀÐ´Ò»¸ö
+	switch (this->currentState) { // ä¸èƒ½ç”¨è‡ªå·±çš„çŠ¶æ€ï¼ŒUçŠ¶æ€ç»“æŸåŽç‰¹æ•ˆä»ç„¶ä¼šåœ¨ï¼Œè¦ä¹ˆç»™ç‰¹æ•ˆå•ç‹¬å†™ä¸€ä¸ª
 	case CharacterState::J1:
 		enemy->gainVelocity({ this->left ? -0.3f : 0.3f, 0.f });
 		enemy->lastHit = this->currentState;
@@ -155,7 +155,7 @@ void Gaara::exertEffect(Character* enemy) {
 		break;
 	case CharacterState::WI_before:
 		enemy->currentState = CharacterState::Hit;
-		if (this->currentFrame > 33) {  // 33 Ö¡ºó£¬³¹µ×±»Âñ×¡
+		if (this->currentFrame > 33) {  // 33 å¸§åŽï¼Œå½»åº•è¢«åŸ‹ä½
 			enemy->currentState = CharacterState::Default;
 		}
 		if (this->currentFrame > 46) {

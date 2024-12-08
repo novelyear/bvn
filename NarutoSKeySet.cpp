@@ -4,22 +4,22 @@
 
 
 void NarutoS::handleMove() {
-	// Ò»¼¶ÆÁ±Î
+	// ä¸€çº§å±è”½
 	if (currentState == CharacterState::Flash ||
 		currentState == CharacterState::Hit ||
 		currentState == CharacterState::Kick) {
 		return;
 	}
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::L)) { // ³å´Ì
-		if (jumpTimes > 1 || chakra <= CHAKRA_L) { //Ö®ºó²¹³ächakra»úÖÆÏŞÖÆ³å´Ì´ÎÊı£¬Í¬Ê±¿ÕÖĞÖ»ÄÜ³å´ÌÒ»´Î
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::L)) { // å†²åˆº
+		if (jumpTimes > 1 || chakra <= CHAKRA_L) { //ä¹‹åè¡¥å……chakraæœºåˆ¶é™åˆ¶å†²åˆºæ¬¡æ•°ï¼ŒåŒæ—¶ç©ºä¸­åªèƒ½å†²åˆºä¸€æ¬¡
 			return;
 		}
 		flash();
 		return;
 	}
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) { // S£º·ÀÓù¡¢ÏÂÂä¡¢ÆÕ¹¥3¡¢´óÕĞ3¡¢Ô¶¹¥3
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) { // Sï¼šé˜²å¾¡ã€ä¸‹è½ã€æ™®æ”»3ã€å¤§æ‹›3ã€è¿œæ”»3
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::K)) {
 			down();
 		}
@@ -33,7 +33,7 @@ void NarutoS::handleMove() {
 			}
 		}
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::I)) {
-			// ´óÕĞ3
+			// å¤§æ‹›3
 			if (currentState == CharacterState::Stand ||
 				currentState == CharacterState::Running ||
 				currentState == CharacterState::Landed ||
@@ -50,11 +50,11 @@ void NarutoS::handleMove() {
 			{
 				su();
 			}
-			else if (currentState == CharacterState::SU && currentFrame > 10) { // SU´òÍê²ÅÄÜ´¥·¢suu
+			else if (currentState == CharacterState::SU && currentFrame > 10) { // SUæ‰“å®Œæ‰èƒ½è§¦å‘suu
 				suu();
 			}
 		}
-		else { // µ¥¶ÀµÄS
+		else { // å•ç‹¬çš„S
 			if (currentState == CharacterState::Stand ||
 				currentState == CharacterState::Running ||
 				currentState == CharacterState::Landed ||
@@ -64,14 +64,14 @@ void NarutoS::handleMove() {
 			}
 		}
 	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::K)) { // Ã»°´S ÓĞK ÔòÌøÔ¾
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::K)) { // æ²¡æŒ‰S æœ‰K åˆ™è·³è·ƒ
 		jump();
 	}
-	else if (currentState == CharacterState::S) { // Ã»°´S£¬µ«ÔÚ·ÀÓù£¬±íÃ÷ËÉ¿ªS
-		s_release(); // ²»¼Óreturn£¬¿É±»´ò¶Ï
+	else if (currentState == CharacterState::S) { // æ²¡æŒ‰Sï¼Œä½†åœ¨é˜²å¾¡ï¼Œè¡¨æ˜æ¾å¼€S
+		s_release(); // ä¸åŠ returnï¼Œå¯è¢«æ‰“æ–­
 	}
 
-	// WÏµÁĞ
+	// Wç³»åˆ—
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::J)) {
 			if (currentState == CharacterState::Stand ||
@@ -93,12 +93,12 @@ void NarutoS::handleMove() {
 				currentState == CharacterState::Landed ||
 				currentState == CharacterState::S_Release)
 				wu();
-			else if (currentState == CharacterState::WU && currentFrame > 24) { // WU24Ö¡ºó²ÅÄÜ´¥·¢WUU
+			else if (currentState == CharacterState::WU && currentFrame > 24) { // WU24å¸§åæ‰èƒ½è§¦å‘WUU
 				wuu();
 			}
 		}
 	}
-	else { // Ã»°´W
+	else { // æ²¡æŒ‰W
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::U)) {
 			if (currentState == CharacterState::Stand ||
 				currentState == CharacterState::Running ||
@@ -117,6 +117,9 @@ void NarutoS::handleMove() {
 				currentState == CharacterState::Landed ||
 				currentState == CharacterState::S_Release)
 				i();
+			else if (currentState == CharacterState::Jumping ||
+				currentState == CharacterState::Fall)
+				ki();
 		}
 	}
 
@@ -131,38 +134,38 @@ void NarutoS::handleMove() {
 			currentState == CharacterState::Landed ||
 			currentState == CharacterState::Jumping ||
 			currentState == CharacterState::Fall)
-		) // µ¥¶ÀJ
+		) // å•ç‹¬J
 	{
 		if (jumpTimes <= 2 &&
 			(currentState == CharacterState::Jumping ||
 				currentState == CharacterState::Fall)
-			) { // ¿ÕÖĞJ
+			) { // ç©ºä¸­J
 			kj();
 		}
 		else if (currentState == CharacterState::Stand ||
 			currentState == CharacterState::Running ||
 			currentState == CharacterState::Landed ||
 			currentState == CharacterState::J1 ||
-			currentState == CharacterState::J2) { // ÏŞÖÆÔÚµØÃæ
+			currentState == CharacterState::J2) { // é™åˆ¶åœ¨åœ°é¢
 			switch (attackStage) {
 			case 0:
-				j1(); // Ò»¶ÎJ
+				j1(); // ä¸€æ®µJ
 				printf("J1\n");
 				break;
 			case 1:
-				if (currentFrame > 3) { // ºóĞø¼ÓÁËÈËÎï¾ÍÃ¿¸öÈËÎï¶¨ÖÆÕâ¸öÏŞÖÆ
-					j2(); // ¶ş¶ÎJ, ²¥·Å11ÕÅÍ¼Æ¬ºó²ÅÄÜ°´£¬·ñÔòºöÂÔ
+				if (currentFrame > 3) { // åç»­åŠ äº†äººç‰©å°±æ¯ä¸ªäººç‰©å®šåˆ¶è¿™ä¸ªé™åˆ¶
+					j2(); // äºŒæ®µJ, æ’­æ”¾11å¼ å›¾ç‰‡åæ‰èƒ½æŒ‰ï¼Œå¦åˆ™å¿½ç•¥
 					printf("J2\n");
 				}
 				break;
 			case 2:
-				if (currentFrame > 4) {// Èı¶Î£¬µÈ¶ş¶Î²¥ÁË4ÕÅ²ÅÄÜ°´
+				if (currentFrame > 4) {// ä¸‰æ®µï¼Œç­‰äºŒæ®µæ’­äº†4å¼ æ‰èƒ½æŒ‰
 					printf("J3\n");
 					j3();
 				}
 				break;
 			case 3:
-				if (currentFrame > 6) { // ËÄ¶Î£¬µÈÈı¶Î²¥ÁË6ÕÅ²ÅÄÜ´¥·¢
+				if (currentFrame > 6) { // å››æ®µï¼Œç­‰ä¸‰æ®µæ’­äº†6å¼ æ‰èƒ½è§¦å‘
 					printf("J4\n");
 					j4();
 				}
@@ -170,7 +173,7 @@ void NarutoS::handleMove() {
 		}
 	}
 
-	// ADÆÁ±Î
+	// ADå±è”½
 	if (
 		currentState != CharacterState::Stand &&
 		currentState != CharacterState::Running &&
@@ -180,7 +183,7 @@ void NarutoS::handleMove() {
 		)
 		return;
 
-	// AD ¾­³£±»ÆÁ±Î£¬·ÅºóÃæ
+	// AD ç»å¸¸è¢«å±è”½ï¼Œæ”¾åé¢
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
 		moveLeft();
 		//return;
@@ -190,7 +193,7 @@ void NarutoS::handleMove() {
 		//return;
 	}
 	if (!sf::Keyboard::isKeyPressed(sf::Keyboard::D) && !sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
-		velocity.x = 0;  // Í£Ö¹Ë®Æ½ÒÆ¶¯
+		velocity.x = 0;  // åœæ­¢æ°´å¹³ç§»åŠ¨
 		if (currentState == CharacterState::Running) {
 			currentState = CharacterState::Stand;
 			currentFrame = 0;

@@ -86,6 +86,13 @@ void Character::i() {
 	currentFrame = 0;
 }
 
+void Character::ki() {
+	currentState = CharacterState::KI_before;
+	currentFrame = 0;
+	velocity.y = 0;
+	jumpTimes = 3;
+}
+
 void Character::wu() {
 	if (currentState != CharacterState::WU) {
 		currentState = CharacterState::WU;

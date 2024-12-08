@@ -84,6 +84,9 @@
     <ClCompile Include="NarutoSCombat.cpp">
       <Filter>源文件\Character\NarutoS</Filter>
     </ClCompile>
+    <ClCompile Include="NarutoSEffect.cpp">
+      <Filter>源文件\Character\NarutoS</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="access\bg.png">

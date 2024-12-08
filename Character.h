@@ -8,6 +8,9 @@ class Effect;
 class Character
 {
 public:
+	static bool SameOr(bool a, bool b);
+	static void separate(Character* a, Character* b);
+
 	bool real;
 	int health;
 	int chakra;
@@ -90,7 +93,6 @@ public:
 	void updateDirection(sf::Vector2f enemyPosition);
 	void updateCollisionWithPlatform(std::vector<Platform> platforms);
 	void updateCollisionWithEffect(Character* enemy);
-	void updateCollisionWithEnemy(Character* enemy);
 	void gainVelocity(sf::Vector2f acceleration);
 
 	virtual void j1();
@@ -110,6 +112,7 @@ public:
 	virtual void ku();
 	virtual void si();
 	virtual void i();
+	virtual void ki();
 	virtual void wu();
 	virtual void wuu();
 
@@ -119,6 +122,9 @@ public:
 							   const std::string& originFile, const std::string& anchorFile) = 0;
 	virtual void handleMove() =0;
 	virtual void updateSprite(float deltaTime, sf::Vector2f enemyPosition) =0;
+	
+	virtual void updateCollisionWithEnemy(Character* enemy) = 0;
+
 	virtual void exertEffect(Character * enemy, Effect * e) = 0;
 	virtual void exertEffect(Character * enemy) = 0;
 };

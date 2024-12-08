@@ -2,6 +2,19 @@
 #include <bits/stdc++.h>
 #include "Constants.h"
 
+bool Character::SameOr(bool a, bool b) {
+	return !(a ^ b);
+}
+
+void Character::separate(Character* p1, Character* p2) {
+	// 默认已经重合
+	float r = std::fabs(p1->position.x - p2->position.x);
+	bool left = p1->position.x < p2->position.x; // p1在左边就获得负的加速度
+	float acceleration = REPULSION / r;
+	p1->gainVelocity({ acceleration * left ? -1.f : 1.f, 0 });
+	p2->gainVelocity({ acceleration * left ? 1.f : -1.f, 0 });
+}
+
 Character::Character(){
 	attackStage = 0;
 	currentState = CharacterState::Stand;

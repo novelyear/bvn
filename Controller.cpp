@@ -15,7 +15,7 @@ void Controller::process(Map* map) {
         {
             role->u();
         }
-        c.restart();  // ÖØÖÃ¼ÆÊ±Æ÷
+        c.restart();  // é‡ç½®è®¡æ—¶å™¨
     }
 }
 
