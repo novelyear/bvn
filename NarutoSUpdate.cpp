@@ -1,20 +1,78 @@
 #include "NarutoS.h"
 #include "Constants.h"
+
 void NarutoS::update(float deltaTime, sf::View view, Character* enemy, std::vector<Platform> platforms) {
 	updateSprite(deltaTime, enemy->position);
-	// �����빥����Ч����ײ
+	// 敌人与攻击特效的碰撞
 	updateCollisionWithEffect(enemy);
 	updateCollisionWithPlatform(platforms);
 	updateCollisionWithEnemy(enemy);
 	updatePosition(view);
 	updateDirection(enemy->position);
 	effects->update(deltaTime, view);
-	// chakra���£���ʱд������
+	// chakra更新，暂时写在这里
 	if (currentState != CharacterState::Flash && currentState != CharacterState::S) {
 		chakra++;
 		if (chakra >= MAX_CHAKRA) {
 			chakra = MAX_CHAKRA;
 		}
+	}
+}
+
+void NarutoS::updateCollisionWithEnemy(Character* enemy) {
+	// 敌方冲刺状态和击飞状态不检测；
+	// 己方冲刺状态无敌，不检测
+	if (currentState == CharacterState::Flash || currentState == CharacterState::Kick ||
+		enemy->currentState == CharacterState::Flash || enemy->currentState == CharacterState::Kick) {
+		return;
+	}
+	// 自己的Rect应该只包括自己的身体，不能包括特效，比如特效被打到，不能被认定为被打到。
+	sf::FloatRect playerRect;
+	playerRect.width = 40.f;playerRect.height = 50.f; // 自己的本体宽40高50，原点为中心
+	sf::FloatRect enemyRect = enemy->sprite.getLocalBounds();
+	if (this->left) {
+		playerRect.left = this->position.x + sprite.getOrigin().x - playerRect.width;
+	}
+	else playerRect.left = this->position.x - sprite.getOrigin().x;
+	if (enemy->left)
+		enemyRect.left = enemy->position.x + enemy->sprite.getOrigin().x - enemyRect.width;
+	else
+		enemyRect.left = enemy->position.x - enemy->sprite.getOrigin().x;
+	playerRect.top = this->position.y - playerRect.height;
+	enemyRect.top = enemy->position.y - enemy->sprite.getOrigin().y;
+	// 双方都没有攻击，全判定
+	if (enemy->canTouch() && this->canTouch()) {
+		if (!playerRect.intersects(enemyRect)) return; // 如果根本没有重合，取消后续操作
+		// 非攻击状态碰撞：
+		if (std::fabs(this->position.y - enemy->position.y) < TOLERANCE) { // 同高度，水平碰撞
+			this->velocity.x /= 4.f; // 速度除以4，减速推动
+			enemy->gainVelocity({ this->velocity.x, 0.f });
+		}
+		separate(this, enemy);
+		return;
+	}
+	// 敌人正在攻击, 且处于攻击帧(宽度大于40，包含特效)，所以排除敌人的本体
+	if (!enemy->canTouch()) {
+		if (!enemy->left) {
+			enemyRect.left += 40.f;
+		}
+		enemyRect.width -= 40.f;
+	}
+
+	if (enemyRect.width <= 0.f || !playerRect.intersects(enemyRect)) return; // 如果没被K
+	if (hitTimer.getElapsedTime().asSeconds() < HIT_INTERVAL) { // 每 HIT_INTERVAL 秒受击判断一次
+		return;
+	}
+	hitTimer.restart(); // 重设计时器
+	// 翻译：敌人的特效与自己的本体有碰撞 & 敌人面向本体 & 敌人正在攻击 = 被打到了
+	bool beAttacked = SameOr(enemy->left, this->position.x < enemy->position.x) && !enemy->canTouch();
+	if (beAttacked) {
+		if (currentState == CharacterState::S) {
+			chakra -= 10;
+			return;
+		}
+		this->real ? printf("I'm hited\n") : printf("he is hitted\n");
+		enemy->exertEffect(this);
 	}
 }
 
@@ -68,6 +126,7 @@ void NarutoS::updateSprite(float deltaTime, sf::Vector2f enemyPosition) {
 		case CharacterState::J1:
 			sprite.setTextureRect(anchors[J1.first + currentFrame]);
 			sprite.setOrigin(origins[J1.first + currentFrame]);
+			if (currentFrame == 0) position.x += left ? -15.f : 15.f; // 0.3和Combat的统一
 			currentFrame++;
 			if (currentFrame + J1.first > J1.second) {
 				if (attackStage > 1) {
@@ -84,6 +143,7 @@ void NarutoS::updateSprite(float deltaTime, sf::Vector2f enemyPosition) {
 		case CharacterState::J2:
 			sprite.setTextureRect(anchors[J2.first + currentFrame]);
 			sprite.setOrigin(origins[J2.first + currentFrame]);
+			if (currentFrame == 0) position.x += left ? -15.f : 15.f; // 
 			currentFrame++;
 			if (currentFrame + J2.first > J2.second) {
 				if (attackStage > 2) {
@@ -126,6 +186,7 @@ void NarutoS::updateSprite(float deltaTime, sf::Vector2f enemyPosition) {
 		case CharacterState::KJ:
 			sprite.setTextureRect(anchors[KJ.first + currentFrame]);
 			sprite.setOrigin(origins[KJ.first + currentFrame]);
+			if (currentFrame == 0) position.x += left ? -20.f : 20.f; // 
 			currentFrame++;
 			if (currentFrame + KJ.first > KJ.second) {
 				currentState = CharacterState::Fall;
@@ -192,6 +253,12 @@ void NarutoS::updateSprite(float deltaTime, sf::Vector2f enemyPosition) {
 			sprite.setTextureRect(anchors[WU.first + currentFrame]);
 			sprite.setOrigin(origins[WU.first + currentFrame]);
 			currentFrame++;
+
+			if (currentFrame > 4 && currentFrame < 36) {
+				position.x += left ? -3.f : 3.f;
+				position.y -= 40.f / (currentFrame - 4) / 2;
+			}
+
 			if (currentFrame + WU.first > WU.second) {
 				currentState = CharacterState::Fall;
 				currentFrame = 0;
@@ -201,6 +268,10 @@ void NarutoS::updateSprite(float deltaTime, sf::Vector2f enemyPosition) {
 			sprite.setTextureRect(anchors[WUU.first + currentFrame]);
 			sprite.setOrigin(origins[WUU.first + currentFrame]);
 			currentFrame++;
+			if (currentFrame > 6 && currentFrame < 17) {
+				position.x += left ? -3.f : 3.f;
+				position.y -= 3.f;
+			}
 			if (currentFrame + WUU.first > WUU.second) {
 				currentState = CharacterState::Fall;
 				currentFrame = 0;
@@ -232,15 +303,22 @@ void NarutoS::updateSprite(float deltaTime, sf::Vector2f enemyPosition) {
 			sprite.setTextureRect(anchors[I_before.first + currentFrame]);
 			sprite.setOrigin(origins[I_before.first + currentFrame]);
 			currentFrame++;
+			if (currentFrame == 25) {
+				velocity.x = left ? -5.f : 5.f;
+			}
 			if (currentFrame + I_before.first > I_before.second) {
 				currentState = CharacterState::Stand;
 				currentFrame = 0;
 			}
 			break;
-		case CharacterState::KI:
+		case CharacterState::KI_before: // 人物不存在before、after、miss，为了统一，状态名加上before，实际的anchor、origin仍然仅为KI
 			sprite.setTextureRect(anchors[KI.first + currentFrame]);
 			sprite.setOrigin(origins[KI.first + currentFrame]);
 			currentFrame++;
+			if (currentFrame == 62) {
+				sf::Vector2f offset = { 0.f, -50.f };
+				effects->run(this->position + offset, EffectState::KI_before, this->left);
+			}
 			if (currentFrame + KI.first > KI.second) {
 				currentState = CharacterState::Fall;
 				currentFrame = 0;
@@ -250,6 +328,10 @@ void NarutoS::updateSprite(float deltaTime, sf::Vector2f enemyPosition) {
 			sprite.setTextureRect(anchors[U.first + currentFrame]);
 			sprite.setOrigin(origins[U.first + currentFrame]);
 			currentFrame++;
+			//position.x += left ? -15.f : 15.f;
+			//if (currentFrame > ) {
+
+			//}
 			if (U.second - currentFrame < U.first) {
 				currentState = CharacterState::Stand;
 				currentFrame = 0;
@@ -273,7 +355,7 @@ void NarutoS::updateSprite(float deltaTime, sf::Vector2f enemyPosition) {
 				velocity.x = this->left ? -MOVE_VELOCITY : MOVE_VELOCITY;
 			}
 			if (currentFrame + KU.first > KU.second) {
-				currentFrame -= 6;
+				currentFrame -= 6; // 回退6帧，维持螺旋丸
 			}
 			break;
 		case CharacterState::KU_down:
@@ -312,7 +394,7 @@ void NarutoS::updateSprite(float deltaTime, sf::Vector2f enemyPosition) {
 		}
 		elapsedTime = 0.f;
 		if (left)
-			sprite.setScale(-1.f, 1.f); // ˮƽ���񣬴�ֱ���ֲ���
+			sprite.setScale(-1.f, 1.f); // 水平镜像，垂直保持不变
 		else {
 			sprite.setScale(1.f, 1.f);
 		}

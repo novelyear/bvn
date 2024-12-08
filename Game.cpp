@@ -157,10 +157,10 @@ void Game::update(float deltaTime) {
 void Game::render() {
     window.clear();
     map->render(window, view);
-    // 渲染玩家
-    player->render(window);
     // 渲染敌人
     enemy->render(window);
+    // 渲染玩家
+    player->render(window);
     enemy->effects->render(window);// 后渲染特效，遮住人物
     player->effects->render(window);
     window.setView(view);

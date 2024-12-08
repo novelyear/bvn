@@ -3,7 +3,7 @@
 #include "Gaara.h"
 
 GaaraEffect::GaaraEffect() : Effect() {
-    if(sharedAnchors.empty()) 
+    //if(sharedAnchors.empty()) 
         loadResources(
         "D:\\D1\\code\\bvn\\access\\gaaraS\\texture_effects_atlas.png",
         "D:\\D1\\code\\bvn\\access\\gaaraS\\config\\effect_section.txt",

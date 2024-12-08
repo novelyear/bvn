@@ -175,6 +175,7 @@
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="NarutoS.cpp" />
     <ClCompile Include="NarutoSCombat.cpp" />
+    <ClCompile Include="NarutoSEffect.cpp" />
     <ClCompile Include="NarutoSKeySet.cpp" />
     <ClCompile Include="NarutoSUpdate.cpp" />
   </ItemGroup>

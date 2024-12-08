@@ -20,6 +20,85 @@ void Gaara::update(float deltaTime, sf::View view, Character* enemy, std::vector
 	}
 }
 
+// 只有两个人物，放弃通用性，针对NarutoS写碰撞检测
+void Gaara::updateCollisionWithEnemy(Character* enemy) {
+	// 敌方冲刺状态和击飞状态不检测；
+	// 己方冲刺状态无敌，不检测
+	if (currentState == CharacterState::Flash || currentState == CharacterState::Kick ||
+		enemy->currentState == CharacterState::Flash || enemy->currentState == CharacterState::Kick) {
+		return;
+	}
+	// 自己的Rect应该只包括自己的身体，不能包括特效，比如特效被打到，不能被认定为被打到。
+	sf::FloatRect playerRect;
+	playerRect.width = 40.f;playerRect.height = 50.f; // 自己的本体宽40高50，原点为中心
+	if (this->left) {
+		playerRect.left = this->position.x + sprite.getOrigin().x - playerRect.width;
+	}
+	else playerRect.left = this->position.x - sprite.getOrigin().x;
+	sf::FloatRect enemyRect = enemy->sprite.getLocalBounds();
+	if (enemy->left)
+		enemyRect.left = enemy->position.x + enemy->sprite.getOrigin().x - enemyRect.width;
+	else
+		enemyRect.left = enemy->position.x - enemy->sprite.getOrigin().x;
+	playerRect.top = this->position.y - playerRect.height;
+	enemyRect.top = enemy->position.y - enemy->sprite.getOrigin().y;
+	// 双方都没有攻击
+	if (enemy->canTouch() && this->canTouch()) {
+		if (!playerRect.intersects(enemyRect)) return; // 如果根本没有重合，取消后续操作
+		// 非攻击状态碰撞：
+		if (std::fabs(this->position.y - enemy->position.y) < TOLERANCE) { // 同高度，水平碰撞
+			this->velocity.x /= 4.f; // 速度除以4，减速推动
+			enemy->gainVelocity({ this->velocity.x, 0.f });
+		}
+		separate(this, enemy);
+		return;
+	}
+	// 对于NarutoS，KJ SUU WJ KU取除体右段，WU WUU取右上角，其他全匹配
+	if (enemy->currentState == CharacterState::KJ ||
+		enemy->currentState == CharacterState::SUU || 
+		enemy->currentState == CharacterState::WJ || 
+		enemy->currentState == CharacterState::KU) { // 左裁40
+		if (!enemy->left) {
+			enemyRect.left += 40.f;
+		}
+		enemyRect.width -= 40.f;
+	}
+	else if (enemy->currentState == CharacterState::WU ||
+			 enemy->currentState == CharacterState::WUU) {// 左裁35，下裁40
+		enemyRect.height -= 40.f;
+		if (!enemy->left) {
+			enemyRect.left += 35.f;
+		}
+		enemyRect.width -= 35.f;
+	}
+
+	if (enemyRect.width <= 0.f || !playerRect.intersects(enemyRect)) return; // 如果没被K
+	switch (enemy->currentState) {
+	case CharacterState::U:
+		enemy->currentState = CharacterState::U_after;
+		enemy->currentFrame = 0;
+		break;
+	case CharacterState::I_before:
+		enemy->velocity.x = 0;
+		break;
+	}
+	if (hitTimer.getElapsedTime().asSeconds() < HIT_INTERVAL) { // 每 HIT_INTERVAL 秒受击判断一次
+		return;
+	}
+	hitTimer.restart(); // 重设计时器
+	// 翻译：敌人的特效与自己的本体有碰撞 & 敌人面向本体 & 敌人正在攻击 = 被打到了
+	bool beAttacked = SameOr(enemy->left, this->position.x < enemy->position.x) && !enemy->canTouch();
+	if (beAttacked) {
+		if (currentState == CharacterState::S) {
+			chakra -= 10;
+			return;
+		}
+		this->real ? printf("I'm hited\n") : printf("he is hitted\n");
+		enemy->exertEffect(this);
+	}
+}
+
+
 void Gaara::updateSprite(float deltaTime, sf::Vector2f enemyPosition) {
 	if (origins.empty()) return;
 	elapsedTime += deltaTime;
@@ -262,7 +341,6 @@ void Gaara::updateSprite(float deltaTime, sf::Vector2f enemyPosition) {
 		case CharacterState::Hit:
 			sprite.setTextureRect(anchors[hit.first + currentFrame]);
 			sprite.setOrigin(origins[hit.first + currentFrame]);
-			currentFrame++;
 			if (currentFrame + hit.first < hit.second)
 				currentFrame++;
 			else if (onBoard) {

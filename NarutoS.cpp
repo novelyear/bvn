@@ -30,13 +30,15 @@ bool NarutoS::canTouch() {
 		currentState == CharacterState::Stand || currentState == CharacterState::Running ||
 		currentState == CharacterState::Jumping || currentState == CharacterState::Fall ||
 		currentState == CharacterState::S_Release || currentState == CharacterState::Hit ||
-		currentState == CharacterState::Kick || currentState == CharacterState::KI
+		currentState == CharacterState::Kick || currentState == CharacterState::KI_before ||
+		currentState == CharacterState::KI_after || currentState == CharacterState::KI_miss ||
+        currentState == CharacterState::Landed || currentState == CharacterState::S
 		);
 }
 
 void NarutoS::loadResources(const std::string& directory, const std::string& rangeFile, const std::string& originFile, const std::string& anchorFile) {
-    // ¶ÁÈ¡ originFile
-    origins.resize(1); // Áô³ö0ºÅ
+    // è¯»å– originFile
+    origins.resize(1); // ç•™å‡º0å·
     std::ifstream originInput(originFile);
     if (!originInput.is_open()) {
         std::cerr << "Failed to open origin file: " << originFile << std::endl;
@@ -54,8 +56,8 @@ void NarutoS::loadResources(const std::string& directory, const std::string& ran
     }
     originInput.close();
 
-    // ¶ÁÈ¡ anchorFile
-    anchors.resize(1); // Áô³ö0ºÅ
+    // è¯»å– anchorFile
+    anchors.resize(1); // ç•™å‡º0å·
     std::ifstream anchorInput(anchorFile);
     if (!anchorInput.is_open()) {
         std::cerr << "Failed to open anchor file: " << anchorFile << std::endl;
@@ -71,7 +73,7 @@ void NarutoS::loadResources(const std::string& directory, const std::string& ran
     }
     anchorInput.close();
 
-    // ¶ÁÈ¡ rangeFile
+    // è¯»å– rangeFile
     std::ifstream rangeInput(rangeFile);
     if (!rangeInput.is_open()) {
         std::cerr << "Failed to open range file: " << rangeFile << std::endl;
@@ -81,12 +83,12 @@ void NarutoS::loadResources(const std::string& directory, const std::string& ran
     std::string line, type;
     int start, end;
     while (std::getline(rangeInput, line)) {
-        // ½âÎöÀàĞÍºÍ·¶Î§
+        // è§£æç±»å‹å’ŒèŒƒå›´
         char temp[256];
         if (sscanf_s(line.c_str(), "%[^-]-[%d,%d]", temp, static_cast<unsigned>(sizeof(temp)), &start, &end) == 3) {
             type = std::string(temp);
 
-            // Ó²±àÂë°ó¶¨µ½ÀàµÄ³ÉÔ±±äÁ¿
+            // ç¡¬ç¼–ç ç»‘å®šåˆ°ç±»çš„æˆå‘˜å˜é‡
             if (type == "animation") animation = std::make_pair(start, end);
             else if (type == "animation_win") animation_win = std::make_pair(start, end);
             else if (type == "run") run = std::make_pair(start, end);
@@ -122,6 +124,7 @@ void NarutoS::loadResources(const std::string& directory, const std::string& ran
             else if (type == "SI_miss") SI_miss = std::make_pair(start, end);
             else if (type == "WI_miss") WI_miss = std::make_pair(start, end);
             else if (type == "I_miss") I_miss = std::make_pair(start, end);
+            else if (type == "KI") KI = std::make_pair(start, end);
         }
         else {
             std::cerr << "Invalid range line: " << line << std::endl;
@@ -129,7 +132,7 @@ void NarutoS::loadResources(const std::string& directory, const std::string& ran
     }
     rangeInput.close();
 
-    // ¼ÓÔØÎÆÀí£¨¼ÙÉè directory Ä¿Â¼ÏÂÊÇÒ»¸öÍêÕûµÄÎÆÀíÍ¼¼¯£©
+    // åŠ è½½çº¹ç†ï¼ˆå‡è®¾ directory ç›®å½•ä¸‹æ˜¯ä¸€ä¸ªå®Œæ•´çš„çº¹ç†å›¾é›†ï¼‰
     if (!texture.loadFromFile(directory)) {
         std::cerr << "Failed to load texture from directory: " << directory << std::endl;
     }
