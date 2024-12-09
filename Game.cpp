@@ -5,9 +5,10 @@
 #include "Factories.h"
 Game::Game(int width, int height, const std::string& title)
     : window(sf::VideoMode(width, height), title) {
-    state = GameState::SelectCharacter;
+    state = GameState::Init;
+    startUI = std::make_unique<StartUI>(window);
 }
-
+// 选人界面加载
 void Game::selectCharacter() {
     // 加载角色头像纹理
     characterTextures[0].loadFromFile("D:\\D1\\code\\bvn\\access\\avater\\gaara.png");
@@ -21,7 +22,7 @@ void Game::selectCharacter() {
         characterSprites.push_back(sprite);
     }
 }
-
+// 选人界面处理输入和渲染
 void Game::handleCharacterSelection() {
     // 渲染选人界面
     window.clear(sf::Color::Black);
@@ -75,13 +76,12 @@ void Game::handleCharacterSelection() {
     }
 }
 
-
-
+// 选地图
 void Game::selectMap() {
     map = MapFactory::createMap(MapType::MR);
 }
 
-
+// 主
 void Game::run() {
     sf::Clock clock;  // 创建时钟对象，记录时间
     
@@ -92,6 +92,10 @@ void Game::run() {
         sf::Time deltaTime = clock.restart();
 
         switch (state) {
+        case GameState::Init:
+            if (startUI->update(deltaTime.asSeconds())) state = GameState::SelectCharacter;
+            startUI->render();
+            break;
         case GameState::SelectCharacter:
             handleCharacterSelection();
             break;
@@ -106,7 +110,7 @@ void Game::run() {
     //// 输出当前帧率到控制台
     //std::cout << "FPS: " << fps << std::endl;
 }
-
+// 战斗键控
 void Game::processEvents() {
     sf::Event event;
     // 真人控制
@@ -145,7 +149,7 @@ void Game::processEvents() {
     // 拟人控制
     enemyAI->process(map.get());
 }
-
+// 战斗更新
 void Game::update(float deltaTime) {
     player->update(deltaTime, view, enemy.get(), map->platforms);
     enemy->update(deltaTime, view, player.get(), map->platforms);
@@ -153,7 +157,7 @@ void Game::update(float deltaTime) {
     // 更新敌人状态：敌人位置，
     view.reset(getView(player->position, enemy->position, deltaTime));
 }
-
+// 战斗渲染
 void Game::render() {
     window.clear();
     map->render(window, view);
@@ -166,30 +170,7 @@ void Game::render() {
     window.setView(view);
     window.display();
 }
-
-//sf::FloatRect Game::getView(sf::Vector2f playerPosition, sf::Vector2f enemyPosition) {
-//    // 以角色连线中点为中心，四周间距100.f
-//    float lowY = std::min(playerPosition.y, enemyPosition.y) - 80.f;
-//    float highY = std::max(playerPosition.y, enemyPosition.y);
-//    float centerX = (playerPosition.x - enemyPosition.x) / 2 + enemyPosition.x;
-//    float centerY = (highY - lowY) / 2 + lowY;
-//    float width, height;
-//    float disX = fabs(playerPosition.x - enemyPosition.x) + PUSH_MARGIN * 2.f;
-//    float disY = highY - lowY + PUSH_MARGIN * 1.5f;
-//    // 获取连线的外接矩形宽
-//    disX = std::max(disX, disY / 0.75f);
-//    // 控制视图缩放比
-//    width = std::max(std::min(disX, maximumViewWidth), minimumViewWidth);
-//    height = width * 0.75f;
-//    // 限制视图
-//    float Left = centerX - width / 2;
-//    float Top = centerY - height / 2;
-//    if (Left < 0.f) Left = 0.f;
-//    if (Left + width > RIGHT_BORDER) Left = RIGHT_BORDER - width;
-//    if (Top + height > GROUND) Top = GROUND - height;
-//    return sf::FloatRect(Left, Top, width, height);
-//}
-
+// 双人焦点视图
 sf::FloatRect Game::getView(sf::Vector2f playerPosition, sf::Vector2f enemyPosition, float deltaTime) {
     // 目标视图参数
     float lowY = std::min(playerPosition.y, enemyPosition.y) - 80.f;
@@ -225,8 +206,7 @@ sf::FloatRect Game::getView(sf::Vector2f playerPosition, sf::Vector2f enemyPosit
     return sf::FloatRect(currentViewLeft, currentViewTop, currentViewWidth, currentViewHeight);
 }
 
-
-// 仅以自己为视图中心，锁定镜头缩放比
+// 单人焦点视图
 sf::FloatRect Game::testView(sf::Vector2f playerPosition) {
     float Left = player->position.x - minimumViewWidth / 2;
     float Top = player->position.y - minimumViewWidth * 0.75f / 2;

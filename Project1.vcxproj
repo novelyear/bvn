@@ -178,6 +178,7 @@
     <ClCompile Include="NarutoSEffect.cpp" />
     <ClCompile Include="NarutoSKeySet.cpp" />
     <ClCompile Include="NarutoSUpdate.cpp" />
+    <ClCompile Include="StartUI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="access\bg.png" />

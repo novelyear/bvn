@@ -20,3 +20,4 @@ enum class EffectState {
 enum class GameState {
 	Init, SelectCharacter, SelectMap, Start, Playing, Over
 };
+// 开场界面(单次点击后出现开始游戏按钮)、选人、选地图、双方人物开场动画、正式游戏、一方死亡结束(播放win动画)

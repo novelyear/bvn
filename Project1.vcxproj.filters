@@ -87,6 +87,9 @@
     <ClCompile Include="NarutoSEffect.cpp">
       <Filter>源文件\Character\NarutoS</Filter>
     </ClCompile>
+    <ClCompile Include="StartUI.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="access\bg.png">

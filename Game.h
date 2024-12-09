@@ -1,6 +1,9 @@
 #pragma once
 #include "Map.h"
 #include "Controller.h"
+
+class StartUI;
+
 class Game
 {
 	float currentViewLeft = 0.f;
@@ -12,6 +15,7 @@ public:
 	std::unique_ptr<Character> enemy;
 	std::unique_ptr<Controller> enemyAI;
 	std::unique_ptr<Map> map;
+	std::unique_ptr<StartUI> startUI;
 
 	GameState state; // 游戏状态
 
@@ -41,3 +45,22 @@ public:
 	
 };
 
+class StartUI {
+public:
+	sf::Texture texture;
+	sf::Sprite sprite;
+	sf::RectangleShape startButton;
+	sf::Texture buttonTextures[3]; // 常态、hover、press
+	std::vector<sf::IntRect> anchors; // 动画帧的锚框
+	int currentFrame = 0;
+	sf::Clock frameClock; // 控制动画播放时间
+	float frameDuration = 0.034f; // 每帧的持续时间
+	bool mouseClicked = false; // 检测鼠标点击
+	sf::RenderWindow& window;
+
+	StartUI(sf::RenderWindow& win); 
+	void loadResources(const std::string& textureFile, const std::string& anchorsFile,
+		const std::string& buttonFile1, const std::string& buttonFile2, const std::string& buttonFile3);
+	bool update(float deltaTime);
+	void render();
+};

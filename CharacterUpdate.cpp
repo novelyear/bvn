@@ -158,12 +158,10 @@ void Character::updateCollisionWithEffect(Character * enemy) {
 			default:
 				break;
 		}
-
 		if (hitTimer.getElapsedTime().asSeconds() < HIT_INTERVAL) { // 每 HIT_INTERVAL 秒受击判断一次
 			return;
 		}
 		hitTimer.restart(); // 重设计时器
-
 		// 根据特效攻击类型获取效果
 		enemy->exertEffect(this, e.get());
 		this->real ? printf("I'm hited\n") : printf("he is hitted\n");
