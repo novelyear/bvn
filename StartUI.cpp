@@ -85,6 +85,7 @@ bool StartUI::update(float deltaTime) {
         if (buttonBounds.contains((float)mousePos.x, (float)mousePos.y)) {
             // 点击完成，切换到角色选择状态
             mouseClicked = false;
+            currentFrame = 0;
             // 触发状态变更逻辑
             return true;
         }

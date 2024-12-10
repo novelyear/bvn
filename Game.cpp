@@ -81,6 +81,66 @@ void Game::selectMap() {
     map = MapFactory::createMap(MapType::MR);
 }
 
+void Game::gameover() {
+    state = GameState::Over;
+    // 绘制最后一击特效
+
+    // 给被击倒方特写
+
+    // 给胜利方特写，播放胜利方animation_win
+
+    // 屏幕结算
+    sf::Font font;
+    if (!font.loadFromFile("./access/others/HanYiXiangSu-11px-U/HYPixel11pxU-2.ttf")) {
+        std::cerr << "Failed to load font!" << std::endl;
+        return;
+    }
+
+    sf::Text gameOverText;
+    gameOverText.setFont(font);
+    gameOverText.setCharacterSize(50); // 设置字体大小
+    gameOverText.setFillColor(sf::Color::Red); // 设置字体颜色
+    gameOverText.setStyle(sf::Text::Bold); // 设置字体样式
+
+    if (player->health < 0) {
+        gameOverText.setString("You Lose!");
+    }
+    else {
+        gameOverText.setString("You Win!");
+    }
+
+    // 获取窗口大小
+    sf::Vector2f windowSize = view.getSize();
+    sf::Vector2f center = view.getCenter();
+    sf::Vector2f size = view.getSize();
+    sf::Vector2f viewTopLeft = { center.x - size.x / 2, center.y - size.y / 2 };
+    // 计算文字宽高
+    sf::FloatRect textRect = gameOverText.getLocalBounds();
+    gameOverText.setOrigin(textRect.left + textRect.width / 2.0f,
+        textRect.top + textRect.height / 2.0f);
+    // 将文字放在窗口中心
+    gameOverText.setPosition(viewTopLeft.x + static_cast<float>(windowSize.x) / 2.0f,
+        viewTopLeft.y + static_cast<float>(windowSize.y) / 2.0f);
+
+    // 等待鼠标点击的循环
+    while (window.isOpen()) {
+        sf::Event event;
+        while (window.pollEvent(event)) {
+            if (event.type == sf::Event::MouseButtonPressed) {
+                return; // 鼠标点击时退出
+            }
+            if (event.type == sf::Event::Closed) {
+                window.close();
+                return;
+            }
+        }
+
+        // 渲染文字
+        window.draw(gameOverText);
+        window.display();
+    }
+}
+
 // 主
 void Game::run() {
     sf::Clock clock;  // 创建时钟对象，记录时间
@@ -103,6 +163,15 @@ void Game::run() {
             processEvents();
             update(deltaTime.asSeconds());
             render();
+            break;
+        case GameState::Over:
+            /*state = GameState::Init;
+            currentViewLeft = 0.f;
+            currentViewTop = 0.f;
+            currentViewWidth = minimumViewWidth;
+            currentViewHeight = minimumViewWidth * 0.75f;
+            view.reset(sf::FloatRect(0, 0, 1000.f, 1000.f));*/
+            window.close();
             break;
         }
     }
@@ -156,6 +225,9 @@ void Game::update(float deltaTime) {
     enemy->update(deltaTime, view, player.get(), map->platforms);
     // 更新敌人状态：敌人位置，
     view.reset(getView(player->position, enemy->position, deltaTime));
+    if (player->health < 0 || enemy->health < 0) {
+        gameover();
+    }
 }
 // 战斗渲染
 void Game::render() {

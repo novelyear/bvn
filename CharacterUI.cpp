@@ -27,7 +27,7 @@ void CharacterUI::loadResources() {
         {"chakra2", "D:/D1/code/bvn/access/others/shapes/chakra2.png"}
     };
     std::set<std::string> fixedSet = {
-        "avatar_box", "qi_bar", "blood_bar", "chakra_bar", "middle"
+        "avatar_box", "qi_bar", "blood_bar", "chakra_bar", "middle", "chakra_text"
     };
     for (const auto& [key, path] : resourcePaths) {
         sf::Texture texture;
@@ -44,14 +44,14 @@ void CharacterUI::loadResources() {
         }
         else {
             // 动态元件
-            sprite.setPosition({ 1000.f, 1000.f });
+            sprite.setPosition({ 1000.f, 1000.f }); // 方便之后遍历绘制，不需要的先画在远处
             dynamicSprites[key] = sprite;
         }
     }
 }
 
 
-sf::Sprite& CharacterUI::getSprite(const std::string& key) {
+sf::Sprite& CharacterUI::getSprite(const std::string& key) { 
     auto it = dynamicSprites.find(key);
     if (it != dynamicSprites.end()) {
         return it->second;
@@ -65,7 +65,7 @@ sf::Vector2f CharacterUI::getViewTopLeft(const sf::View& view) const {
     sf::Vector2f size = view.getSize();
     return { center.x - size.x / 2, center.y - size.y / 2 };
 }
-
+// 视图宽度
 float CharacterUI::getViewWidth(const sf::View& view) {
     return view.getSize().x;
 }
@@ -77,7 +77,7 @@ void CharacterUI::update(Character* c, const sf::View& view) {
     float scale = view.getSize().x / 800.f; // 660是最大视图宽度
     // 固定UI元件的位置
     xy = { 0.f, 0.f };
-    fixedSprites["avatar_box"].setPosition({ viewTopLeft.x + (c->real ? 0.f : viewWidth) + xy.x * scale, viewTopLeft.y + xy.y * scale }); 
+    fixedSprites["avatar_box"].setPosition({ viewTopLeft.x + (c->real ? 0.f : viewWidth) + xy.x * scale, viewTopLeft.y + xy.y * scale });
     fixedSprites["avatar_box"].setScale(c->real ? scale : -1.f * scale, scale);
     xy = { 0.f, 570.f };
     fixedSprites["qi_bar"].setPosition({ viewTopLeft.x + (c->real ? 0.f : viewWidth) + xy.x * (c->real ? scale : -scale), viewTopLeft.y + xy.y * scale });
@@ -91,7 +91,10 @@ void CharacterUI::update(Character* c, const sf::View& view) {
     xy = { 363.f, 10.f };
     fixedSprites["middle"].setPosition({ viewTopLeft.x + (c->real ? 0.f : viewWidth) + xy.x * (c->real ? scale : -scale), viewTopLeft.y + xy.y * scale });
     fixedSprites["middle"].setScale(c->real ? scale : -scale, scale);
-
+    xy = { c->real ? 245.f : 515.5f, 49.f };
+    fixedSprites["chakra_text"].setPosition({ viewTopLeft.x + xy.x * scale, viewTopLeft.y + xy.y * scale });
+    fixedSprites["chakra_text"].setScale(scale, scale);
+    // 清空动态绘制队列
     spriteQueue.clear();
 
     // 动态元件：血条
@@ -108,7 +111,7 @@ void CharacterUI::update(Character* c, const sf::View& view) {
     xy = { 111.f, 52.4f };
     chakraBar.setPosition({ viewTopLeft.x + (c->real ? 0.f : viewWidth) + xy.x * (c->real ? scale : -scale), viewTopLeft.y + xy.y * scale });
     spriteQueue.emplace_back(chakraBar);
-    // 动态元件：气条
+    // 动态元件：气条、气段数字
     int qiLevel = c->qi / MAX_QI;
     float qiPercentage = static_cast<float>(c->qi % MAX_QI) / MAX_QI;
     std::string qiKey = "qi_bar_" + std::to_string(qiLevel);
@@ -119,9 +122,9 @@ void CharacterUI::update(Character* c, const sf::View& view) {
     qiBar.setScale(qiPercentage * (c->real ? 1.f : -1.f) * scale, scale);
     qiBar.setPosition({ viewTopLeft.x + (c->real ? 0.f : viewWidth) + xy.x * (c->real ? scale : -scale), viewTopLeft.y + xy.y * scale });
     spriteQueue.emplace_back(qiBar);
-    xy = { 156.f, 575.f };
-    qiStage.setScale(c->real ? scale : -1.f * scale, scale);
-    qiStage.setPosition({ viewTopLeft.x + (c->real ? 0.f : viewWidth) + xy.x * (c->real ? scale : -scale), viewTopLeft.y + xy.y * scale });
+    xy = { c->real ? 156.f : 633.f, 575.f };
+    qiStage.setScale(scale, scale);
+    qiStage.setPosition({ viewTopLeft.x + xy.x * scale, viewTopLeft.y + xy.y * scale });
     spriteQueue.emplace_back(qiStage);
 }
 

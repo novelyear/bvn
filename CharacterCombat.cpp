@@ -77,20 +77,26 @@ void Character::ku() {
 }
 
 void Character::si() {
+	if (qi < MAX_QI * 3) return;
 	currentState = CharacterState::SI_before;
 	currentFrame = 0;
+	qi = 0;
 }
 
 void Character::i() {
+	if (qi < MAX_QI) return;
 	currentState = CharacterState::I_before;
 	currentFrame = 0;
+	qi -= MAX_QI;
 }
 
 void Character::ki() {
+	if (qi < MAX_QI) return;
 	currentState = CharacterState::KI_before;
 	currentFrame = 0;
 	velocity.y = 0;
 	jumpTimes = 3;
+	qi -= MAX_QI;
 }
 
 void Character::wu() {
@@ -108,6 +114,8 @@ void Character::wuu() {
 }
 
 void Character::wi() {
+	if (qi < MAX_QI) return;
 	currentState = CharacterState::WI_before;
 	currentFrame = 0;
+	qi -= MAX_QI;
 }
