@@ -13,13 +13,13 @@ void Character::updatePosition(sf::View view) {
 
 
 	position.x += velocity.x;
-	//if (currentState == CharacterState::Running ||
-	//	currentState == CharacterState::Jumping ||
-	//	currentState == CharacterState::Fall ||
-	//	currentState == CharacterState::Stand ||
-	//	currentState == CharacterState::S ||
-	//	currentState == CharacterState::S_Release)
-	if (currentState != CharacterState::Flash)
+
+	if (currentState != CharacterState::Flash && 
+		currentState != CharacterState::Hit &&
+		currentState != CharacterState::KU &&
+		currentState != CharacterState::U &&
+		currentState != CharacterState::I_before &&
+		(currentState != CharacterState::Kick || currentFrame > 7)) // 7就是落地帧，两个人物都差不多
 	{
 		velocity.x = 0;
 	}
@@ -32,9 +32,16 @@ void Character::updatePosition(sf::View view) {
 
 	if ((currentState == CharacterState::Jumping ||
 		currentState == CharacterState::Fall ||
-		currentState == CharacterState::Flash)
+		currentState == CharacterState::Flash || 
+		currentState == CharacterState::Hit ||
+		currentState == CharacterState::Kick)
 		&& velocity.y <= MAX_FALLING_VELOCITY) {
 		velocity.y += GRAVITY;
+	}
+	// 转下落
+	if (currentState == CharacterState::Jumping && velocity.y > 0) {
+		currentState = CharacterState::Fall;
+		currentFrame = 0;
 	}
 
 	position.y += velocity.y;
@@ -42,9 +49,11 @@ void Character::updatePosition(sf::View view) {
 	if (position.y >= CHARACTER_BOTTOM) {
 		position.y = CHARACTER_BOTTOM;  // 重置位置
 		inAir = false;
-		//if (currentState != CharacterState::Running) {
-		//	currentState = CharacterState::Stand;  // run和stand都需要platform
-		//}
+		onBoard = true;
+		if (currentState == CharacterState::KU) {
+			currentState = CharacterState::KU_down;  // run和stand都需要platform
+			currentFrame = 0;
+		}
 		velocity.y = 0.f;  // 清除竖直速度
 		jumpTimes = 0;  // 重置跳跃次数
 	}
@@ -54,9 +63,6 @@ bool XOR(bool a, bool b) {
 	return (a + b) % 2;
 }
 
-bool SameOr(bool a, bool b) {
-	return (a + b) != true;
-}
 
 void Character::updateDirection(sf::Vector2f enemyPosition) {
 	if (currentState != CharacterState::Stand) return;
@@ -67,8 +73,9 @@ void Character::updateDirection(sf::Vector2f enemyPosition) {
 }
 
 void Character::updateCollisionWithPlatform(std::vector<Platform> platforms) {
-	if (platforms.empty() || velocity.y < 0) return;
-	bool onBoard = false;
+	if (platforms.empty() || velocity.y < 0 ||
+		this->currentState == CharacterState::KU || this->currentState == CharacterState::KU_down) return;
+	onBoard = false;
 	// 遍历所有platform，判断是否在上面
 	for (const auto& platform : platforms) {
 		sf::Vector2f platformStart = platform.startPosition;
@@ -83,9 +90,10 @@ void Character::updateCollisionWithPlatform(std::vector<Platform> platforms) {
 
 			position.y = platformStart.y;  // 站在上面
 			inAir = false;
-			if (currentState == CharacterState::Jumping || // 注意与上面的兜底机制保持一致
+			if (currentState == CharacterState::Jumping ||
 				currentState == CharacterState::Fall) {
-				currentState = CharacterState::Stand;
+				currentState = CharacterState::Landed;
+				currentFrame = 0;
 			}
 			velocity.y = 0.f;  // 清除竖直速度
 			jumpTimes = 0;  // 重置跳跃次数
@@ -99,64 +107,63 @@ void Character::updateCollisionWithPlatform(std::vector<Platform> platforms) {
 	}
 }
 
-void separate(Character* p1, Character* p2) {
-	// 默认已经重合
-	float r = std::fabs(p1->position.x - p2->position.x);
-	bool left = p1->position.x < p2->position.x; // p1在左边就获得负的加速度
-	float acceleration = REPULSION / r;
-	p1->gainVelocity({ acceleration * left ? -1.f : 1.f, 0 });
-	p2->gainVelocity({ acceleration * left ? 1.f : -1.f, 0 });
-}
-// 检测自己是否碰到敌人
-void Character::updateCollisionWithEnemy(Character* enemy) {
-	// 敌方冲刺状态和击飞状态不检测；
-	// 己方冲刺状态无敌，不检测
-	if (currentState == CharacterState::Flash || currentState == CharacterState::Kick ||
-		enemy->currentState == CharacterState::Flash || enemy->currentState == CharacterState::Kick) {
+
+// 传入敌人的特效池，从中遍历，判断是否与特效碰撞。
+// 自己受击 & 修改敌方大招命中状态
+void Character::updateCollisionWithEffect(Character * enemy) {
+	if (currentState == CharacterState::Flash || currentState == CharacterState::Kick) {
 		return;
 	}
-	// 自己的Rect应该只包括自己的身体，不能包括特效，比如KU的特效被打到，不能被认定为被打到。
+
 	sf::FloatRect playerRect;
-	playerRect.width = 40.f;playerRect.height = 50.f;
-	sf::FloatRect enemyRect = enemy->sprite.getLocalBounds();
+	playerRect.width = 40.f;playerRect.height = 50.f; // 自己的本体宽40高50，原点为中心
 	if (this->left) {
 		playerRect.left = this->position.x + sprite.getOrigin().x - playerRect.width;
 	}
-	else playerRect.left = this->position.x - sprite.getOrigin().x;
-	if (enemy->left)
-		enemyRect.left = enemy->position.x + enemy->sprite.getOrigin().x - enemyRect.width;
-	else
-		enemyRect.left = enemy->position.x - enemy->sprite.getOrigin().x;
-	playerRect.top = this->position.y - this->sprite.getOrigin().y;
-	enemyRect.top = enemy->position.y - enemy->sprite.getOrigin().y;
-	// 双方都没有攻击，全判定
-	if (enemy->canTouch() && this->canTouch()) {
-		if (!playerRect.intersects(enemyRect)) return; // 如果根本没有重合，取消后续操作
-		// 非攻击状态碰撞：
-		if (std::fabs(this->position.y - enemy->position.y) < TOLERANCE) { // 同高度，水平碰撞
-			this->velocity.x /= 4.f;
-			enemy->gainVelocity({ this->velocity.x, 0.f });
-		}
-		separate(this, enemy);
-		return;
-	}
-	// 敌人正在攻击，由于是检测自己是否被K，所以排除敌人的本体
-	if (!enemy->canTouch()) {
-		if (!enemy->left) {
-			enemyRect.left += 30.f;
-		}
-		enemyRect.width -= 30.f;
-	}
+	else playerRect.left = this->position.x - playerRect.width;
+	playerRect.top = this->position.y - playerRect.height;
+	for (auto& e : enemy->effects->effects) {
+		if (e->currentState == EffectState::Default) continue;
 
-	if (!playerRect.intersects(enemyRect)) return; // 如果没被K
-    // 被敌方的特效K到了
-	bool beAttacked = SameOr(enemy->left, this->position.x < enemy->position.x) && !enemy->canTouch();
-	if (beAttacked) {
+		sf::FloatRect eRect = e->sprite.getLocalBounds();
+		eRect.left = e->left ? e->position.x - (eRect.width - e->sprite.getOrigin().x) : e->position.x - e->sprite.getOrigin().x;
+		eRect.top = e->position.y - e->sprite.getOrigin().y;
+		if (!playerRect.intersects(eRect)) continue;
+		// 有碰撞，修改特效发出者的命中状态，修改特效的命中状态
+		switch (e->currentState) {
+			case EffectState::I_before:
+				if (e->currentFrame < 13) break;
+				e->currentState = EffectState::I_after;
+				e->currentFrame = 0;
+				enemy->currentState = CharacterState::I_after;
+				enemy->currentFrame = 0;
+				break;
+			case EffectState::WI_before:
+				e->currentState = EffectState::Default;
+				e->currentFrame = 0;
+				enemy->currentState = CharacterState::WI_after;
+				enemy->currentFrame = 0;
+				break;
+			case EffectState::SI_before:
+				if (e->currentFrame < 13) break;
+				e->currentState = EffectState::Default;
+				e->currentFrame = 0;
+				enemy->currentState = CharacterState::SI_after;
+				enemy->currentFrame = 0;
+				break;
+			case EffectState::KI_before:
+				e->currentState = EffectState::KI_after;
+				e->currentFrame = 0;
+				break;
+			default:
+				break;
+		}
+		if (hitTimer.getElapsedTime().asSeconds() < HIT_INTERVAL) { // 每 HIT_INTERVAL 秒受击判断一次
+			return;
+		}
+		hitTimer.restart(); // 重设计时器
+		// 根据特效攻击类型获取效果
+		enemy->exertEffect(this, e.get());
 		this->real ? printf("I'm hited\n") : printf("he is hitted\n");
 	}
 }
-
-void Character::updateCollisionWithEffect(std::unique_ptr<EffectPool> effects) {
-
-}
-

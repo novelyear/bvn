@@ -1,5 +1,6 @@
 #include "Effect.h"
 #include "Gaara.h"
+#include "NarutoS.h"
 
 // 定义静态成员变量
 sf::Texture Effect::sharedTexture;
@@ -14,9 +15,12 @@ EffectPool::EffectPool(CharacterType c) {
     for (int i = 0; i < 5; ++i) {
         switch (c) {
             case CharacterType::Gaara:
-            effects.push_back(std::make_unique<GaaraEffect>());
-            break;
+                effects.push_back(std::make_unique<GaaraEffect>());
+                break;
             case CharacterType::NarutoS:
+                effects.push_back(std::make_unique<NarutoSEffect>());
+                break;
+            default:
                 break;
         }
     }
@@ -39,14 +43,23 @@ void EffectPool::run(sf::Vector2f position, EffectState e, bool left) {
                 case EffectState::I_before: 
                     effect->i_before(position);
                     break;
+                case EffectState::I_after:
+                    effect->i_after(position);
+                    break;
                 case EffectState::U:
                     effect->u(position, left);
                     break;
                 case EffectState::SI_before:
                     effect->si_before(position);
                     break;
+                case EffectState::SI_after:
+                    effect->si_after(position);
+                    break;
                 case EffectState::WU:
                     effect->wu(position);
+                    break;
+                case EffectState::KI_before:
+                    effect->ki(position, left);
                     break;
                 default:
                     break;
@@ -89,6 +102,13 @@ Effect::Effect() {
     left = true;
 }
 
+void Effect::u(sf::Vector2f point, bool left)     {printf("you didn't override the function!\n");}
+void Effect::wu(sf::Vector2f position)            {printf("you didn't override the function!\n");}
+void Effect::i_before(sf::Vector2f position)      {printf("you didn't override the function!\n");}
+void Effect::i_after(sf::Vector2f position)       {printf("you didn't override the function!\n");}
+void Effect::si_before(sf::Vector2f position)     {printf("you didn't override the function!\n");}
+void Effect::si_after(sf::Vector2f position)      {printf("you didn't override the function!\n");}
+void Effect::ki(sf::Vector2f position, bool left) {printf("you didn't override the function!\n");}
 
 void Effect::update(float deltaTime, sf::View view){
     updatePosition(view);
@@ -166,7 +186,9 @@ void Effect::loadResources(const std::string& directory, const std::string& rang
             else if (type == "SI_miss") sharedRangeMap[EffectState::SI_miss] = std::make_pair(start, end);
             else if (type == "WI_miss") sharedRangeMap[EffectState::WI_miss] = std::make_pair(start, end);
             else if (type == "I_miss") sharedRangeMap[EffectState::I_miss] = std::make_pair(start, end);
-            else if (type == "KI") sharedRangeMap[EffectState::KI] = std::make_pair(start, end);
+            else if (type == "KI_before") sharedRangeMap[EffectState::KI_before] = std::make_pair(start, end);
+            else if (type == "KI_after") sharedRangeMap[EffectState::KI_after] = std::make_pair(start, end);
+            else if (type == "KI_miss") sharedRangeMap[EffectState::KI_miss] = std::make_pair(start, end);
         }
         else {
             std::cerr << "Invalid range line: " << line << std::endl;
@@ -180,5 +202,6 @@ void Effect::loadResources(const std::string& directory, const std::string& rang
     }
     sprite.setTexture(Effect::sharedTexture);
     sprite.setTextureRect(Effect::sharedAnchors[20]); // 硬编码，20号图是空，防止首次按下时正好未逻辑换帧导致闪烁全图
+                                                      // 只适用于我爱罗，后面可改为0号
 }
 

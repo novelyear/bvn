@@ -2,17 +2,32 @@
 #include <bits/stdc++.h>
 #include "Constants.h"
 
-Character::Character(){
+bool Character::SameOr(bool a, bool b) {
+	return !(a ^ b);
+}
+
+void Character::separate(Character* p1, Character* p2) {
+	// 默认已经重合
+	float r = std::fabs(p1->position.x - p2->position.x);
+	bool left = p1->position.x < p2->position.x; // p1在左边就获得负的加速度
+	float acceleration = REPULSION / r;
+	p1->gainVelocity({ acceleration * left ? -1.f : 1.f, 0 });
+	p2->gainVelocity({ acceleration * left ? 1.f : -1.f, 0 });
+}
+
+Character::Character(): cUI(std::make_unique<CharacterUI>()) {
 	attackStage = 0;
 	currentState = CharacterState::Stand;
 	health = INIT_HEALTH;
 	chakra = 0;
-	qi = 0;
+	qi = 10;
 	inAir = true;
 	jumpTimes = 0;
 	left = true;
 	elapsedTime = PLAYER_FRAME;
 	currentFrame = 0;
+	onBoard = false;
+	lastHit = CharacterState::Default;
 }
 
 void Character::moveLeft() {
@@ -21,7 +36,7 @@ void Character::moveLeft() {
 	}
 	attackStage = 0;
 	velocity.x = -MOVE_VELOCITY;
-	if (currentState == CharacterState::Stand) {
+	if (currentState == CharacterState::Stand || currentState == CharacterState::Landed) {
 		currentFrame = 0;
 		currentState = CharacterState::Running;
 	}
@@ -32,7 +47,7 @@ void Character::moveRight() {
 	}
 	attackStage = 0;
 	velocity.x = MOVE_VELOCITY;
-	if (currentState == CharacterState::Stand) {
+	if (currentState == CharacterState::Stand || currentState == CharacterState::Landed) {
 		currentFrame = 0;
 		currentState = CharacterState::Running;
 	}
@@ -74,7 +89,6 @@ void Character::flash() {
 		currentFrame = 0;
 		jumpTimes++;
 		chakra -= CHAKRA_L;
-		// TODO 减少气
 	}
 }
 

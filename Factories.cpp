@@ -1,4 +1,5 @@
 #include "Factories.h"
+#include "NarutoS.h"
 
 std::unique_ptr<Character> CharacterFactory::createCharacter(CharacterType type, bool forEnemy) {
     switch (type) {
@@ -8,6 +9,13 @@ std::unique_ptr<Character> CharacterFactory::createCharacter(CharacterType type,
         }
         else {
             return std::make_unique<Gaara>();  // 调用默认构造函数
+        }
+    case CharacterType::NarutoS:
+        if (forEnemy) {
+            return std::make_unique<NarutoS>((int)1); // 调用带参数的构造函数
+        }
+        else {
+            return std::make_unique<NarutoS>();  // 调用默认构造函数
         }
     default:
         throw std::invalid_argument("Unknown character type");
