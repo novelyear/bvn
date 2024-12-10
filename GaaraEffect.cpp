@@ -3,7 +3,7 @@
 #include "Gaara.h"
 
 GaaraEffect::GaaraEffect() : Effect() {
-    if(sharedAnchors.empty()) 
+    //if(sharedAnchors.empty()) 
         loadResources(
         "D:\\D1\\code\\bvn\\access\\gaaraS\\texture_effects_atlas.png",
         "D:\\D1\\code\\bvn\\access\\gaaraS\\config\\effect_section.txt",
@@ -35,12 +35,23 @@ void GaaraEffect::si_before(sf::Vector2f tarPosition) {
     position = tarPosition;
 }
 
+void GaaraEffect::si_after(sf::Vector2f tarPosition) {
+    currentState = EffectState::SI_after;
+    currentFrame = 0;
+    position = tarPosition;
+}
+
 void GaaraEffect::i_before(sf::Vector2f tarPosition) {
     currentState = EffectState::I_before;
     currentFrame = 0;
     position = tarPosition;
 }
 
+void GaaraEffect::i_after(sf::Vector2f tarPosition) {
+    currentState = EffectState::I_after;
+    currentFrame = 0;
+    position = tarPosition;
+}
 
 void GaaraEffect::updatePosition(sf::View view) {
     if (currentState == EffectState::Default) return;
@@ -58,6 +69,9 @@ void GaaraEffect::updatePosition(sf::View view) {
             currentState = EffectState::Default;
             currentFrame = 0;
         }
+    }
+    if (currentState == EffectState::SI_after && currentFrame < 13) {
+        position.y -= 1.5f;
     }
 }
 
@@ -85,6 +99,24 @@ void GaaraEffect::updateSprite(float deltaTime) {
             sprite.setOrigin(origins[rangeMap[EffectState::SI_before].first + currentFrame]);
             currentFrame++;
             if (currentFrame + rangeMap[EffectState::SI_before].first > rangeMap[EffectState::SI_before].second) {
+                currentState = EffectState::SI_miss;
+                currentFrame = 0;
+            }
+            break;
+        case EffectState::SI_miss:
+            sprite.setTextureRect(anchors[rangeMap[EffectState::SI_miss].second - currentFrame]);
+            sprite.setOrigin(origins[rangeMap[EffectState::SI_miss].second - currentFrame]);
+            currentFrame++;
+            if (rangeMap[EffectState::SI_miss].second - currentFrame < rangeMap[EffectState::SI_miss].first) {
+                currentState = EffectState::Default;
+                currentFrame = 0;
+            }
+            break;
+        case EffectState::SI_after:
+            sprite.setTextureRect(anchors[rangeMap[EffectState::SI_after].first + currentFrame]);
+            sprite.setOrigin(origins[rangeMap[EffectState::SI_after].first + currentFrame]);
+            currentFrame++;
+            if (currentFrame + rangeMap[EffectState::SI_after].first > rangeMap[EffectState::SI_after].second) {
                 currentState = EffectState::Default;
                 currentFrame = 0;
             }
@@ -94,6 +126,24 @@ void GaaraEffect::updateSprite(float deltaTime) {
             sprite.setOrigin(origins[rangeMap[EffectState::I_before].second - currentFrame]);
             currentFrame++;
             if (rangeMap[EffectState::I_before].second - currentFrame < rangeMap[EffectState::I_before].first) {
+                currentState = EffectState::I_miss;
+                currentFrame = 0;
+            }
+            break;
+        case EffectState::I_miss:
+            sprite.setTextureRect(anchors[rangeMap[EffectState::I_miss].first + currentFrame]);
+            sprite.setOrigin(origins[rangeMap[EffectState::I_miss].first + currentFrame]);
+            currentFrame++;
+            if (rangeMap[EffectState::I_miss].first + currentFrame < rangeMap[EffectState::I_miss].second) {
+                currentState = EffectState::Default;
+                currentFrame = 0;
+            }
+            break;
+        case EffectState::I_after:
+            sprite.setTextureRect(anchors[rangeMap[EffectState::I_after].first + currentFrame]);
+            sprite.setOrigin(origins[rangeMap[EffectState::I_after].first + currentFrame]);
+            currentFrame++;
+            if (rangeMap[EffectState::I_after].first + currentFrame > rangeMap[EffectState::I_after].second) {
                 currentState = EffectState::Default;
                 currentFrame = 0;
             }

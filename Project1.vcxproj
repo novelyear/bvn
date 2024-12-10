@@ -159,6 +159,7 @@
   <ItemGroup>
     <ClCompile Include="CharacterOp.cpp" />
     <ClCompile Include="CharacterCombat.cpp" />
+    <ClCompile Include="CharacterUI.cpp" />
     <ClCompile Include="Factories.cpp" />
     <ClCompile Include="CharacterUpdate.cpp" />
     <ClCompile Include="Controller.cpp" />
@@ -174,6 +175,11 @@
     </ClCompile>
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="NarutoS.cpp" />
+    <ClCompile Include="NarutoSCombat.cpp" />
+    <ClCompile Include="NarutoSEffect.cpp" />
+    <ClCompile Include="NarutoSKeySet.cpp" />
+    <ClCompile Include="NarutoSUpdate.cpp" />
+    <ClCompile Include="StartUI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="access\bg.png" />
@@ -181,6 +187,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Character.h" />
+    <ClInclude Include="CharacterUI.h" />
     <ClInclude Include="Enums.h" />
     <ClInclude Include="Factories.h" />
     <ClInclude Include="Constants.h" />

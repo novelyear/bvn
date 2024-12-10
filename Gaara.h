@@ -2,7 +2,9 @@
 #include "Character.h"
 class Gaara :
     public Character {
+
 public:
+
 	Gaara();
 	Gaara(int flag);
 
@@ -12,13 +14,16 @@ public:
 	const std::string& originFile, const std::string& anchorFile) override;
 	void handleMove() override;
 	void updateSprite(float deltaTime, sf::Vector2f enemyPosition) override;
+	void updateCollisionWithEnemy(Character* enemy) override;
+	void exertEffect(Character* enemy, Effect * e) override;
+	void exertEffect(Character* enemy) override;
 
 	void wu() override;
+	void sj() override;
 	void u() override;
 	void ku() override;
 	void si() override;
 	void i() override;
-
 };
 
 class GaaraEffect :
@@ -27,13 +32,14 @@ public:
 
 	GaaraEffect();
 
-	void u(sf::Vector2f position, bool left)override;
-	void wu(sf::Vector2f position) override;
-	void si_before(sf::Vector2f position) override;
-	void i_before(sf::Vector2f position) override;
+	void u(sf::Vector2f position, bool left)	override;
+	void wu(sf::Vector2f position)				override;
+	void si_before(sf::Vector2f position)		override;
+	void si_after(sf::Vector2f position)		override;
+	void i_before(sf::Vector2f position)		override;
+	void i_after(sf::Vector2f position)			override;
 
 
 	void updatePosition(sf::View view) override;
 	void updateSprite(float deltaTime) override;
 };
-

@@ -1,7 +1,9 @@
-#include "Gaara.h"
+#include "NarutoS.h"
 #include "Constants.h"
+#include "Character.h"
 
-void Gaara::handleMove() {
+
+void NarutoS::handleMove() {
 	// 一级屏蔽
 	if (currentState == CharacterState::Flash ||
 		currentState == CharacterState::Hit ||
@@ -48,6 +50,9 @@ void Gaara::handleMove() {
 			{
 				su();
 			}
+			else if (currentState == CharacterState::SU && currentFrame > 10) { // SU打完才能触发suu
+				suu();
+			}
 		}
 		else { // 单独的S
 			if (currentState == CharacterState::Stand ||
@@ -88,18 +93,21 @@ void Gaara::handleMove() {
 				currentState == CharacterState::Landed ||
 				currentState == CharacterState::S_Release)
 				wu();
+			else if (currentState == CharacterState::WU && currentFrame > 24) { // WU24帧后才能触发WUU
+				wuu();
+			}
 		}
 	}
 	else { // 没按W
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::U)) {
-			if(currentState == CharacterState::Stand ||
-				currentState == CharacterState::Running || 
+			if (currentState == CharacterState::Stand ||
+				currentState == CharacterState::Running ||
 				currentState == CharacterState::Landed ||
 				currentState == CharacterState::S_Release)
 				u();
-			else if(jumpTimes <= 2 &&
-					(currentState == CharacterState::Jumping ||
-					currentState == CharacterState::Fall)){
+			else if (jumpTimes <= 2 &&
+				(currentState == CharacterState::Jumping ||
+					currentState == CharacterState::Fall)) {
 				ku();
 			}
 		}
@@ -109,6 +117,9 @@ void Gaara::handleMove() {
 				currentState == CharacterState::Landed ||
 				currentState == CharacterState::S_Release)
 				i();
+			else if (currentState == CharacterState::Jumping ||
+				currentState == CharacterState::Fall)
+				ki();
 		}
 	}
 
@@ -127,7 +138,7 @@ void Gaara::handleMove() {
 	{
 		if (jumpTimes <= 2 &&
 			(currentState == CharacterState::Jumping ||
-			 currentState == CharacterState::Fall)
+				currentState == CharacterState::Fall)
 			) { // 空中J
 			kj();
 		}
@@ -142,22 +153,25 @@ void Gaara::handleMove() {
 				printf("J1\n");
 				break;
 			case 1:
-				if (currentFrame > 4) { // 后续加了人物就每个人物定制这个限制，“4”只针对我爱罗，下面同理
-					j2(); // 二段J, 播放4张图片后才能按，否则忽略
+				if (currentFrame > 3) { // 后续加了人物就每个人物定制这个限制
+					j2(); // 二段J, 播放11张图片后才能按，否则忽略
 					printf("J2\n");
 				}
 				break;
 			case 2:
-				if (currentFrame > 8) {// 三段，等二段播了10张才能按
+				if (currentFrame > 4) {// 三段，等二段播了4张才能按
 					printf("J3\n");
 					j3();
 				}
-
+				break;
+			case 3:
+				if (currentFrame > 6) { // 四段，等三段播了6张才能触发
+					printf("J4\n");
+					j4();
+				}
 			}
 		}
 	}
-
-
 
 	// AD屏蔽
 	if (
@@ -184,7 +198,6 @@ void Gaara::handleMove() {
 			currentState = CharacterState::Stand;
 			currentFrame = 0;
 		}
-		//return;
 	}
 
 }
