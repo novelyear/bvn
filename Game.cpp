@@ -18,7 +18,7 @@ void Game::selectCharacter() {
     for (int i = 0; i < characterTypes.size(); ++i) {
         sf::Sprite sprite;
         sprite.setTexture(characterTextures[i]);
-        sprite.setPosition(200 + i * 150, 300); // 假设每个角色间隔150像素
+        sprite.setPosition(200.f + i * 150.f, 300.f); // 假设每个角色间隔150像素
         characterSprites.push_back(sprite);
     }
 }
@@ -60,7 +60,7 @@ void Game::handleCharacterSelection() {
                 selectedCharacterIndex = (selectedCharacterIndex + 1) % characterSprites.size();
             }
             else if (event.key.code == sf::Keyboard::Left) {
-                selectedCharacterIndex = (selectedCharacterIndex - 1 + characterSprites.size()) % characterSprites.size();
+                selectedCharacterIndex = (selectedCharacterIndex - 1 + characterSprites.size()) % (int)characterSprites.size();
             }
             else if (event.key.code == sf::Keyboard::Enter) {
                 player = CharacterFactory::createCharacter(characterTypes[selectedCharacterIndex], false);
@@ -153,7 +153,6 @@ void Game::processEvents() {
 void Game::update(float deltaTime) {
     player->update(deltaTime, view, enemy.get(), map->platforms);
     enemy->update(deltaTime, view, player.get(), map->platforms);
-
     // 更新敌人状态：敌人位置，
     view.reset(getView(player->position, enemy->position, deltaTime));
 }
@@ -167,6 +166,9 @@ void Game::render() {
     player->render(window);
     enemy->effects->render(window);// 后渲染特效，遮住人物
     player->effects->render(window);
+
+    enemy->cUI->render(window);
+    player->cUI->render(window);
     window.setView(view);
     window.display();
 }

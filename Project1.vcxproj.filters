@@ -90,6 +90,9 @@
     <ClCompile Include="StartUI.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="CharacterUI.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="access\bg.png">
@@ -128,6 +131,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="NarutoS.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CharacterUI.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

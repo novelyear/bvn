@@ -159,6 +159,7 @@
   <ItemGroup>
     <ClCompile Include="CharacterOp.cpp" />
     <ClCompile Include="CharacterCombat.cpp" />
+    <ClCompile Include="CharacterUI.cpp" />
     <ClCompile Include="Factories.cpp" />
     <ClCompile Include="CharacterUpdate.cpp" />
     <ClCompile Include="Controller.cpp" />
@@ -186,6 +187,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Character.h" />
+    <ClInclude Include="CharacterUI.h" />
     <ClInclude Include="Enums.h" />
     <ClInclude Include="Factories.h" />
     <ClInclude Include="Constants.h" />

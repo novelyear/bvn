@@ -15,7 +15,7 @@ void Character::separate(Character* p1, Character* p2) {
 	p2->gainVelocity({ acceleration * left ? 1.f : -1.f, 0 });
 }
 
-Character::Character(){
+Character::Character(): cUI(std::make_unique<CharacterUI>()) {
 	attackStage = 0;
 	currentState = CharacterState::Stand;
 	health = INIT_HEALTH;

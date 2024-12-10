@@ -43,17 +43,20 @@ void StartUI::loadResources(const std::string& textureFile, const std::string& a
     buttonTextures[2].loadFromFile(buttonFile3);
 
     // 初始化按钮
-    startButton.setSize(sf::Vector2f(200, 50));
+    startButton.setSize(sf::Vector2f(650, 140));
     startButton.setTexture(&buttonTextures[0]); // 默认状态
-    startButton.setPosition(window.getSize().x / 2 - 100, window.getSize().y / 2 - 25);
+    startButton.setPosition(450, 593);
 }
 
 bool StartUI::update(float deltaTime) {
     // 动画轮播
     if (frameClock.getElapsedTime().asSeconds() > frameDuration) {
         currentFrame++;
-        int limit = mouseClicked ? 89 : 65;
-        if (currentFrame >= limit) currentFrame -= 15;
+        if (mouseClicked) {
+            if (currentFrame < 65) currentFrame = 67;
+            if (currentFrame >= anchors.size()) currentFrame = 76;
+        }
+        else if (currentFrame >= 65) currentFrame = 50;
         sprite.setTextureRect(anchors[currentFrame]);
         frameClock.restart();
     }
@@ -67,7 +70,7 @@ bool StartUI::update(float deltaTime) {
     sf::Vector2i mousePos = sf::Mouse::getPosition(window);
     sf::FloatRect buttonBounds = startButton.getGlobalBounds();
 
-    if (buttonBounds.contains(mousePos.x, mousePos.y)) {
+    if (buttonBounds.contains((float)mousePos.x, (float)mousePos.y)) {
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
             startButton.setTexture(&buttonTextures[2]); // 按下状态
         } else {

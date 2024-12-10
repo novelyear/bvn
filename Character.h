@@ -2,11 +2,13 @@
 #include <SFML/Graphics.hpp>
 #include "Effect.h"
 #include "Map.h"
+#include "CharacterUI.h"
 
 class Effect;
 
-class Character
-{
+class CharacterUI;
+
+class Character {
 public:
 	static bool SameOr(bool a, bool b);
 	static void separate(Character* a, Character* b);
@@ -15,6 +17,7 @@ public:
 	int health;
 	int chakra;
 	int qi;
+	std::unique_ptr<CharacterUI> cUI;
 
 	sf::Texture texture;
 	std::vector<sf::IntRect> anchors;

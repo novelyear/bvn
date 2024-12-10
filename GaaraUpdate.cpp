@@ -11,6 +11,7 @@ void Gaara::update(float deltaTime, sf::View view, Character* enemy, std::vector
 	updatePosition(view);
 	updateDirection(enemy->position);
 	effects->update(deltaTime, view);
+	cUI->update(this, view);
 	// chakra更新，暂时写在这里
 	if (currentState != CharacterState::Flash && currentState != CharacterState::S) {
 		chakra++;
