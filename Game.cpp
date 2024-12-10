@@ -136,6 +136,7 @@ void Game::processEvents() {
                     std::cout << "right button pressed" << std::endl;
                 else if (event.mouseButton.button == sf::Mouse::Left)
                     std::cout << "left button pressed" << std::endl;
+                std::cout << event.mouseButton.x << "  " << event.mouseButton.y << std::endl;
                 std::cout << window.mapPixelToCoords({ event.mouseButton.x , event.mouseButton.y }).x << " " << window.mapPixelToCoords({ event.mouseButton.x , event.mouseButton.y }).y;
                 std::cout << std::endl;
                 break;
