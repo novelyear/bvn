@@ -1,124 +1,93 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="源文件">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="头文件">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
-    <Filter Include="资源文件">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
-    <Filter Include="源文件\Character">
-      <UniqueIdentifier>{61526a04-79b3-40eb-a5d4-f25ef340eb9e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="源文件\Character\Gaara">
-      <UniqueIdentifier>{76ed634c-8002-4782-a52c-afbc12f2fd40}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="源文件\Map">
-      <UniqueIdentifier>{42337787-c6d5-441b-a582-746a8b1d0143}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="源文件\Game">
-      <UniqueIdentifier>{71b49755-4104-4c4f-96d4-c3fa2e6df727}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="源文件\Character\NarutoS">
-      <UniqueIdentifier>{e95f13c8-ac62-4b78-8295-8d5eba2f31ba}</UniqueIdentifier>
-    </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="Effect.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="Controller.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="CharacterOp.cpp">
-      <Filter>源文件\Character</Filter>
-    </ClCompile>
-    <ClCompile Include="CharacterCombat.cpp">
-      <Filter>源文件\Character</Filter>
+    <ClCompile Include="Effect.cpp">
+      <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Factories.cpp">
-      <Filter>源文件\Character</Filter>
-    </ClCompile>
-    <ClCompile Include="CharacterUpdate.cpp">
-      <Filter>源文件\Character</Filter>
-    </ClCompile>
-    <ClCompile Include="Gaara.cpp">
-      <Filter>源文件\Character\Gaara</Filter>
+      <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Map.cpp">
-      <Filter>源文件\Map</Filter>
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Gaara.cpp">
+      <Filter>源文件\Gaara</Filter>
+    </ClCompile>
+    <ClCompile Include="GaaraCombat.cpp">
+      <Filter>源文件\Gaara</Filter>
+    </ClCompile>
+    <ClCompile Include="GaaraEffect.cpp">
+      <Filter>源文件\Gaara</Filter>
+    </ClCompile>
+    <ClCompile Include="GaaraKeySet.cpp">
+      <Filter>源文件\Gaara</Filter>
+    </ClCompile>
+    <ClCompile Include="GaaraUpdate.cpp">
+      <Filter>源文件\Gaara</Filter>
+    </ClCompile>
+    <ClCompile Include="NarutoS.cpp">
+      <Filter>源文件\NarutoS</Filter>
+    </ClCompile>
+    <ClCompile Include="NarutoSCombat.cpp">
+      <Filter>源文件\NarutoS</Filter>
+    </ClCompile>
+    <ClCompile Include="NarutoSEffect.cpp">
+      <Filter>源文件\NarutoS</Filter>
+    </ClCompile>
+    <ClCompile Include="NarutoSKeySet.cpp">
+      <Filter>源文件\NarutoS</Filter>
+    </ClCompile>
+    <ClCompile Include="NarutoSUpdate.cpp">
+      <Filter>源文件\NarutoS</Filter>
     </ClCompile>
     <ClCompile Include="Game.cpp">
+      <Filter>源文件\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="StartUI.cpp">
       <Filter>源文件\Game</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>源文件\Game</Filter>
     </ClCompile>
-    <ClCompile Include="GaaraKeySet.cpp">
-      <Filter>源文件\Character\Gaara</Filter>
+    <ClCompile Include="CameraShake.cpp">
+      <Filter>源文件\Game</Filter>
     </ClCompile>
-    <ClCompile Include="GaaraUpdate.cpp">
-      <Filter>源文件\Character\Gaara</Filter>
+    <ClCompile Include="CharacterCombat.cpp">
+      <Filter>源文件\Character</Filter>
     </ClCompile>
-    <ClCompile Include="GaaraEffect.cpp">
-      <Filter>源文件\Character\Gaara</Filter>
-    </ClCompile>
-    <ClCompile Include="GaaraCombat.cpp">
-      <Filter>源文件\Character\Gaara</Filter>
-    </ClCompile>
-    <ClCompile Include="NarutoS.cpp">
-      <Filter>源文件\Character\NarutoS</Filter>
-    </ClCompile>
-    <ClCompile Include="NarutoSUpdate.cpp">
-      <Filter>源文件\Character\NarutoS</Filter>
-    </ClCompile>
-    <ClCompile Include="NarutoSKeySet.cpp">
-      <Filter>源文件\Character\NarutoS</Filter>
-    </ClCompile>
-    <ClCompile Include="NarutoSCombat.cpp">
-      <Filter>源文件\Character\NarutoS</Filter>
-    </ClCompile>
-    <ClCompile Include="NarutoSEffect.cpp">
-      <Filter>源文件\Character\NarutoS</Filter>
-    </ClCompile>
-    <ClCompile Include="StartUI.cpp">
-      <Filter>源文件</Filter>
+    <ClCompile Include="CharacterOp.cpp">
+      <Filter>源文件\Character</Filter>
     </ClCompile>
     <ClCompile Include="CharacterUI.cpp">
-      <Filter>源文件</Filter>
+      <Filter>源文件\Character</Filter>
     </ClCompile>
-    <ClCompile Include="CameraShake.cpp">
-      <Filter>源文件</Filter>
+    <ClCompile Include="CharacterUpdate.cpp">
+      <Filter>源文件\Character</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="access\bg.png">
-      <Filter>资源文件</Filter>
-    </Image>
-    <Image Include="access\building.png">
-      <Filter>资源文件</Filter>
-    </Image>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Game.h">
+    <ClInclude Include="CameraShake.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Character.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Map.h">
+    <ClInclude Include="CharacterUI.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Constants.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Controller.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Effect.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Constants.h">
+    <ClInclude Include="Enums.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Gaara.h">
@@ -127,20 +96,38 @@
     <ClInclude Include="Factories.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Controller.h">
+    <ClInclude Include="Game.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Enums.h">
+    <ClInclude Include="Map.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="NarutoS.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="CharacterUI.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="CameraShake.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="access\bg.png" />
+    <Image Include="access\building.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="头文件">
+      <UniqueIdentifier>{e4554879-303f-4402-bd22-ae5f1f5e84e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{580203fb-8d1f-420e-bab1-d9b45c6761a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Gaara">
+      <UniqueIdentifier>{caf2dd62-5bd9-472c-bbac-2122d59a7aaa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\NarutoS">
+      <UniqueIdentifier>{2807d426-2733-4f8e-8938-257d7fbe6176}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Game">
+      <UniqueIdentifier>{d932a9ad-20d4-45e2-b06f-736bd23896af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Character">
+      <UniqueIdentifier>{69e152de-4f65-4a05-8667-b669fcc4fdf1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>
