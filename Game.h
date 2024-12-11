@@ -2,6 +2,7 @@
 #include "Map.h"
 #include "Controller.h"
 #include "CameraShake.h"
+#include "Pause.h"
 
 class StartUI;
 
@@ -18,7 +19,7 @@ public:
 	std::unique_ptr<Map> map;
 	std::unique_ptr<StartUI> startUI;
 	CameraShake cameraShake;
-
+	Pause pause;
 
 	GameState state; // 游戏状态
 

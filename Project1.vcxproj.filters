@@ -67,6 +67,9 @@
     <ClCompile Include="CharacterUpdate.cpp">
       <Filter>源文件\Character</Filter>
     </ClCompile>
+    <ClCompile Include="Pause.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CameraShake.h">
@@ -103,6 +106,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="NarutoS.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Pause.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

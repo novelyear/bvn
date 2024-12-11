@@ -9,7 +9,8 @@ class Effect;
 class CharacterUI;
 
 class Character {
-protected:	std::queue<EventType> eventQueue; // 存储触发的事件
+protected:	
+	std::queue<EventType> eventQueue; // 存储触发的事件
 public:
 	static bool SameOr(bool a, bool b);
 	static void separate(Character* a, Character* b);
@@ -19,6 +20,7 @@ public:
 	int chakra;
 	int qi;
 	std::unique_ptr<CharacterUI> cUI;
+	std::queue<PauseEvent> pauseEventQueue; // 存储触发的事件
 
 	sf::Texture texture;
 	std::vector<sf::IntRect> anchors;

@@ -180,6 +180,7 @@
     <ClCompile Include="NarutoSEffect.cpp" />
     <ClCompile Include="NarutoSKeySet.cpp" />
     <ClCompile Include="NarutoSUpdate.cpp" />
+    <ClCompile Include="Pause.cpp" />
     <ClCompile Include="StartUI.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -199,6 +200,7 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="NarutoS.h" />
+    <ClInclude Include="Pause.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

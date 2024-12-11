@@ -253,8 +253,12 @@ void Game::updateView(float deltaTime) {
 
 // 战斗更新
 void Game::update(float deltaTime) {
-    player->update(deltaTime, view, enemy.get(), map->platforms);
-    enemy->update(deltaTime, view, player.get(), map->platforms);
+    pause.update(deltaTime, player->pauseEventQueue);
+    pause.update(deltaTime, enemy->pauseEventQueue);
+    if (!pause.isPausedFor(player.get()))
+        player->update(deltaTime, view, enemy.get(), map->platforms);
+    if (!pause.isPausedFor(enemy.get()))
+        enemy->update(deltaTime, view, player.get(), map->platforms);
 
     // 处理角色事件
     handleCharacterEvents(player.get());
