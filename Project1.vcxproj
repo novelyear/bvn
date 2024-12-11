@@ -157,6 +157,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CameraShake.cpp" />
     <ClCompile Include="CharacterOp.cpp" />
     <ClCompile Include="CharacterCombat.cpp" />
     <ClCompile Include="CharacterUI.cpp" />
@@ -186,6 +187,7 @@
     <Image Include="access\building.png" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CameraShake.h" />
     <ClInclude Include="Character.h" />
     <ClInclude Include="CharacterUI.h" />
     <ClInclude Include="Enums.h" />

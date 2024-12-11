@@ -1,6 +1,7 @@
 #pragma once
 #include "Map.h"
 #include "Controller.h"
+#include "CameraShake.h"
 
 class StartUI;
 
@@ -16,6 +17,8 @@ public:
 	std::unique_ptr<Controller> enemyAI;
 	std::unique_ptr<Map> map;
 	std::unique_ptr<StartUI> startUI;
+	CameraShake cameraShake;
+
 
 	GameState state; // 游戏状态
 
@@ -38,6 +41,9 @@ public:
 	void update(float Time);
 	void render();
 	void gameover();
+	void triggerShake(float intensity, float duration);
+	void handleCharacterEvents(Character* character);
+	void updateView(float deltaTime);
 
 	std::vector<sf::Sprite> characterSprites;
 	std::vector<CharacterType> characterTypes = { CharacterType::Gaara, CharacterType::NarutoS };

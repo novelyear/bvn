@@ -76,6 +76,8 @@ void Game::handleCharacterSelection() {
     }
 }
 
+
+
 // 选地图
 void Game::selectMap() {
     map = MapFactory::createMap(MapType::MR);
@@ -219,12 +221,47 @@ void Game::processEvents() {
     // 拟人控制
     enemyAI->process(map.get());
 }
+
+
+void Game::triggerShake(float intensity, float duration) {
+    cameraShake.startShake(intensity, duration);
+}
+
+void Game::handleCharacterEvents(Character* character) {
+    while (character->hasEvents()) {
+        EventType event = character->popEvent();
+        switch (event) {
+        case EventType::SkillHit:
+            triggerShake(8.f, 0.2f); // 技能命中震屏
+            break;
+        case EventType::FallImpact:
+            triggerShake(8.f, 0.2f); // 落地震屏
+            break;
+        }
+    }
+}
+
+void Game::updateView(float deltaTime) {
+    // 更新震屏偏移
+    sf::Vector2f shakeOffset = cameraShake.update();
+
+    // 将偏移应用到视图
+    sf::Vector2f viewCenter = { currentViewLeft + currentViewWidth / 2,
+                                currentViewTop + currentViewHeight / 2 };
+    view.setCenter(viewCenter + shakeOffset);
+}
+
 // 战斗更新
 void Game::update(float deltaTime) {
     player->update(deltaTime, view, enemy.get(), map->platforms);
     enemy->update(deltaTime, view, player.get(), map->platforms);
-    // 更新敌人状态：敌人位置，
+
+    // 处理角色事件
+    handleCharacterEvents(player.get());
+    handleCharacterEvents(enemy.get());
+
     view.reset(getView(player->position, enemy->position, deltaTime));
+    updateView(deltaTime);
     if (player->health < 0 || enemy->health < 0) {
         gameover();
     }

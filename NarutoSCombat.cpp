@@ -42,6 +42,7 @@ void NarutoS::exertEffect(Character* enemy, Effect * e) {
 		break;
 	}
 	enemy->currentFrame = 0;
+	if (enemy->currentState == CharacterState::Kick) eventQueue.push(EventType::SkillHit); // 击飞触发震屏
 }
 
 void NarutoS::exertEffect(Character* enemy) {
@@ -190,4 +191,5 @@ void NarutoS::exertEffect(Character* enemy) {
 		break;
 	}
 	enemy->currentFrame = 0;
+	if (enemy->currentState == CharacterState::Kick) eventQueue.push(EventType::SkillHit); // 击飞触发震屏
 }

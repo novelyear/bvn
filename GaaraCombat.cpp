@@ -122,6 +122,7 @@ void Gaara::exertEffect(Character* enemy, Effect * e) {
 	default:
 		break;
 	}
+	if (enemy->currentState == CharacterState::Kick) eventQueue.push(EventType::SkillHit); // 击飞触发震屏
 	enemy->currentFrame = 0;
 }
 
@@ -229,5 +230,6 @@ void Gaara::exertEffect(Character* enemy) {
 	default:
 		break;
 	}
+	if (enemy->currentState == CharacterState::Kick) eventQueue.push(EventType::SkillHit); // 击飞触发震屏
 	enemy->currentFrame = 0;
 }
