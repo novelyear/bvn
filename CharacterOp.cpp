@@ -15,6 +15,16 @@ void Character::separate(Character* p1, Character* p2) {
 	p2->gainVelocity({ acceleration * left ? 1.f : -1.f, 0 });
 }
 
+bool Character::hasEvents() const {
+	return !eventQueue.empty();
+}
+
+EventType Character::popEvent() {
+	EventType event = eventQueue.front();
+	eventQueue.pop();
+	return event;
+}
+
 Character::Character(): cUI(std::make_unique<CharacterUI>()) {
 	attackStage = 0;
 	currentState = CharacterState::Stand;

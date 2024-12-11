@@ -93,11 +93,8 @@
     <ClCompile Include="CharacterUI.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="GaaraKeySet.cpp">
-      <Filter>源文件\Character\Gaara</Filter>
-    </ClCompile>
-    <ClCompile Include="GaaraUpdate.cpp">
-      <Filter>源文件\Character\Gaara</Filter>
+    <ClCompile Include="CameraShake.cpp">
+      <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -140,6 +137,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="CharacterUI.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraShake.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

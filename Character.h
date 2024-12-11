@@ -9,6 +9,7 @@ class Effect;
 class CharacterUI;
 
 class Character {
+protected:	std::queue<EventType> eventQueue; // 存储触发的事件
 public:
 	static bool SameOr(bool a, bool b);
 	static void separate(Character* a, Character* b);
@@ -97,6 +98,9 @@ public:
 	void updateCollisionWithPlatform(std::vector<Platform> platforms);
 	void updateCollisionWithEffect(Character* enemy);
 	void gainVelocity(sf::Vector2f acceleration);
+
+	bool hasEvents() const;
+	EventType popEvent();
 
 	virtual void j1();
 	virtual void j2();
