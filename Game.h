@@ -37,6 +37,7 @@ public:
 	void processEvents();
 	void update(float Time);
 	void render();
+	void gameover();
 
 	std::vector<sf::Sprite> characterSprites;
 	std::vector<CharacterType> characterTypes = { CharacterType::Gaara, CharacterType::NarutoS };

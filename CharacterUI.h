@@ -14,12 +14,11 @@ public:
     void render(sf::RenderWindow& window);
 
 private:
-    std::unordered_map<std::string, sf::Texture> textures; // 存储纹理
-    std::unordered_map<std::string, sf::Sprite> fixedSprites; // 固定UI元件
-    std::unordered_map<std::string, sf::Sprite> dynamicSprites; // 动态UI元件
-    std::vector<sf::Sprite> spriteQueue; // 动态UI元件
+    std::unordered_map<std::string, sf::Texture> textures; // 瀛樺偍绾圭悊
+    std::unordered_map<std::string, sf::Sprite> fixedSprites; // 鍥哄畾UI鍏冧欢
+    std::unordered_map<std::string, sf::Sprite> dynamicSprites; // 鍔ㄦ�乁I鍏冧欢
+    std::vector<sf::Sprite> spriteQueue; // 鍔ㄦ�乁I鍏冧欢
 
     sf::Sprite& getSprite(const std::string& key);
-    sf::Vector2f convertToUISpace(const sf::Vector2f& relativePosition);
 };
 
