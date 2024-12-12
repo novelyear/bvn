@@ -24,5 +24,15 @@ enum class GameState {
 
 enum class EventType { // 事件队列，用于震屏
 	SkillHit,
-	FallImpact
+	FallImpact,
+	UltimateSkill,    // 释放大招
+	PauseRequest      // 暂停请求
 };
+
+struct PauseEvent {
+	EventType type;       // 事件类型
+	void* source;             // 事件触发源，例如角色指针
+	float duration;           // 暂停持续时间（针对 PauseRequest）
+	bool excludeSource;       // 是否排除触发源
+};
+

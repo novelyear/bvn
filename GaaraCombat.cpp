@@ -72,7 +72,7 @@ void Gaara::exertEffect(Character* enemy, Effect * e) {
 		enemy->health -= 12; // 伤害
 		this->qi += 10; // 攻击者获得更多气
 		enemy->qi += 5;
-		enemy->currentState = CharacterState::Kick;
+		enemy->currentState = CharacterState::Kick;audioEventQueue.push("kick");
 		enemy->lastHit = (CharacterState)e->currentState;
 		break;
 	case EffectState::WU:
@@ -80,11 +80,13 @@ void Gaara::exertEffect(Character* enemy, Effect * e) {
 		enemy->health -= 8; // 伤害
 		this->qi += 10; // 攻击者获得更多气
 		enemy->qi += 5;
-		enemy->currentState = CharacterState::Hit;
+		enemy->currentState = CharacterState::Hit;audioEventQueue.push("hit");
 		enemy->lastHit = (CharacterState)e->currentState;
+		eventQueue.push(EventType::SkillHit);
+		pauseEventQueue.push({ EventType::SkillHit, this, PAUSE_KICK, false });
 		break;
 	case EffectState::SI_before:
-		enemy->currentState = CharacterState::Hit;
+		enemy->currentState = CharacterState::Hit;audioEventQueue.push("hit");
 		enemy->health -= 10; // 伤害
 		enemy->qi += 4;
 		break;
@@ -95,14 +97,14 @@ void Gaara::exertEffect(Character* enemy, Effect * e) {
 		enemy->qi += 2;
 		if (e->currentFrame > 98) {// 特效在 98 帧后爆炸，此时敌方可飞出，最终段伤害
 			enemy->gainVelocity({ this->left ? -12.f : 12.f, -12.f });
-			enemy->currentState = CharacterState::Kick;
+			enemy->currentState = CharacterState::Kick;audioEventQueue.push("kick");
 			enemy->health -= 30; // 伤害
 			enemy->qi += 18;
 			enemy->lastHit = (CharacterState)e->currentState;
 		}
 		break;
 	case EffectState::I_before:
-		enemy->currentState = CharacterState::Hit;
+		enemy->currentState = CharacterState::Hit;audioEventQueue.push("hit");
 		enemy->health -= 5; // 伤害
 		enemy->qi += 3;
 		break;
@@ -115,14 +117,17 @@ void Gaara::exertEffect(Character* enemy, Effect * e) {
 			enemy->gainVelocity({ this->left ? -6.f : 6.f, -8.5f });
 			enemy->health -= 15; // 伤害
 			enemy->qi += 10;
-			enemy->currentState = CharacterState::Kick;
+			enemy->currentState = CharacterState::Kick;audioEventQueue.push("kick");
 			enemy->lastHit = (CharacterState)e->currentState;
 		}
 		break;
 	default:
 		break;
 	}
-	if (enemy->currentState == CharacterState::Kick) eventQueue.push(EventType::SkillHit); // 击飞触发震屏
+	if (enemy->currentState == CharacterState::Kick) {
+		eventQueue.push(EventType::SkillHit); // 击飞触发震屏
+		pauseEventQueue.push({ EventType::SkillHit, this, PAUSE_KICK, false }); // 击飞触发全局暂停
+	}
 	enemy->currentFrame = 0;
 }
 
@@ -144,7 +149,7 @@ void Gaara::exertEffect(Character* enemy) {
 		this->qi += 5; // 攻击者获得更多气
 		enemy->qi += 2;
 		enemy->lastHit = this->currentState;
-		enemy->currentState = CharacterState::Hit;
+		enemy->currentState = CharacterState::Hit;audioEventQueue.push("hit");
 		break;
 	case CharacterState::J2:
 		enemy->gainVelocity({ 0.f, -5.f });
@@ -152,7 +157,7 @@ void Gaara::exertEffect(Character* enemy) {
 		enemy->health -= 4; // 伤害
 		this->qi += 6; // 攻击者获得更多气
 		enemy->qi += 3;
-		enemy->currentState = CharacterState::Hit;
+		enemy->currentState = CharacterState::Hit;audioEventQueue.push("hit");
 		break;
 	case CharacterState::J3:
 		enemy->gainVelocity({ this->left ? -1.f : 1.f, 0.f });
@@ -160,7 +165,7 @@ void Gaara::exertEffect(Character* enemy) {
 		this->qi += 8; // 攻击者获得更多气
 		enemy->qi += 4;
 		enemy->lastHit = this->currentState;
-		enemy->currentState = CharacterState::Kick;
+		enemy->currentState = CharacterState::Kick;audioEventQueue.push("kick");
 		break;
 	case CharacterState::KJ:
 		enemy->gainVelocity({ this->left ? -1.f : 1.f, TOLERANCE });
@@ -168,7 +173,7 @@ void Gaara::exertEffect(Character* enemy) {
 		enemy->health -= 4; // 伤害
 		this->qi += 8; // 攻击者获得更多气
 		enemy->qi += 4;
-		enemy->currentState = CharacterState::Hit;
+		enemy->currentState = CharacterState::Hit;audioEventQueue.push("hit");
 		break;
 	case CharacterState::SJ:
 		enemy->gainVelocity({ this->left ? -8.5f : 8.5f, 0.f });
@@ -176,11 +181,11 @@ void Gaara::exertEffect(Character* enemy) {
 		enemy->health -= 17; // 伤害
 		this->qi += 14; // 攻击者获得更多气
 		enemy->qi += 7;
-		enemy->currentState = CharacterState::Kick;
+		enemy->currentState = CharacterState::Kick;audioEventQueue.push("kick");
 		break;
 	case CharacterState::WJ:
 		enemy->gainVelocity({ this->left ? -2.f : 2.f, -7.f });
-		enemy->currentState = CharacterState::Kick;
+		enemy->currentState = CharacterState::Kick;audioEventQueue.push("kick");
 		enemy->health -= 14; // 伤害
 		this->qi += 12; // 攻击者获得更多气
 		enemy->qi += 6;
@@ -188,14 +193,14 @@ void Gaara::exertEffect(Character* enemy) {
 		break;
 	case CharacterState::SU:
 		enemy->gainVelocity({ this->left ? -0.5f : 0.5f, 0.f });
-		enemy->currentState = CharacterState::Hit;
+		enemy->currentState = CharacterState::Hit;audioEventQueue.push("hit");
 		enemy->health -= 2; // 伤害
 		this->qi += 2; // 攻击者获得更多气
 		enemy->qi += 1;
 		break;
 	case CharacterState::KU:
 		enemy->gainVelocity({ 0.f, TOLERANCE });
-		enemy->currentState = CharacterState::Kick;
+		enemy->currentState = CharacterState::Kick;audioEventQueue.push("kick");
 		enemy->health -= 9; // 伤害
 		this->qi += 10; // 攻击者获得更多气
 		enemy->qi += 5;
@@ -203,14 +208,14 @@ void Gaara::exertEffect(Character* enemy) {
 		break;
 	case CharacterState::U:
 		enemy->gainVelocity({ this->left ? -0.5f : 0.5f, 0.f });
-		enemy->currentState = CharacterState::Kick;
+		enemy->currentState = CharacterState::Kick;audioEventQueue.push("kick");
 		enemy->health -= 10; // 伤害
 		this->qi += 8; // 攻击者获得更多气
 		enemy->qi += 4;
 		enemy->lastHit = this->currentState;
 		break;
 	case CharacterState::WI_before:
-		enemy->currentState = CharacterState::Hit;
+		enemy->currentState = CharacterState::Hit;audioEventQueue.push("hit");
 		if (this->currentFrame > 33) {  // 33 帧后，彻底被埋住
 			enemy->currentState = CharacterState::Default;
 			enemy->health -= 4; // 伤害
@@ -222,7 +227,7 @@ void Gaara::exertEffect(Character* enemy) {
 		}
 		break;
 	case CharacterState::WI_after:
-		enemy->currentState = CharacterState::Kick;
+		enemy->currentState = CharacterState::Kick;audioEventQueue.push("kick");
 		enemy->gainVelocity({ 0.f, 8.f });
 		enemy->health -= 20; // 伤害
 		enemy->qi += 10; 
@@ -230,6 +235,9 @@ void Gaara::exertEffect(Character* enemy) {
 	default:
 		break;
 	}
-	if (enemy->currentState == CharacterState::Kick) eventQueue.push(EventType::SkillHit); // 击飞触发震屏
+	if (enemy->currentState == CharacterState::Kick) {
+		eventQueue.push(EventType::SkillHit); // 击飞触发震屏
+		pauseEventQueue.push({ EventType::SkillHit, this, PAUSE_KICK, false }); // 击飞触发全局暂停
+	}
 	enemy->currentFrame = 0;
 }

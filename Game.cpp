@@ -7,7 +7,33 @@ Game::Game(int width, int height, const std::string& title)
     : window(sf::VideoMode(width, height), title) {
     state = GameState::Init;
     startUI = std::make_unique<StartUI>(window);
+    if (!blackPng.loadFromFile("./access/black.png")) {
+        printf("black error\n");
+    }
+    blackBG.setTexture(blackPng);
+    loadAudios();
 }
+
+void Game::loadAudios() {
+    gameAudio.loadMusic("bgm", "./access/sound/bgm.mp3");
+    gameAudio.loadMusic("op", "./access/sound/op.mp3");
+    gameAudio.loadSound("gaara_attack", "./access/sound/gaara_attack.mp3");
+    gameAudio.loadSound("gaara_I", "./access/sound/gaara_I.mp3");
+    gameAudio.loadSound("gaara_kick", "./access/sound/gaara_kick.mp3");
+    gameAudio.loadSound("gaara_SI", "./access/sound/gaara_SI.mp3");
+    gameAudio.loadSound("gaara_WI", "./access/sound/gaara_WI.mp3");
+    gameAudio.loadSound("narutoS_I", "./access/sound/narutoS_I.mp3");
+    gameAudio.loadSound("narutoS_KI", "./access/sound/narutoS_KI.mp3");
+    gameAudio.loadSound("narutoS_SI1", "./access/sound/narutoS_SI1.mp3");
+    gameAudio.loadSound("narutoS_SI2", "./access/sound/narutoS_SI2.mp3");
+    gameAudio.loadSound("narutoS_SJ", "./access/sound/narutoS_SJ.mp3");
+    gameAudio.loadSound("narutoS_SUU", "./access/sound/narutoS_SUU.mp3");
+    gameAudio.loadSound("narutoS_U", "./access/sound/narutoS_U.mp3");
+    gameAudio.loadSound("narutoS_WI", "./access/sound/narutoS_WI.mp3");
+    gameAudio.loadSound("hit", "./access/sound/hit_s.mp3");
+    gameAudio.loadSound("kick", "./access/sound/kick_s.mp3");
+}
+
 // 选人界面加载
 void Game::selectCharacter() {
     // 加载角色头像纹理
@@ -28,7 +54,7 @@ void Game::handleCharacterSelection() {
     window.clear(sf::Color::Black);
 
     sf::Font font;
-    font.loadFromFile("./access/others/HanYiXiangSu-11px-U/HYPixel11pxU-2.ttf");
+    font.loadFromFile("./access/others/HanYiXiangSu-11px-U/retro-pixel-arcade.ttf");
     sf::Text instruction("Press Left/Right to Choose, Enter to Confirm", font, 20);
     instruction.setPosition(200, 200);
     window.draw(instruction);
@@ -66,6 +92,7 @@ void Game::handleCharacterSelection() {
                 player = CharacterFactory::createCharacter(characterTypes[selectedCharacterIndex], false);
                 enemy = CharacterFactory::createCharacter(characterTypes[(selectedCharacterIndex + 1) % characterSprites.size()], true);
                 enemyAI = std::make_unique<Controller>(enemy.get(), player.get());
+                gameAudio.stopMusic();
                 state = GameState::Playing; // 切换到游戏状态
             }
             break;
@@ -93,7 +120,7 @@ void Game::gameover() {
 
     // 屏幕结算
     sf::Font font;
-    if (!font.loadFromFile("./access/others/HanYiXiangSu-11px-U/HYPixel11pxU-2.ttf")) {
+    if (!font.loadFromFile("./access/others/HanYiXiangSu-11px-U/retro-pixel-arcade.ttf")) {
         std::cerr << "Failed to load font!" << std::endl;
         return;
     }
@@ -155,6 +182,7 @@ void Game::run() {
 
         switch (state) {
         case GameState::Init:
+            gameAudio.playMusic("op", true);
             if (startUI->update(deltaTime.asSeconds())) state = GameState::SelectCharacter;
             startUI->render();
             break;
@@ -162,9 +190,12 @@ void Game::run() {
             handleCharacterSelection();
             break;
         case GameState::Playing:
+            gameAudio.playMusic("bgm", true);
             processEvents();
             update(deltaTime.asSeconds());
             render();
+
+            gameAudio.playMusic("bgm", true);
             break;
         case GameState::Over:
             /*state = GameState::Init;
@@ -186,6 +217,7 @@ void Game::processEvents() {
     sf::Event event;
     // 真人控制
     player->handleMove();
+    enemy->handleMove();
     while (window.pollEvent(event)) {
         if (event.type == sf::Event::Closed)
             window.close();
@@ -217,9 +249,8 @@ void Game::processEvents() {
         // ================== 
         //player->handleInput(event);
     }
-
     // 拟人控制
-    enemyAI->process(map.get());
+    //enemyAI->process(map.get());
 }
 
 
@@ -232,12 +263,16 @@ void Game::handleCharacterEvents(Character* character) {
         EventType event = character->popEvent();
         switch (event) {
         case EventType::SkillHit:
-            triggerShake(8.f, 0.2f); // 技能命中震屏
+            triggerShake(AMPLITUDE, SHAKE_KICK); // 技能命中震屏
             break;
         case EventType::FallImpact:
-            triggerShake(8.f, 0.2f); // 落地震屏
+            triggerShake(AMPLITUDE, SHAKE_KICK); // 落地震屏
             break;
         }
+    }
+    while (!character->audioEventQueue.empty()) {
+        std::string name = character->audioEventQueue.front();character->audioEventQueue.pop();
+        gameAudio.playSound(name);
     }
 }
 
@@ -253,8 +288,12 @@ void Game::updateView(float deltaTime) {
 
 // 战斗更新
 void Game::update(float deltaTime) {
-    player->update(deltaTime, view, enemy.get(), map->platforms);
-    enemy->update(deltaTime, view, player.get(), map->platforms);
+    pause.update(deltaTime, player->pauseEventQueue);
+    pause.update(deltaTime, enemy->pauseEventQueue);
+    if (!pause.isPausedFor(enemy.get()))
+        enemy->update(deltaTime, view, player.get(), map->platforms);
+    if (!pause.isPausedFor(player.get()))
+        player->update(deltaTime, view, enemy.get(), map->platforms);
 
     // 处理角色事件
     handleCharacterEvents(player.get());
@@ -269,7 +308,19 @@ void Game::update(float deltaTime) {
 // 战斗渲染
 void Game::render() {
     window.clear();
-    map->render(window, view);
+    if (pause.isPausedFor(player.get()) ^ pause.isPausedFor(enemy.get())) {
+        blackBG.setPosition(window.mapPixelToCoords({ 0, 0 }));
+        // 获取窗口的视图大小（即可视区域的大小）
+        sf::Vector2f viewSize = view.getSize();
+        blackBG.setScale(
+            static_cast<float>(viewSize.x) / blackBG.getLocalBounds().width,
+            static_cast<float>(viewSize.y) / blackBG.getLocalBounds().height
+        );
+        window.draw(blackBG);
+    }
+    else 
+        map->render(window, view);
+    
     // 渲染敌人
     enemy->render(window);
     // 渲染玩家

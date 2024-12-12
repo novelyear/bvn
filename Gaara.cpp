@@ -3,6 +3,7 @@
 #include "Constants.h"
 
 Gaara::Gaara() : Character() {
+    name = CharacterType::Gaara;
     real = true;
 	left = false;
 	position = { 100.f, GROUND };
@@ -15,6 +16,7 @@ Gaara::Gaara() : Character() {
 }
 
 Gaara::Gaara(int flag) : Character() {
+    name = CharacterType::Gaara;
     real = false;
 	left = true;
 	position = { 300.f, GROUND };

@@ -88,8 +88,7 @@ void Gaara::updateCollisionWithEnemy(Character* enemy) {
 	}
 	hitTimer.restart(); // 重设计时器
 	// 翻译：敌人的特效与自己的本体有碰撞 & 敌人面向本体 & 敌人正在攻击 = 被打到了
-	bool beAttacked = SameOr(enemy->left, this->position.x < enemy->position.x) && !enemy->canTouch();
-	if (beAttacked) {
+	if (!enemy->canTouch()) {
 		if (currentState == CharacterState::S) {
 			chakra -= 10;
 			return;
@@ -182,6 +181,7 @@ void Gaara::updateSprite(float deltaTime, sf::Vector2f enemyPosition) {
 		case CharacterState::J3:
 			sprite.setTextureRect(anchors[J3.first + currentFrame]);
 			sprite.setOrigin(origins[J3.first + currentFrame]);
+			if (currentFrame == 0) audioEventQueue.push("gaara_attack");
 			currentFrame++;
 			if (currentFrame + J3.first > J3.second) {
 				attackStage = 0;
@@ -257,6 +257,7 @@ void Gaara::updateSprite(float deltaTime, sf::Vector2f enemyPosition) {
 		case CharacterState::WI_before:
 			sprite.setTextureRect(anchors[WI_before.first + currentFrame]);
 			sprite.setOrigin(origins[WI_before.first + currentFrame]);
+			if (currentFrame == 0) audioEventQueue.push("gaara_WI");
 			currentFrame++;
 			if (currentFrame + WI_before.first > WI_before.second) {
 				currentState = CharacterState::Stand;
@@ -275,6 +276,7 @@ void Gaara::updateSprite(float deltaTime, sf::Vector2f enemyPosition) {
 		case CharacterState::SI_before:
 			sprite.setTextureRect(anchors[SI_before.first + currentFrame]);
 			sprite.setOrigin(origins[SI_before.first + currentFrame]);
+			if (currentFrame == 0) audioEventQueue.push("gaara_SI");
 			currentFrame++;
 			if (currentFrame == 5) { // 5帧后触发特效
 				effects->run(enemyPosition, EffectState::SI_before, left);
@@ -299,6 +301,7 @@ void Gaara::updateSprite(float deltaTime, sf::Vector2f enemyPosition) {
 		case CharacterState::I_before:
 			sprite.setTextureRect(anchors[I_before.first + currentFrame]);
 			sprite.setOrigin(origins[I_before.first + currentFrame]);
+			if (currentFrame == 0) audioEventQueue.push("gaara_I");
 			currentFrame++;
 			if (currentFrame == 1) { // 1帧后触发特效
 				effects->run(enemyPosition, EffectState::I_before, left);
@@ -353,6 +356,7 @@ void Gaara::updateSprite(float deltaTime, sf::Vector2f enemyPosition) {
 		case CharacterState::Kick:
 			sprite.setTextureRect(anchors[kick.first + currentFrame]);
 			sprite.setOrigin(origins[kick.first + currentFrame]);
+			if (currentFrame == 0) audioEventQueue.push("gaara_kick");
 			if (currentFrame + kick.first < kick.second)
 				currentFrame++;	
 			else if (onBoard) {

@@ -2,6 +2,7 @@
 #include "Constants.h"
 
 NarutoS::NarutoS() : Character() {
+    name = CharacterType::NarutoS;
 	real = true;
 	left = false;
 	position = { 100.f, GROUND };
@@ -14,6 +15,7 @@ NarutoS::NarutoS() : Character() {
 }
 
 NarutoS::NarutoS(int flag) : Character() {
+    name = CharacterType::NarutoS;
 	real = false;
 	left = true;
 	position = { 300.f, GROUND };

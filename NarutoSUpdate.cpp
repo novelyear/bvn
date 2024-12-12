@@ -18,6 +18,9 @@ void NarutoS::update(float deltaTime, sf::View view, Character* enemy, std::vect
 			chakra = MAX_CHAKRA;
 		}
 	}
+	if (qi > MAX_QI * 3) {
+		qi = MAX_QI * 3;
+	}
 }
 
 void NarutoS::updateCollisionWithEnemy(Character* enemy) {
@@ -66,7 +69,7 @@ void NarutoS::updateCollisionWithEnemy(Character* enemy) {
 	}
 	hitTimer.restart(); // 重设计时器
 	// 翻译：敌人的特效与自己的本体有碰撞 & 敌人面向本体 & 敌人正在攻击 = 被打到了
-	bool beAttacked = SameOr(enemy->left, this->position.x < enemy->position.x) && !enemy->canTouch();
+	bool beAttacked = SameOr(enemy->left, this->position.x <= enemy->position.x) && !enemy->canTouch();
 	if (beAttacked) {
 		if (currentState == CharacterState::S) {
 			chakra -= 10;
@@ -197,9 +200,10 @@ void NarutoS::updateSprite(float deltaTime, sf::Vector2f enemyPosition) {
 		case CharacterState::SJ:
 			sprite.setTextureRect(anchors[SJ.first + currentFrame]);
 			sprite.setOrigin(origins[SJ.first + currentFrame]);
+			if (currentFrame == 1) audioEventQueue.push("narutoS_SJ");
 			currentFrame++;
 			if (currentFrame == 5) {
-				float offset = -50.f;
+				float offset = -35.f;
 				this->position = { enemyPosition.x, enemyPosition.y + offset };
 			}
 			if (currentFrame + SJ.first > SJ.second) {
@@ -219,6 +223,7 @@ void NarutoS::updateSprite(float deltaTime, sf::Vector2f enemyPosition) {
 		case CharacterState::SUU:
 			sprite.setTextureRect(anchors[SUU.first + currentFrame]);
 			sprite.setOrigin(origins[SUU.first + currentFrame]);
+			if (currentFrame == 3) audioEventQueue.push("narutoS_SUU");
 			currentFrame++;
 			if (currentFrame + SUU.first > SUU.second) {
 				currentState = CharacterState::Stand;
@@ -281,6 +286,10 @@ void NarutoS::updateSprite(float deltaTime, sf::Vector2f enemyPosition) {
 		case CharacterState::WI_before:
 			sprite.setTextureRect(anchors[WI_before.first + currentFrame]);
 			sprite.setOrigin(origins[WI_before.first + currentFrame]);
+			if (currentFrame == 0) {
+				pauseEventQueue.push({ EventType::UltimateSkill, this, 4.5f, true });
+				audioEventQueue.push("narutoS_WI");
+			}
 			currentFrame++;
 			if (currentFrame == 60) {
 				sf::Vector2f offset = { this->left ? 45.f : -45.f, -90.f };
@@ -294,6 +303,13 @@ void NarutoS::updateSprite(float deltaTime, sf::Vector2f enemyPosition) {
 		case CharacterState::SI_before:
 			sprite.setTextureRect(anchors[SI_before.first + currentFrame]);
 			sprite.setOrigin(origins[SI_before.first + currentFrame]);
+			if (currentFrame == 0) {
+				pauseEventQueue.push({ EventType::UltimateSkill, this, 2.5f, true });
+				audioEventQueue.push("narutoS_SI1");
+			}
+			if (currentFrame == 60) {
+				audioEventQueue.push("narutoS_SI2");
+			}
 			currentFrame++;
 			if (currentFrame + SI_before.first > SI_before.second) {
 				currentState = CharacterState::Stand;
@@ -303,6 +319,10 @@ void NarutoS::updateSprite(float deltaTime, sf::Vector2f enemyPosition) {
 		case CharacterState::I_before:
 			sprite.setTextureRect(anchors[I_before.first + currentFrame]);
 			sprite.setOrigin(origins[I_before.first + currentFrame]);
+			if (currentFrame == 0) {
+				pauseEventQueue.push({ EventType::UltimateSkill, this, 2.2f, true });
+				audioEventQueue.push("narutoS_I");
+			}
 			currentFrame++;
 			if (currentFrame == 25) {
 				velocity.x = left ? -5.f : 5.f;
@@ -315,6 +335,10 @@ void NarutoS::updateSprite(float deltaTime, sf::Vector2f enemyPosition) {
 		case CharacterState::KI_before: // 人物不存在before、after、miss，为了统一，状态名加上before，实际的anchor、origin仍然仅为KI
 			sprite.setTextureRect(anchors[KI.first + currentFrame]);
 			sprite.setOrigin(origins[KI.first + currentFrame]);
+			if (currentFrame == 0) {
+				pauseEventQueue.push({ EventType::UltimateSkill, this, 4.5f, true });
+				audioEventQueue.push("narutoS_KI");
+			}
 			currentFrame++;
 			if (currentFrame == 62) {
 				sf::Vector2f offset = { 0.f, -50.f };
@@ -328,11 +352,10 @@ void NarutoS::updateSprite(float deltaTime, sf::Vector2f enemyPosition) {
 		case CharacterState::U:
 			sprite.setTextureRect(anchors[U.first + currentFrame]);
 			sprite.setOrigin(origins[U.first + currentFrame]);
+			if (currentFrame == 0) {
+				audioEventQueue.push("narutoS_U");
+			}
 			currentFrame++;
-			//position.x += left ? -15.f : 15.f;
-			//if (currentFrame > ) {
-
-			//}
 			if (U.second - currentFrame < U.first) {
 				currentState = CharacterState::Stand;
 				currentFrame = 0;
@@ -384,7 +407,7 @@ void NarutoS::updateSprite(float deltaTime, sf::Vector2f enemyPosition) {
 			sprite.setOrigin(origins[kick.first + currentFrame]);
 			if (currentFrame + kick.first < kick.second)
 				currentFrame++;
-			else if (onBoard) {
+			else if (onBoard) { // 落地了才能脱离Kick状态
 				currentState = CharacterState::Stand;
 				currentFrame = 0;
 				lastHit = CharacterState::Default;

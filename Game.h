@@ -2,6 +2,8 @@
 #include "Map.h"
 #include "Controller.h"
 #include "CameraShake.h"
+#include "Pause.h"
+#include "GameAudio.h"
 
 class StartUI;
 
@@ -18,7 +20,8 @@ public:
 	std::unique_ptr<Map> map;
 	std::unique_ptr<StartUI> startUI;
 	CameraShake cameraShake;
-
+	Pause pause;
+	GameAudio gameAudio;
 
 	GameState state; // 游戏状态
 
@@ -34,6 +37,7 @@ public:
 
 	void selectCharacter();
 	void handleCharacterSelection();
+	void loadAudios();
 
 	void selectMap();
 	void run();
@@ -49,7 +53,8 @@ public:
 	std::vector<CharacterType> characterTypes = { CharacterType::Gaara, CharacterType::NarutoS };
 	int selectedCharacterIndex = 0;
 	sf::Texture characterTextures[2]; // 用于加载选人头像的纹理
-	
+	sf::Texture blackPng;
+	sf::Sprite blackBG;
 };
 
 class StartUI {
