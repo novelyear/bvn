@@ -53,6 +53,8 @@ void Character::updatePosition(sf::View view) {
 		if (currentState == CharacterState::KU) {
 			currentState = CharacterState::KU_down;  // run和stand都需要platform
 			currentFrame = 0;
+			eventQueue.push(EventType::SkillHit);
+			pauseEventQueue.push({ EventType::SkillHit, this, PAUSE_KICK, false });
 		}
 		velocity.y = 0.f;  // 清除竖直速度
 		jumpTimes = 0;  // 重置跳跃次数

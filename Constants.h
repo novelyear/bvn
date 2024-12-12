@@ -31,7 +31,7 @@
 // 互斥力常数
 #define REPULSION 57.f
 // 人物初始生命值
-#define INIT_HEALTH 100
+#define INIT_HEALTH 1000
 
 
 // 人物贴图轮换帧率
@@ -46,3 +46,10 @@
 
 // 攻击检测间隔时间，短了可能导致大招末段伤害漏检
 #define HIT_INTERVAL 0.35f
+
+// 受击震屏时间
+#define SHAKE_KICK 0.1f
+// 受击暂停时间
+#define PAUSE_KICK 0.3f
+// 受击震屏幅度
+#define AMPLITUDE 6.f

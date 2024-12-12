@@ -44,7 +44,7 @@ void NarutoS::exertEffect(Character* enemy, Effect * e) {
 	enemy->currentFrame = 0;
 	if (enemy->currentState == CharacterState::Kick) {
 		eventQueue.push(EventType::SkillHit); // 击飞触发震屏
-		pauseEventQueue.push({ EventType::SkillHit, this, 0.1f, false }); // 击飞触发全局暂停
+		pauseEventQueue.push({ EventType::SkillHit, this, PAUSE_KICK, false }); // 击飞触发全局暂停
 	}
 }
 
@@ -82,6 +82,8 @@ void NarutoS::exertEffect(Character* enemy) {
 		enemy->health -= 3; // 伤害
 		this->qi += 8; // 攻击者获得更多气
 		enemy->qi += 4;
+		eventQueue.push(EventType::SkillHit);
+		pauseEventQueue.push({ EventType::SkillHit, this, PAUSE_KICK, false });
 		break;
 	case CharacterState::J4:
 		enemy->gainVelocity({ this->left ? -1.5f : 1.5f, -6.f });
@@ -90,6 +92,8 @@ void NarutoS::exertEffect(Character* enemy) {
 		enemy->health -= 6; // 伤害
 		this->qi += 12; // 攻击者获得更多气
 		enemy->qi += 6;
+		eventQueue.push(EventType::SkillHit);
+		pauseEventQueue.push({ EventType::SkillHit, this, PAUSE_KICK, false });
 		break;
 	case CharacterState::KJ:
 		enemy->gainVelocity({ this->left ? -1.f : 1.f, 0.f });
@@ -121,6 +125,8 @@ void NarutoS::exertEffect(Character* enemy) {
 		this->qi += 6; // 攻击者获得更多气
 		enemy->qi += 3;
 		enemy->lastHit = this->currentState;
+		eventQueue.push(EventType::SkillHit);
+		pauseEventQueue.push({ EventType::SkillHit, this, PAUSE_KICK, false });
 		break;
 	case CharacterState::SUU:
 		enemy->gainVelocity({ this->left ? -5.5f : 5.5f, 0.f });
@@ -144,6 +150,8 @@ void NarutoS::exertEffect(Character* enemy) {
 		this->qi += 9; // 攻击者获得更多气
 		enemy->qi += 4;
 		enemy->lastHit = this->currentState;
+		eventQueue.push(EventType::SkillHit); 
+		pauseEventQueue.push({ EventType::SkillHit, this, PAUSE_KICK, false }); 
 		break;
 	case CharacterState::WU:
 		enemy->gainVelocity({ this->left ? -1.5f : 1.5f, -2.5f });
@@ -196,6 +204,6 @@ void NarutoS::exertEffect(Character* enemy) {
 	enemy->currentFrame = 0;
 	if (enemy->currentState == CharacterState::Kick) {
 		eventQueue.push(EventType::SkillHit); // 击飞触发震屏
-		pauseEventQueue.push({ EventType::SkillHit, this, 0.1f, false }); // 击飞触发全局暂停
+		pauseEventQueue.push({ EventType::SkillHit, this, PAUSE_KICK, false }); // 击飞触发全局暂停
 	}
 }

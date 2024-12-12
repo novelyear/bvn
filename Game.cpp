@@ -5,8 +5,12 @@
 #include "Factories.h"
 Game::Game(int width, int height, const std::string& title)
     : window(sf::VideoMode(width, height), title) {
-    state = GameState::Init;
+    state = GameState::SelectCharacter;
     startUI = std::make_unique<StartUI>(window);
+    if (!blackPng.loadFromFile("./access/black.png")) {
+        printf("black error\n");
+    }
+    blackBG.setTexture(blackPng);
 }
 // 选人界面加载
 void Game::selectCharacter() {
@@ -28,7 +32,7 @@ void Game::handleCharacterSelection() {
     window.clear(sf::Color::Black);
 
     sf::Font font;
-    font.loadFromFile("./access/others/HanYiXiangSu-11px-U/HYPixel11pxU-2.ttf");
+    font.loadFromFile("./access/others/HanYiXiangSu-11px-U/retro-pixel-arcade.ttf");
     sf::Text instruction("Press Left/Right to Choose, Enter to Confirm", font, 20);
     instruction.setPosition(200, 200);
     window.draw(instruction);
@@ -93,7 +97,7 @@ void Game::gameover() {
 
     // 屏幕结算
     sf::Font font;
-    if (!font.loadFromFile("./access/others/HanYiXiangSu-11px-U/HYPixel11pxU-2.ttf")) {
+    if (!font.loadFromFile("./access/others/HanYiXiangSu-11px-U/retro-pixel-arcade.ttf")) {
         std::cerr << "Failed to load font!" << std::endl;
         return;
     }
@@ -217,7 +221,6 @@ void Game::processEvents() {
         // ================== 
         //player->handleInput(event);
     }
-
     // 拟人控制
     enemyAI->process(map.get());
 }
@@ -232,10 +235,10 @@ void Game::handleCharacterEvents(Character* character) {
         EventType event = character->popEvent();
         switch (event) {
         case EventType::SkillHit:
-            triggerShake(8.f, 0.2f); // 技能命中震屏
+            triggerShake(AMPLITUDE, SHAKE_KICK); // 技能命中震屏
             break;
         case EventType::FallImpact:
-            triggerShake(8.f, 0.2f); // 落地震屏
+            triggerShake(AMPLITUDE, SHAKE_KICK); // 落地震屏
             break;
         }
     }
@@ -255,10 +258,10 @@ void Game::updateView(float deltaTime) {
 void Game::update(float deltaTime) {
     pause.update(deltaTime, player->pauseEventQueue);
     pause.update(deltaTime, enemy->pauseEventQueue);
-    if (!pause.isPausedFor(player.get()))
-        player->update(deltaTime, view, enemy.get(), map->platforms);
     if (!pause.isPausedFor(enemy.get()))
         enemy->update(deltaTime, view, player.get(), map->platforms);
+    if (!pause.isPausedFor(player.get()))
+        player->update(deltaTime, view, enemy.get(), map->platforms);
 
     // 处理角色事件
     handleCharacterEvents(player.get());
@@ -273,7 +276,19 @@ void Game::update(float deltaTime) {
 // 战斗渲染
 void Game::render() {
     window.clear();
-    map->render(window, view);
+    if (pause.isPausedFor(player.get()) ^ pause.isPausedFor(enemy.get())) {
+        blackBG.setPosition(window.mapPixelToCoords({ 0, 0 }));
+        // 获取窗口的视图大小（即可视区域的大小）
+        sf::Vector2f viewSize = view.getSize();
+        blackBG.setScale(
+            static_cast<float>(viewSize.x) / blackBG.getLocalBounds().width,
+            static_cast<float>(viewSize.y) / blackBG.getLocalBounds().height
+        );
+        window.draw(blackBG);
+    }
+    else 
+        map->render(window, view);
+    
     // 渲染敌人
     enemy->render(window);
     // 渲染玩家

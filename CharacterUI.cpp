@@ -114,6 +114,10 @@ void CharacterUI::update(Character* c, const sf::View& view) {
     // 动态元件：气条、气段数字
     int qiLevel = c->qi / MAX_QI;
     float qiPercentage = static_cast<float>(c->qi % MAX_QI) / MAX_QI;
+    if (qiLevel >= 3) {
+        qiLevel = 3;
+        qiPercentage = 1.f;
+    }
     std::string qiKey = "qi_bar_" + std::to_string(qiLevel);
     std::string qiNum = "qi_" + std::to_string(qiLevel);
     sf::Sprite& qiBar = getSprite(qiKey);

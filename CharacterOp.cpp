@@ -30,7 +30,7 @@ Character::Character(): cUI(std::make_unique<CharacterUI>()) {
 	currentState = CharacterState::Stand;
 	health = INIT_HEALTH;
 	chakra = 0;
-	qi = 10;
+	qi = 300;
 	inAir = true;
 	jumpTimes = 0;
 	left = true;

@@ -82,6 +82,8 @@ void Gaara::exertEffect(Character* enemy, Effect * e) {
 		enemy->qi += 5;
 		enemy->currentState = CharacterState::Hit;
 		enemy->lastHit = (CharacterState)e->currentState;
+		eventQueue.push(EventType::SkillHit);
+		pauseEventQueue.push({ EventType::SkillHit, this, PAUSE_KICK, false });
 		break;
 	case EffectState::SI_before:
 		enemy->currentState = CharacterState::Hit;
@@ -124,7 +126,7 @@ void Gaara::exertEffect(Character* enemy, Effect * e) {
 	}
 	if (enemy->currentState == CharacterState::Kick) {
 		eventQueue.push(EventType::SkillHit); // 击飞触发震屏
-		pauseEventQueue.push({ EventType::SkillHit, this, 0.2f, false }); // 击飞触发全局暂停
+		pauseEventQueue.push({ EventType::SkillHit, this, PAUSE_KICK, false }); // 击飞触发全局暂停
 	}
 	enemy->currentFrame = 0;
 }
@@ -235,7 +237,7 @@ void Gaara::exertEffect(Character* enemy) {
 	}
 	if (enemy->currentState == CharacterState::Kick) {
 		eventQueue.push(EventType::SkillHit); // 击飞触发震屏
-		pauseEventQueue.push({ EventType::SkillHit, this, 0.2f, false }); // 击飞触发全局暂停
+		pauseEventQueue.push({ EventType::SkillHit, this, PAUSE_KICK, false }); // 击飞触发全局暂停
 	}
 	enemy->currentFrame = 0;
 }

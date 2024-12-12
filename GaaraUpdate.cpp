@@ -88,8 +88,7 @@ void Gaara::updateCollisionWithEnemy(Character* enemy) {
 	}
 	hitTimer.restart(); // 重设计时器
 	// 翻译：敌人的特效与自己的本体有碰撞 & 敌人面向本体 & 敌人正在攻击 = 被打到了
-	bool beAttacked = SameOr(enemy->left, this->position.x < enemy->position.x) && !enemy->canTouch();
-	if (beAttacked) {
+	if (!enemy->canTouch()) {
 		if (currentState == CharacterState::S) {
 			chakra -= 10;
 			return;

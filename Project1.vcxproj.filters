@@ -1,9 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="Controller.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="Effect.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -68,7 +65,10 @@
       <Filter>源文件\Character</Filter>
     </ClCompile>
     <ClCompile Include="Pause.cpp">
-      <Filter>源文件</Filter>
+      <Filter>源文件\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Controller.cpp">
+      <Filter>源文件\Controller</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -134,6 +134,9 @@
     </Filter>
     <Filter Include="源文件\Character">
       <UniqueIdentifier>{69e152de-4f65-4a05-8667-b669fcc4fdf1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Controller">
+      <UniqueIdentifier>{364e4b41-af24-4309-8b4c-53db31267890}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

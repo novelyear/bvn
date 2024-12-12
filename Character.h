@@ -68,6 +68,7 @@ public:
 	std::pair<int, int> I_miss; // 大招未命中
 
 	CharacterState currentState;
+	CharacterType name;
 	bool inAir; // 在空中
 	bool left; // 朝向
 	bool onBoard;

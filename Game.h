@@ -50,7 +50,8 @@ public:
 	std::vector<CharacterType> characterTypes = { CharacterType::Gaara, CharacterType::NarutoS };
 	int selectedCharacterIndex = 0;
 	sf::Texture characterTextures[2]; // 用于加载选人头像的纹理
-	
+	sf::Texture blackPng;
+	sf::Sprite blackBG;
 };
 
 class StartUI {
