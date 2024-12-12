@@ -31,7 +31,7 @@
 // 互斥力常数
 #define REPULSION 57.f
 // 人物初始生命值
-#define INIT_HEALTH 1000
+#define INIT_HEALTH 300
 
 
 // 人物贴图轮换帧率
@@ -42,7 +42,7 @@
 // chakra上限
 #define MAX_CHAKRA (100)
 // 气每段的上限
-#define MAX_QI (100)
+#define MAX_QI (50)
 
 // 攻击检测间隔时间，短了可能导致大招末段伤害漏检
 #define HIT_INTERVAL 0.35f

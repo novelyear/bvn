@@ -5,7 +5,7 @@
 #include "Factories.h"
 Game::Game(int width, int height, const std::string& title)
     : window(sf::VideoMode(width, height), title) {
-    state = GameState::SelectCharacter;
+    state = GameState::Init;
     startUI = std::make_unique<StartUI>(window);
     if (!blackPng.loadFromFile("./access/black.png")) {
         printf("black error\n");
@@ -190,6 +190,7 @@ void Game::processEvents() {
     sf::Event event;
     // 真人控制
     player->handleMove();
+    enemy->handleMove();
     while (window.pollEvent(event)) {
         if (event.type == sf::Event::Closed)
             window.close();
@@ -222,7 +223,7 @@ void Game::processEvents() {
         //player->handleInput(event);
     }
     // 拟人控制
-    enemyAI->process(map.get());
+    //enemyAI->process(map.get());
 }
 
 
