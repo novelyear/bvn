@@ -21,6 +21,7 @@ public:
 	int qi;
 	std::unique_ptr<CharacterUI> cUI;
 	std::queue<PauseEvent> pauseEventQueue; // 存储触发的事件
+	std::queue<std::string> audioEventQueue;
 
 	sf::Texture texture;
 	std::vector<sf::IntRect> anchors;

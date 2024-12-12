@@ -70,6 +70,9 @@
     <ClCompile Include="Controller.cpp">
       <Filter>源文件\Controller</Filter>
     </ClCompile>
+    <ClCompile Include="GameAudio.cpp">
+      <Filter>源文件\Game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CameraShake.h">
@@ -109,6 +112,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Pause.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="GameAudio.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
