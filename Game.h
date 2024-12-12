@@ -3,6 +3,7 @@
 #include "Controller.h"
 #include "CameraShake.h"
 #include "Pause.h"
+#include "GameAudio.h"
 
 class StartUI;
 
@@ -20,6 +21,7 @@ public:
 	std::unique_ptr<StartUI> startUI;
 	CameraShake cameraShake;
 	Pause pause;
+	GameAudio gameAudio;
 
 	GameState state; // 游戏状态
 
@@ -35,6 +37,7 @@ public:
 
 	void selectCharacter();
 	void handleCharacterSelection();
+	void loadAudios();
 
 	void selectMap();
 	void run();

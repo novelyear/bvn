@@ -11,7 +11,29 @@ Game::Game(int width, int height, const std::string& title)
         printf("black error\n");
     }
     blackBG.setTexture(blackPng);
+    loadAudios();
 }
+
+void Game::loadAudios() {
+    gameAudio.loadMusic("bgm", "./access/sound/bgm.mp3");
+    gameAudio.loadMusic("op", "./access/sound/op.mp3");
+    gameAudio.loadSound("gaara_attack", "./access/sound/gaara_attack.mp3");
+    gameAudio.loadSound("gaara_I", "./access/sound/gaara_I.mp3");
+    gameAudio.loadSound("gaara_kick", "./access/sound/gaara_kick.mp3");
+    gameAudio.loadSound("gaara_SI", "./access/sound/gaara_SI.mp3");
+    gameAudio.loadSound("gaara_WI", "./access/sound/gaara_WI.mp3");
+    gameAudio.loadSound("narutoS_I", "./access/sound/narutoS_I.mp3");
+    gameAudio.loadSound("narutoS_KI", "./access/sound/narutoS_KI.mp3");
+    gameAudio.loadSound("narutoS_SI1", "./access/sound/narutoS_SI1.mp3");
+    gameAudio.loadSound("narutoS_SI2", "./access/sound/narutoS_SI2.mp3");
+    gameAudio.loadSound("narutoS_SJ", "./access/sound/narutoS_SJ.mp3");
+    gameAudio.loadSound("narutoS_SUU", "./access/sound/narutoS_SUU.mp3");
+    gameAudio.loadSound("narutoS_U", "./access/sound/narutoS_U.mp3");
+    gameAudio.loadSound("narutoS_WI", "./access/sound/narutoS_WI.mp3");
+    gameAudio.loadSound("hit", "./access/sound/hit_s.mp3");
+    gameAudio.loadSound("kick", "./access/sound/kick_s.mp3");
+}
+
 // 选人界面加载
 void Game::selectCharacter() {
     // 加载角色头像纹理
@@ -70,6 +92,7 @@ void Game::handleCharacterSelection() {
                 player = CharacterFactory::createCharacter(characterTypes[selectedCharacterIndex], false);
                 enemy = CharacterFactory::createCharacter(characterTypes[(selectedCharacterIndex + 1) % characterSprites.size()], true);
                 enemyAI = std::make_unique<Controller>(enemy.get(), player.get());
+                gameAudio.stopMusic();
                 state = GameState::Playing; // 切换到游戏状态
             }
             break;
@@ -159,6 +182,7 @@ void Game::run() {
 
         switch (state) {
         case GameState::Init:
+            gameAudio.playMusic("op", true);
             if (startUI->update(deltaTime.asSeconds())) state = GameState::SelectCharacter;
             startUI->render();
             break;
@@ -166,9 +190,12 @@ void Game::run() {
             handleCharacterSelection();
             break;
         case GameState::Playing:
+            gameAudio.playMusic("bgm", true);
             processEvents();
             update(deltaTime.asSeconds());
             render();
+
+            gameAudio.playMusic("bgm", true);
             break;
         case GameState::Over:
             /*state = GameState::Init;
@@ -242,6 +269,10 @@ void Game::handleCharacterEvents(Character* character) {
             triggerShake(AMPLITUDE, SHAKE_KICK); // 落地震屏
             break;
         }
+    }
+    while (!character->audioEventQueue.empty()) {
+        std::string name = character->audioEventQueue.front();character->audioEventQueue.pop();
+        gameAudio.playSound(name);
     }
 }
 
