@@ -9,10 +9,6 @@ GaaraEffect::GaaraEffect() : Effect() {
         "D:\\D1\\code\\bvn\\access\\gaaraS\\config\\effect_section.txt",
         "D:\\D1\\code\\bvn\\access\\gaaraS\\config\\effect_origins.txt",
         "D:\\D1\\code\\bvn\\access\\gaaraS\\effects_anchors.txt");
-    texture = sharedTexture;
-    anchors = sharedAnchors;
-    origins = sharedOrigins;
-    rangeMap = sharedRangeMap;
     sprite.setTexture(texture);
 }
 

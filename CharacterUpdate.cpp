@@ -46,8 +46,8 @@ void Character::updatePosition(sf::View view) {
 
 	position.y += velocity.y;
 	// 兜底机制
-	if (position.y >= CHARACTER_BOTTOM) {
-		position.y = CHARACTER_BOTTOM;  // 重置位置
+	if (position.y >= Map::CHARACTER_BOTTOM) {
+		position.y = Map::CHARACTER_BOTTOM;  // 重置位置
 		inAir = false;
 		onBoard = true;
 		if (currentState == CharacterState::KU) {

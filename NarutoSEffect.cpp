@@ -7,10 +7,6 @@ NarutoSEffect::NarutoSEffect() {
             "D:\\D1\\code\\bvn\\access\\narutoS\\config\\effect_section.txt",
             "D:\\D1\\code\\bvn\\access\\narutoS\\config\\effect_origins.txt",
             "D:\\D1\\code\\bvn\\access\\narutoS\\effects_anchors.txt");
-    texture = sharedTexture;
-    anchors = sharedAnchors;
-    origins = sharedOrigins;
-    rangeMap = sharedRangeMap;
     sprite.setTexture(texture);
 }
 
@@ -38,7 +34,7 @@ void NarutoSEffect::updatePosition(sf::View view) {
             currentState = EffectState::Default;
             currentFrame = 0;
         }
-        else if (position.y > CHARACTER_BOTTOM) {
+        else if (position.y > Map::CHARACTER_BOTTOM) {
             currentState = EffectState::KI_miss;
             currentFrame = 0;
         }

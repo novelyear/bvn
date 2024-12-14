@@ -5,7 +5,7 @@ NarutoS::NarutoS() : Character() {
     name = CharacterType::NarutoS;
 	real = true;
 	left = false;
-	position = { 100.f, GROUND };
+	position = { 100.f, Map::GROUND };
 	effects = std::make_unique<EffectPool>(CharacterType::NarutoS);
     defaultEffects = std::make_unique<EffectPool>(CharacterType::Default);
 	loadResources(
@@ -19,7 +19,7 @@ NarutoS::NarutoS(int flag) : Character() {
     name = CharacterType::NarutoS;
 	real = false;
 	left = true;
-	position = { 300.f, GROUND };
+	position = { 300.f, Map::GROUND };
 	loadResources(
 		"D:\\D1\\code\\bvn\\access\\narutoS\\texture_atlas.png",
 		"D:\\D1\\code\\bvn\\access\\narutoS\\config\\section.txt",

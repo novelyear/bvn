@@ -1,12 +1,12 @@
 #pragma once
-// 世界底部
-#define GROUND 600.f
-// 角色兜底线
-#define CHARACTER_BOTTOM 550.f
-// 世界左部
-#define LEFT_BORDER 0.f
-// 世界右部
-#define RIGHT_BORDER 800.f
+//// 世界底部
+//#define GROUND 600.f
+//// 角色兜底线
+//#define CHARACTER_BOTTOM 550.f
+//// 世界左部
+//#define LEFT_BORDER 0.f
+//// 世界右部
+//#define RIGHT_BORDER 800.f
 // 视图双盒子模型间距 margin
 #define PUSH_MARGIN 100.f
 

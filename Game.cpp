@@ -3,6 +3,7 @@
 #include <bits/stdc++.h>
 #include "Constants.h"
 #include "Factories.h"
+
 Game::Game(int width, int height, const std::string& title)
     : window(sf::VideoMode(width, height), title) {
     state = GameState::Init;
@@ -127,7 +128,7 @@ void Game::handleCharacterSelection() {
 
 // 选地图
 void Game::selectMap() {
-    map = MapFactory::createMap(MapType::MR);
+    map = MapFactory::createMap(MapType::VE);
 }
 
 void Game::gameover() {
@@ -378,8 +379,8 @@ sf::FloatRect Game::getView(sf::Vector2f playerPosition, sf::Vector2f enemyPosit
     float targetTop = centerY - targetHeight / 2;
 
     if (targetLeft < 0.f) targetLeft = 0.f;
-    if (targetLeft + targetWidth > RIGHT_BORDER) targetLeft = RIGHT_BORDER - targetWidth;
-    if (targetTop + targetHeight > GROUND) targetTop = GROUND - targetHeight;
+    if (targetLeft + targetWidth > Map::RIGHT_BORDER) targetLeft = Map::RIGHT_BORDER - targetWidth;
+    if (targetTop + targetHeight > Map::GROUND) targetTop = Map::GROUND - targetHeight;
 
     // 平滑调整视图位置
     float smoothingFactor = 5.f; // 调整速度，值越大调整越快
@@ -397,8 +398,8 @@ sf::FloatRect Game::testView(sf::Vector2f playerPosition) {
     float Top = player->position.y - minimumViewWidth * 0.75f / 2;
     // 限制视窗底部在地面上，左部不超过左边界，右部不超过有边界
     if (Left < 0.f) Left = 0.f;
-    if (Left + minimumViewWidth > RIGHT_BORDER) Left = RIGHT_BORDER - minimumViewWidth;
+    if (Left + minimumViewWidth > Map::RIGHT_BORDER) Left = Map::RIGHT_BORDER - minimumViewWidth;
 
-    if (Top + minimumViewWidth * 0.75f > GROUND) Top = GROUND - minimumViewWidth * 0.75f;
+    if (Top + minimumViewWidth * 0.75f > Map::GROUND) Top = Map::GROUND - minimumViewWidth * 0.75f;
     return sf::FloatRect(Left, Top, minimumViewWidth, minimumViewWidth * 0.75f);
 }

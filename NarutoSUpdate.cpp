@@ -121,7 +121,7 @@ void NarutoS::updateSprite(float deltaTime, sf::Vector2f enemyPosition) {
 			sprite.setTextureRect(anchors[flashing.first + currentFrame]);
 			sprite.setOrigin(origins[flashing.first + currentFrame]);
 			if (currentFrame == 0) {
-				defaultEffects->run(this->position, this->onBoard ? EffectState::Flash_ash : EffectState::Flash_air, this->left);
+				defaultEffects->run(this->position, this->inAir ? EffectState::Flash_air : EffectState::Flash_ash, this->left);
 			}
 			currentFrame++;
 			if (currentFrame + flashing.first > flashing.second) {
@@ -348,7 +348,7 @@ void NarutoS::updateSprite(float deltaTime, sf::Vector2f enemyPosition) {
 			if (currentFrame == 0) {
 				pauseEventQueue.push({ EventType::UltimateSkill, this, 4.5f, true });
 				audioEventQueue.push("narutoS_KI");
-				effects->run(position, EffectState::I_effect, this->left);
+				defaultEffects->run(position, EffectState::I_effect, this->left);
 			}
 			currentFrame++;
 			if (currentFrame == 62) {

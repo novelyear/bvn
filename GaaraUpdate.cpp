@@ -140,7 +140,7 @@ void Gaara::updateSprite(float deltaTime, sf::Vector2f enemyPosition) {
 			sprite.setTextureRect(anchors[flashing.first + currentFrame]);
 			sprite.setOrigin(origins[flashing.first + currentFrame]);
 			if (currentFrame == 0) {
-				defaultEffects->run(this->position, this->onBoard ? EffectState::Flash_ash : EffectState::Flash_air, this->left);
+				defaultEffects->run(this->position, this->inAir ? EffectState::Flash_air : EffectState::Flash_ash, this->left);
 			}
 			currentFrame++;
 			if (currentFrame + flashing.first > flashing.second) {

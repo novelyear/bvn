@@ -6,7 +6,7 @@ Gaara::Gaara() : Character() {
     name = CharacterType::Gaara;
     real = true;
 	left = false;
-	position = { 100.f, GROUND };
+	position = { 100.f, Map::GROUND };
     effects = std::make_unique<EffectPool>(CharacterType::Gaara);
     defaultEffects = std::make_unique<EffectPool>(CharacterType::Default);
 	loadResources(
@@ -20,7 +20,7 @@ Gaara::Gaara(int flag) : Character() {
     name = CharacterType::Gaara;
     real = false;
 	left = true;
-	position = { 300.f, GROUND };
+	position = { 300.f, Map::GROUND };
 	loadResources(
 		"D:\\D1\\code\\bvn\\access\\gaaraS\\texture_atlas.png",
 		"D:\\D1\\code\\bvn\\access\\gaaraS\\config\\section.txt",

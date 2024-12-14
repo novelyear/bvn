@@ -3,12 +3,6 @@
 #include "NarutoS.h"
 #include "Constants.h"
 
-// 定义静态成员变量
-sf::Texture Effect::sharedTexture;
-std::unordered_map<EffectState, std::pair<int, int>> Effect::sharedRangeMap;
-std::vector<sf::IntRect> Effect::sharedAnchors;
-std::vector<sf::Vector2f> Effect::sharedOrigins;
-
 EffectPool::EffectPool() {}
 
 // 构造函数：初始化特效池，创建指定数量的默认特效对象
@@ -93,6 +87,7 @@ void EffectPool::updatePosition(sf::View view) {
         }
     }
 }
+
 void EffectPool::updateSprite(float deltaTime) {
     for (const auto& effect : effects) {
         if (effect->currentState != EffectState::Default) {
@@ -161,7 +156,7 @@ void Effect::render(sf::RenderWindow& window){
 
 void Effect::loadResources(const std::string& directory, const std::string& rangeFile, const std::string& originFile, const std::string& anchorFile) {
     // 读取 originFile
-    sharedOrigins.resize(1); // 留出0号
+    origins.resize(1); // 留出0号
     std::ifstream originInput(originFile);
     if (!originInput.is_open()) {
         std::cerr << "Failed to open origin file: " << originFile << std::endl;
@@ -172,15 +167,15 @@ void Effect::loadResources(const std::string& directory, const std::string& rang
     float x, y;
     char delimiter;
     while (originInput >> index >> delimiter >> delimiter >> x >> delimiter >> y >> delimiter) {
-        if (index >= sharedOrigins.size()) {
-            sharedOrigins.resize(index + 1);
+        if (index >= origins.size()) {
+            origins.resize(index + 1);
         }
-        sharedOrigins[index] = sf::Vector2f(x, y);
+        origins[index] = sf::Vector2f(x, y);
     }
     originInput.close();
 
     // 读取 anchorFile
-    sharedAnchors.resize(1); // 留出0号
+    anchors.resize(1); // 留出0号
     std::ifstream anchorInput(anchorFile);
     if (!anchorInput.is_open()) {
         std::cerr << "Failed to open anchor file: " << anchorFile << std::endl;
@@ -189,10 +184,10 @@ void Effect::loadResources(const std::string& directory, const std::string& rang
 
     int x1, y1, width, height;
     while (anchorInput >> index >> delimiter >> delimiter >> x1 >> delimiter >> y1 >> delimiter >> width >> delimiter >> height >> delimiter) {
-        if (index >= sharedAnchors.size()) {
-            sharedAnchors.resize(index + 1);
+        if (index >= anchors.size()) {
+            anchors.resize(index + 1);
         }
-        sharedAnchors[index] = sf::IntRect(x1, y1, width, height);
+        anchors[index] = sf::IntRect(x1, y1, width, height);
     }
     anchorInput.close();
 
@@ -212,25 +207,25 @@ void Effect::loadResources(const std::string& directory, const std::string& rang
             type = std::string(temp);
 
             // 硬编码绑定到类的成员变量
-            if (type == "SU") sharedRangeMap[EffectState::SU] = std::make_pair(start, end);
-            else if (type == "WU") sharedRangeMap[EffectState::WU] = std::make_pair(start, end);
-            else if (type == "U") sharedRangeMap[EffectState::U] = std::make_pair(start, end);
-            else if (type == "SI_before") sharedRangeMap[EffectState::SI_before] = std::make_pair(start, end);
-            else if (type == "WI_before") sharedRangeMap[EffectState::WI_before] = std::make_pair(start, end);
-            else if (type == "I_before") sharedRangeMap[EffectState::I_before] = std::make_pair(start, end);
-            else if (type == "SI_after") sharedRangeMap[EffectState::SI_after] = std::make_pair(start, end);
-            else if (type == "WI_after") sharedRangeMap[EffectState::WI_after] = std::make_pair(start, end);
-            else if (type == "I_after") sharedRangeMap[EffectState::I_after] = std::make_pair(start, end);
-            else if (type == "SI_miss") sharedRangeMap[EffectState::SI_miss] = std::make_pair(start, end);
-            else if (type == "WI_miss") sharedRangeMap[EffectState::WI_miss] = std::make_pair(start, end);
-            else if (type == "I_miss") sharedRangeMap[EffectState::I_miss] = std::make_pair(start, end);
-            else if (type == "KI_before") sharedRangeMap[EffectState::KI_before] = std::make_pair(start, end);
-            else if (type == "KI_after") sharedRangeMap[EffectState::KI_after] = std::make_pair(start, end);
-            else if (type == "KI_miss") sharedRangeMap[EffectState::KI_miss] = std::make_pair(start, end);
-            else if (type == "I_effect") sharedRangeMap[EffectState::I_effect] = std::make_pair(start, end);
-            else if (type == "flash_air") sharedRangeMap[EffectState::Flash_air] = std::make_pair(start, end);
-            else if (type == "flash_ash") sharedRangeMap[EffectState::Flash_ash] = std::make_pair(start, end);
-            else if (type == "Landed_ash") sharedRangeMap[EffectState::Landed_ash] = std::make_pair(start, end);
+            if (type == "SU") rangeMap[EffectState::SU] = std::make_pair(start, end);
+            else if (type == "WU") rangeMap[EffectState::WU] = std::make_pair(start, end);
+            else if (type == "U") rangeMap[EffectState::U] = std::make_pair(start, end);
+            else if (type == "SI_before") rangeMap[EffectState::SI_before] = std::make_pair(start, end);
+            else if (type == "WI_before") rangeMap[EffectState::WI_before] = std::make_pair(start, end);
+            else if (type == "I_before") rangeMap[EffectState::I_before] = std::make_pair(start, end);
+            else if (type == "SI_after") rangeMap[EffectState::SI_after] = std::make_pair(start, end);
+            else if (type == "WI_after") rangeMap[EffectState::WI_after] = std::make_pair(start, end);
+            else if (type == "I_after") rangeMap[EffectState::I_after] = std::make_pair(start, end);
+            else if (type == "SI_miss") rangeMap[EffectState::SI_miss] = std::make_pair(start, end);
+            else if (type == "WI_miss") rangeMap[EffectState::WI_miss] = std::make_pair(start, end);
+            else if (type == "I_miss") rangeMap[EffectState::I_miss] = std::make_pair(start, end);
+            else if (type == "KI_before") rangeMap[EffectState::KI_before] = std::make_pair(start, end);
+            else if (type == "KI_after") rangeMap[EffectState::KI_after] = std::make_pair(start, end);
+            else if (type == "KI_miss") rangeMap[EffectState::KI_miss] = std::make_pair(start, end);
+            else if (type == "I_effect") rangeMap[EffectState::I_effect] = std::make_pair(start, end);
+            else if (type == "flash_air") rangeMap[EffectState::Flash_air] = std::make_pair(start, end);
+            else if (type == "flash_ash") rangeMap[EffectState::Flash_ash] = std::make_pair(start, end);
+            else if (type == "Landed_ash") rangeMap[EffectState::Landed_ash] = std::make_pair(start, end);
         }
         else {
             std::cerr << "Invalid range line: " << line << std::endl;
@@ -239,12 +234,11 @@ void Effect::loadResources(const std::string& directory, const std::string& rang
     rangeInput.close();
 
     // 加载纹理（假设 directory 目录下是一个完整的纹理图集）
-    if (!sharedTexture.loadFromFile(directory)) {
-        std::cerr << "Failed to load sharedTexture from directory: " << directory << std::endl;
+    if (!texture.loadFromFile(directory)) {
+        std::cerr << "Failed to load texture from directory: " << directory << std::endl;
     }
-    sprite.setTexture(Effect::sharedTexture);
-    sprite.setTextureRect(Effect::sharedAnchors[20]); // 硬编码，20号图是空，防止首次按下时正好未逻辑换帧导致闪烁全图
-                                                      // 只适用于我爱罗，后面可改为0号
+    sprite.setTexture(Effect::texture);
+    sprite.setTextureRect(Effect::anchors[0]); // 硬编码，0号图是空，防止首次按下时正好未逻辑换帧导致闪烁全图
 }
 // ========DefaultEffectPool========
 DefaultEffect::DefaultEffect() {
@@ -254,10 +248,6 @@ DefaultEffect::DefaultEffect() {
         "./access/others/config/effect_origins.txt",
         "./access/others/defaultE_anchors.txt"
     );
-    texture = sharedTexture;
-    anchors = sharedAnchors;
-    origins = sharedOrigins;
-    rangeMap = sharedRangeMap;
     sprite.setTexture(texture);
 }
 void DefaultEffect::flash_ash(sf::Vector2f position, bool left) {

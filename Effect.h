@@ -4,11 +4,6 @@
 #include "Enums.h"
 class Effect {
 public:
-	static sf::Texture sharedTexture; // 纹理图集
-	static std::unordered_map<EffectState, std::pair<int, int>> sharedRangeMap; // 技能组范围
-	static std::vector<sf::IntRect> sharedAnchors;  // 锚框集
-	static std::vector<sf::Vector2f> sharedOrigins; // 原点集
-
 	void loadResources(const std::string& directory, const std::string& rangeFile,
 		const std::string& originFile, const std::string& anchorFile);
 
