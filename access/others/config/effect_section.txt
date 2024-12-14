@@ -1,0 +1,4 @@
+flash_air-[1, 22]
+flash_ash-[23, 42]
+I_effect-[43, 53]
+Landed_ash-[54, 61]

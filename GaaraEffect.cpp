@@ -3,12 +3,11 @@
 #include "Gaara.h"
 
 GaaraEffect::GaaraEffect() : Effect() {
-    //if(sharedAnchors.empty()) 
-        loadResources(
-        "D:\\D1\\code\\bvn\\access\\gaaraS\\texture_effects_atlas.png",
-        "D:\\D1\\code\\bvn\\access\\gaaraS\\config\\effect_section.txt",
-        "D:\\D1\\code\\bvn\\access\\gaaraS\\config\\effect_origins.txt",
-        "D:\\D1\\code\\bvn\\access\\gaaraS\\effects_anchors.txt");
+    loadResources(
+    "./access/gaaraS/texture_effects_atlas.png",
+    "./access/gaaraS/config/effect_section.txt",
+    "./access/gaaraS/config/effect_origins.txt",
+    "./access/gaaraS/effects_anchors.txt");
     sprite.setTexture(texture);
 }
 

@@ -2,11 +2,11 @@
 
 StartUI::StartUI(sf::RenderWindow& win) : window(win) {
     loadResources(
-        "D:\\D1\\code\\bvn\\access\\others\\start_textures_atlas.png",
-        "D:\\D1\\code\\bvn\\access\\others\\start_anchors.txt",
-        "D:\\D1\\code\\bvn\\access\\others\\button\\button.png",
-        "D:\\D1\\code\\bvn\\access\\others\\button\\button_hover.png",
-        "D:\\D1\\code\\bvn\\access\\others\\button\\button_pressed.png"
+        "./access/others/start_textures_atlas.png",
+        "./access/others/start_anchors.txt",
+        "./access/others/button/button.png",
+        "./access/others/button/button_hover.png",
+        "./access/others/button/button_pressed.png"
     );
 }
 

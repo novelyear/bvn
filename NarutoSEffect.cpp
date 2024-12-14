@@ -1,12 +1,11 @@
 #include "NarutoS.h"
 #include "Constants.h"
 NarutoSEffect::NarutoSEffect() {
-    //if (sharedAnchors.empty())
-        loadResources(
-            "D:\\D1\\code\\bvn\\access\\narutoS\\texture_effects_atlas.png",
-            "D:\\D1\\code\\bvn\\access\\narutoS\\config\\effect_section.txt",
-            "D:\\D1\\code\\bvn\\access\\narutoS\\config\\effect_origins.txt",
-            "D:\\D1\\code\\bvn\\access\\narutoS\\effects_anchors.txt");
+    loadResources(
+        "./access/narutoS/texture_effects_atlas.png",
+        "./access/narutoS/config/effect_section.txt",
+        "./access/narutoS/config/effect_origins.txt",
+        "./access/narutoS/effects_anchors.txt");
     sprite.setTexture(texture);
 }
 

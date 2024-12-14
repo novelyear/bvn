@@ -10,10 +10,10 @@ Gaara::Gaara() : Character() {
     effects = std::make_unique<EffectPool>(CharacterType::Gaara);
     defaultEffects = std::make_unique<EffectPool>(CharacterType::Default);
 	loadResources(
-		"D:\\D1\\code\\bvn\\access\\gaaraS\\texture_atlas.png",
-		"D:\\D1\\code\\bvn\\access\\gaaraS\\config\\section.txt",
-		"D:\\D1\\code\\bvn\\access\\gaaraS\\config\\origins.txt",
-		"D:\\D1\\code\\bvn\\access\\gaaraS\\anchors.txt");
+		"./access/gaaraS/texture_atlas.png",
+		"./access/gaaraS/config/section.txt",
+		"./access/gaaraS/config/origins.txt",
+		"./access/gaaraS/anchors.txt");
 }
 
 Gaara::Gaara(int flag) : Character() {
@@ -22,10 +22,10 @@ Gaara::Gaara(int flag) : Character() {
 	left = true;
 	position = { 300.f, Map::GROUND };
 	loadResources(
-		"D:\\D1\\code\\bvn\\access\\gaaraS\\texture_atlas.png",
-		"D:\\D1\\code\\bvn\\access\\gaaraS\\config\\section.txt",
-		"D:\\D1\\code\\bvn\\access\\gaaraS\\config\\origins.txt",
-		"D:\\D1\\code\\bvn\\access\\gaaraS\\anchors.txt");
+		"./access/gaaraS/texture_atlas.png",
+		"./access/gaaraS/config/section.txt",
+		"./access/gaaraS/config/origins.txt",
+		"./access/gaaraS/anchors.txt");
     effects = std::make_unique<EffectPool>(CharacterType::Gaara);
     defaultEffects = std::make_unique<EffectPool>(CharacterType::Default);
 }

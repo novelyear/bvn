@@ -8,23 +8,23 @@ CharacterUI::CharacterUI() {
 void CharacterUI::loadResources() {
     // 所有资源文件路径及其对应的键名
     std::unordered_map<std::string, std::string> resourcePaths = {
-        {"qi_bar_0", "D:/D1/code/bvn/access/others/shapes/qi_bar_0.png"},
-        {"qi_bar_1", "D:/D1/code/bvn/access/others/shapes/qi_bar_1.png"},
-        {"qi_bar_2", "D:/D1/code/bvn/access/others/shapes/qi_bar_2.png"},
-        {"qi_bar_3", "D:/D1/code/bvn/access/others/shapes/qi_bar_3.png"},
-        {"qi_0", "D:/D1/code/bvn/access/others/shapes/qi_0.png"},
-        {"qi_1", "D:/D1/code/bvn/access/others/shapes/qi_1.png"},
-        {"qi_2", "D:/D1/code/bvn/access/others/shapes/qi_2.png"},
-        {"qi_3", "D:/D1/code/bvn/access/others/shapes/qi_3.png"},
-        {"middle", "D:/D1/code/bvn/access/others/shapes/middle.png"},
-        {"qi_bar", "D:/D1/code/bvn/access/others/shapes/qi_bar.png"},
-        {"avatar_box", "D:/D1/code/bvn/access/others/shapes/avatar_box.png"},
-        {"blood", "D:/D1/code/bvn/access/others/shapes/blood.png"},
-        {"blood_bar", "D:/D1/code/bvn/access/others/shapes/blood_bar.png"},
-        {"chakra", "D:/D1/code/bvn/access/others/shapes/chakra.png"},
-        {"chakra_bar", "D:/D1/code/bvn/access/others/shapes/chakra_bar.png"},
-        {"chakra_text", "D:/D1/code/bvn/access/others/shapes/chakra_text.png"},
-        {"chakra2", "D:/D1/code/bvn/access/others/shapes/chakra2.png"}
+        {"qi_bar_0", "./access/others/shapes/qi_bar_0.png"},
+        {"qi_bar_1", "./access/others/shapes/qi_bar_1.png"},
+        {"qi_bar_2", "./access/others/shapes/qi_bar_2.png"},
+        {"qi_bar_3", "./access/others/shapes/qi_bar_3.png"},
+        {"qi_0", "./access/others/shapes/qi_0.png"},
+        {"qi_1", "./access/others/shapes/qi_1.png"},
+        {"qi_2", "./access/others/shapes/qi_2.png"},
+        {"qi_3", "./access/others/shapes/qi_3.png"},
+        {"middle", "./access/others/shapes/middle.png"},
+        {"qi_bar", "./access/others/shapes/qi_bar.png"},
+        {"avatar_box", "./access/others/shapes/avatar_box.png"},
+        {"blood", "./access/others/shapes/blood.png"},
+        {"blood_bar", "./access/others/shapes/blood_bar.png"},
+        {"chakra", "./access/others/shapes/chakra.png"},
+        {"chakra_bar", "./access/others/shapes/chakra_bar.png"},
+        {"chakra_text", "./access/others/shapes/chakra_text.png"},
+        {"chakra2", "./access/others/shapes/chakra2.png"}
     };
     std::set<std::string> fixedSet = {
         "avatar_box", "qi_bar", "blood_bar", "chakra_bar", "middle", "chakra_text"

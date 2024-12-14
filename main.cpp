@@ -11,7 +11,7 @@ int main() {
     try {
         initializeKeyMapping();
         // 创建 Game 实例，传入窗口的宽度、高度和标题
-        Game game(1600, 1200, "My Fighting Game");
+        Game game(1600, 1200, "Bleach VS Naruto by LY");
         game.window.setFramerateLimit(70);// 限制帧率
         // 启动游戏主循环
         game.run();

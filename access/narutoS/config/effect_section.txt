@@ -1,0 +1,3 @@
+KI_before-[1, 23]
+KI_after-[24, 41]
+KI_miss-[42, 47]

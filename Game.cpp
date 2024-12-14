@@ -126,10 +126,88 @@ void Game::handleCharacterSelection() {
 }
 
 
-// 选地图
 void Game::selectMap() {
-    map = MapFactory::createMap(MapType::VE);
+    // 初始化地图选项
+    std::vector<sf::Sprite> mapSprites;  // 存储地图背景图片的精灵
+    std::vector<MapType> mapTypes = { MapType::MR, MapType::VE };
+    size_t selectedMapIndex = 0;
+
+    // 加载背景图片
+    sf::Texture mapTextureMR, mapTextureVE;
+    if (!mapTextureMR.loadFromFile("./access/maps/louding.png") ||
+        !mapTextureVE.loadFromFile("./access/maps/pubu.png")) {
+        std::cerr << "Failed to load map preview images!" << std::endl;
+        return;
+    }
+
+    // 配置地图精灵
+    sf::Sprite mapSpriteMR(mapTextureMR);
+    sf::Sprite mapSpriteVE(mapTextureVE);
+
+    mapSpriteMR.setPosition(150, 200);  // 设置位置
+    mapSpriteVE.setPosition(650, 200);
+
+    mapSprites.push_back(mapSpriteMR);
+    mapSprites.push_back(mapSpriteVE);
+
+    // 字体和文本
+    sf::Font font;
+    if (!font.loadFromFile("./access/others/HanYiXiangSu-11px-U/retro-pixel-arcade.ttf")) {
+        std::cerr << "Failed to load font!" << std::endl;
+        return;
+    }
+
+    sf::Text instruction("Use Left/Right to Select a Map, Enter to Confirm", font, 20);
+    instruction.setPosition(200, 100);
+
+    sf::RectangleShape highlightBox(sf::Vector2f(450, 240));
+    highlightBox.setFillColor(sf::Color(0, 0, 0, 0));  // 透明填充
+    highlightBox.setOutlineColor(sf::Color::Yellow);
+    highlightBox.setOutlineThickness(3);
+
+    // 循环处理选地图逻辑
+    while (window.isOpen() && state == GameState::SelectMap) {
+        sf::Event event;
+        while (window.pollEvent(event)) {
+            switch (event.type) {
+            case sf::Event::Closed:
+                window.close();
+                break;
+
+            case sf::Event::KeyPressed:
+                if (event.key.code == sf::Keyboard::Right) {
+                    selectedMapIndex = (selectedMapIndex + 1) % mapSprites.size();
+                }
+                else if (event.key.code == sf::Keyboard::Left) {
+                    selectedMapIndex = (selectedMapIndex - 1 + mapSprites.size()) % mapSprites.size();
+                }
+                else if (event.key.code == sf::Keyboard::Enter) {
+                    // 创建地图并进入选人界面
+                    map = MapFactory::createMap(mapTypes[selectedMapIndex]);
+                    state = GameState::SelectCharacter;
+                }
+                break;
+
+            default:
+                break;
+            }
+        }
+
+        // 渲染选地图界面
+        window.clear(sf::Color::Black);
+        window.draw(instruction);
+
+        for (size_t i = 0; i < mapSprites.size(); ++i) {
+            window.draw(mapSprites[i]);
+        }
+
+        highlightBox.setPosition(mapSprites[selectedMapIndex].getPosition());
+        window.draw(highlightBox);
+
+        window.display();
+    }
 }
+
 
 void Game::gameover() {
     state = GameState::Over;
@@ -204,8 +282,11 @@ void Game::run() {
         switch (state) {
         case GameState::Init:
             gameAudio.playMusic("op", true);
-            if (startUI->update(deltaTime.asSeconds())) state = GameState::SelectCharacter;
+            if (startUI->update(deltaTime.asSeconds())) state = GameState::SelectMap;
             startUI->render();
+            break;
+        case GameState::SelectMap:
+            selectMap();
             break;
         case GameState::SelectCharacter:
             handleCharacterSelection();
