@@ -22,6 +22,8 @@ void Game::loadAudios() {
     gameAudio.loadSound("gaara_kick", "./access/sound/gaara_kick.mp3");
     gameAudio.loadSound("gaara_SI", "./access/sound/gaara_SI.mp3");
     gameAudio.loadSound("gaara_WI", "./access/sound/gaara_WI.mp3");
+    gameAudio.loadSound("gaara_SI_Boom", "./access/sound/gaara_SI_Boom.mp3");
+    gameAudio.loadSound("gaara_U", "./access/sound/gaara_U.mp3");
     gameAudio.loadSound("narutoS_I", "./access/sound/narutoS_I.mp3");
     gameAudio.loadSound("narutoS_KI", "./access/sound/narutoS_KI.mp3");
     gameAudio.loadSound("narutoS_SI1", "./access/sound/narutoS_SI1.mp3");
@@ -48,14 +50,23 @@ void Game::selectCharacter() {
         characterSprites.push_back(sprite);
     }
 }
+
 // 选人界面处理输入和渲染
 void Game::handleCharacterSelection() {
+    static bool selectingFirstPlayer = true; // 标记当前是否在选择1P
+    static size_t player1SelectionIndex = 0; // 记录1P选择的角色索引
+
     // 渲染选人界面
     window.clear(sf::Color::Black);
 
     sf::Font font;
     font.loadFromFile("./access/others/HanYiXiangSu-11px-U/retro-pixel-arcade.ttf");
-    sf::Text instruction("Press Left/Right to Choose, Enter to Confirm", font, 20);
+
+    std::string instructionText = selectingFirstPlayer
+        ? "Player 1: Press Left/Right to Choose, Enter to Confirm"
+        : "Player 2: Press Left/Right to Choose, Enter to Confirm";
+
+    sf::Text instruction(instructionText, font, 20);
     instruction.setPosition(200, 200);
     window.draw(instruction);
 
@@ -65,7 +76,7 @@ void Game::handleCharacterSelection() {
             sf::RectangleShape highlightBox(sf::Vector2f(128, 128)); // 假设头像是128x128
             highlightBox.setPosition(characterSprites[i].getPosition());
             highlightBox.setFillColor(sf::Color(0, 0, 0, 0));
-            highlightBox.setOutlineColor(sf::Color::Yellow);
+            highlightBox.setOutlineColor(selectingFirstPlayer ? sf::Color::Yellow : sf::Color::Blue);
             highlightBox.setOutlineThickness(3);
             window.draw(highlightBox);
         }
@@ -74,6 +85,7 @@ void Game::handleCharacterSelection() {
 
     window.display();
 
+    // 处理输入事件
     sf::Event event;
     while (window.pollEvent(event)) {
         switch (event.type) {
@@ -89,11 +101,20 @@ void Game::handleCharacterSelection() {
                 selectedCharacterIndex = (selectedCharacterIndex - 1 + characterSprites.size()) % (int)characterSprites.size();
             }
             else if (event.key.code == sf::Keyboard::Enter) {
-                player = CharacterFactory::createCharacter(characterTypes[selectedCharacterIndex], false);
-                enemy = CharacterFactory::createCharacter(characterTypes[(selectedCharacterIndex + 1) % characterSprites.size()], true);
-                enemyAI = std::make_unique<Controller>(enemy.get(), player.get());
-                gameAudio.stopMusic();
-                state = GameState::Playing; // 切换到游戏状态
+                if (selectingFirstPlayer) {
+                    // 确认1P选择
+                    player1SelectionIndex = selectedCharacterIndex;
+                    player = CharacterFactory::createCharacter(characterTypes[player1SelectionIndex], false);
+                    selectingFirstPlayer = false; // 切换到2P选择阶段
+                }
+                else {
+                    // 确认2P选择
+                    size_t player2SelectionIndex = selectedCharacterIndex;
+                    enemy = CharacterFactory::createCharacter(characterTypes[player2SelectionIndex], true);
+                    enemyAI = std::make_unique<Controller>(enemy.get(), player.get());
+                    gameAudio.stopMusic();
+                    state = GameState::Playing; // 切换到游戏状态
+                }
             }
             break;
 
@@ -102,7 +123,6 @@ void Game::handleCharacterSelection() {
         }
     }
 }
-
 
 
 // 选地图
@@ -325,6 +345,8 @@ void Game::render() {
     enemy->render(window);
     // 渲染玩家
     player->render(window);
+    enemy->defaultEffects->render(window);
+    player->defaultEffects->render(window);
     enemy->effects->render(window);// 后渲染特效，遮住人物
     player->effects->render(window);
 

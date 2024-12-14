@@ -5,10 +5,10 @@ class Character;
 
 class Pause {
 private:
-    bool isPaused = false;        // ÊÇ·ñ´¦ÓÚÔİÍ£×´Ì¬
-    float pauseDuration = 0.f;    // ÔİÍ£µÄÊ£ÓàÊ±¼ä
-    float elapsedPauseTime = 0.f; // ÒÑ¾­ÔİÍ£µÄÊ±¼ä
-    void* excludedSource = nullptr; // ±»ÅÅ³ıµÄ´¥·¢Ô´
+    bool isPaused = false;        // æ˜¯å¦å¤„äºæš‚åœçŠ¶æ€
+    float pauseDuration = 0.f;    // æš‚åœçš„å‰©ä½™æ—¶é—´
+    float elapsedPauseTime = 0.f; // å·²ç»æš‚åœçš„æ—¶é—´
+    void* excludedSource = nullptr; // è¢«æ’é™¤çš„è§¦å‘æº
 
 public:
     void setPause(float duration, void* exclude);

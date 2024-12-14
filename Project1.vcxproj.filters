@@ -73,6 +73,7 @@
     <ClCompile Include="GameAudio.cpp">
       <Filter>源文件\Game</Filter>
     </ClCompile>
+    <ClCompile Include="keyMap.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CameraShake.h">
@@ -117,6 +118,7 @@
     <ClInclude Include="GameAudio.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="keyMap.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="access\bg.png" />

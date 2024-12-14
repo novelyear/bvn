@@ -7,6 +7,7 @@ NarutoS::NarutoS() : Character() {
 	left = false;
 	position = { 100.f, GROUND };
 	effects = std::make_unique<EffectPool>(CharacterType::NarutoS);
+    defaultEffects = std::make_unique<EffectPool>(CharacterType::Default);
 	loadResources(
 		"D:\\D1\\code\\bvn\\access\\narutoS\\texture_atlas.png",
 		"D:\\D1\\code\\bvn\\access\\narutoS\\config\\section.txt",
@@ -25,6 +26,7 @@ NarutoS::NarutoS(int flag) : Character() {
 		"D:\\D1\\code\\bvn\\access\\narutoS\\config\\origins.txt",
 		"D:\\D1\\code\\bvn\\access\\narutoS\\anchors.txt");
 	effects = std::make_unique<EffectPool>(CharacterType::NarutoS);
+    defaultEffects = std::make_unique<EffectPool>(CharacterType::Default);
 }
 
 bool NarutoS::canTouch() {

@@ -10,6 +10,7 @@ void NarutoS::update(float deltaTime, sf::View view, Character* enemy, std::vect
 	updatePosition(view);
 	updateDirection(enemy->position);
 	effects->update(deltaTime, view);
+	defaultEffects->update(deltaTime, view);
 	cUI->update(this, view);
 	// chakra更新，暂时写在这里
 	if (currentState != CharacterState::Flash && currentState != CharacterState::S) {
@@ -107,6 +108,9 @@ void NarutoS::updateSprite(float deltaTime, sf::Vector2f enemyPosition) {
 		case CharacterState::Landed:
 			sprite.setTextureRect(anchors[landed.first + currentFrame]);
 			sprite.setOrigin(origins[landed.first + currentFrame]);
+			if (currentFrame == 0) {
+				defaultEffects->run(this->position, EffectState::Landed_ash, true);
+			}
 			currentFrame++;
 			if (currentFrame + landed.first > landed.second) {
 				currentState = CharacterState::Stand;
@@ -116,6 +120,9 @@ void NarutoS::updateSprite(float deltaTime, sf::Vector2f enemyPosition) {
 		case CharacterState::Flash:
 			sprite.setTextureRect(anchors[flashing.first + currentFrame]);
 			sprite.setOrigin(origins[flashing.first + currentFrame]);
+			if (currentFrame == 0) {
+				defaultEffects->run(this->position, this->onBoard ? EffectState::Flash_ash : EffectState::Flash_air, this->left);
+			}
 			currentFrame++;
 			if (currentFrame + flashing.first > flashing.second) {
 				currentState = CharacterState::Fall;
@@ -289,6 +296,7 @@ void NarutoS::updateSprite(float deltaTime, sf::Vector2f enemyPosition) {
 			if (currentFrame == 0) {
 				pauseEventQueue.push({ EventType::UltimateSkill, this, 4.5f, true });
 				audioEventQueue.push("narutoS_WI");
+				defaultEffects->run(position, EffectState::I_effect, this->left);
 			}
 			currentFrame++;
 			if (currentFrame == 60) {
@@ -306,6 +314,7 @@ void NarutoS::updateSprite(float deltaTime, sf::Vector2f enemyPosition) {
 			if (currentFrame == 0) {
 				pauseEventQueue.push({ EventType::UltimateSkill, this, 2.5f, true });
 				audioEventQueue.push("narutoS_SI1");
+				defaultEffects->run(position, EffectState::I_effect, this->left);
 			}
 			if (currentFrame == 60) {
 				audioEventQueue.push("narutoS_SI2");
@@ -322,6 +331,7 @@ void NarutoS::updateSprite(float deltaTime, sf::Vector2f enemyPosition) {
 			if (currentFrame == 0) {
 				pauseEventQueue.push({ EventType::UltimateSkill, this, 2.2f, true });
 				audioEventQueue.push("narutoS_I");
+				defaultEffects->run(position, EffectState::I_effect, this->left);
 			}
 			currentFrame++;
 			if (currentFrame == 25) {
@@ -338,6 +348,7 @@ void NarutoS::updateSprite(float deltaTime, sf::Vector2f enemyPosition) {
 			if (currentFrame == 0) {
 				pauseEventQueue.push({ EventType::UltimateSkill, this, 4.5f, true });
 				audioEventQueue.push("narutoS_KI");
+				effects->run(position, EffectState::I_effect, this->left);
 			}
 			currentFrame++;
 			if (currentFrame == 62) {

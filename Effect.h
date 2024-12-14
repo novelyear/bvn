@@ -39,6 +39,10 @@ public:
 	virtual void si_before(sf::Vector2f position);
 	virtual void si_after(sf::Vector2f position);
 	virtual void ki(sf::Vector2f position, bool left);
+	virtual void flash_ash(sf::Vector2f position, bool left);
+	virtual void landed(sf::Vector2f position)				;
+	virtual void flash_air(sf::Vector2f position, bool left);
+	virtual void i_effect(sf::Vector2f position);
 
 	virtual void updatePosition(sf::View view) = 0;
 	virtual void updateSprite(float deltaTime) = 0;
@@ -59,3 +63,17 @@ public:
 	void update(float deltaTime, sf::View view);
 };
 
+class DefaultEffect :
+	public Effect {
+public:
+	DefaultEffect();
+
+	void flash_ash(sf::Vector2f position, bool left) override;
+	void landed(sf::Vector2f position)				 override;
+	void flash_air(sf::Vector2f position, bool left) override;
+	void i_effect(sf::Vector2f position) override;
+
+	void updateSprite(float deltaTime) override;
+
+	void updatePosition(sf::View view) override;
+};

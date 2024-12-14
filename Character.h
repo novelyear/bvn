@@ -85,7 +85,9 @@ public:
 	sf::Vector2f velocity;
 	sf::FloatRect rect;
 
-	std::unique_ptr<EffectPool> effects;
+	std::unique_ptr<EffectPool> effects; // 战斗特效池
+	std::unique_ptr<EffectPool> defaultEffects; // 通用特效池
+
 
 	Character(); 
 	virtual ~Character() = default; 

@@ -63,6 +63,9 @@ void Character::moveRight() {
 	}
 }
 void Character::jump() {
+	if (currentState == CharacterState::Default || currentState == CharacterState::Hit ||
+		currentState == CharacterState::Kick || currentState == CharacterState::S || 
+		currentState == CharacterState::Flash) return;
 	if (jumpTimes >= 2) {
 		return;
 	}

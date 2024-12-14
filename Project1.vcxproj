@@ -172,6 +172,7 @@
     <ClCompile Include="GaaraUpdate.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameAudio.cpp" />
+    <ClCompile Include="keyMap.cpp" />
     <ClCompile Include="main.cpp">
       <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stdcpp17</LanguageStandard>
     </ClCompile>
@@ -200,6 +201,7 @@
     <ClInclude Include="Gaara.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameAudio.h" />
+    <ClInclude Include="keyMap.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="NarutoS.h" />
     <ClInclude Include="Pause.h" />

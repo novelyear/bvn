@@ -1,6 +1,7 @@
 #include "NarutoS.h"
 #include "Constants.h"
 #include "Character.h"
+#include "keyMap.h"
 
 
 void NarutoS::handleMove() {
@@ -10,8 +11,7 @@ void NarutoS::handleMove() {
 		currentState == CharacterState::Kick) {
 		return;
 	}
-
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad3)) { // 冲刺
+	if (sf::Keyboard::isKeyPressed(key[real]["L"])) { // 冲刺
 		if (jumpTimes > 1 || chakra <= CHAKRA_L) { //之后补充chakra机制限制冲刺次数，同时空中只能冲刺一次
 			return;
 		}
@@ -19,11 +19,11 @@ void NarutoS::handleMove() {
 		return;
 	}
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) { // S：防御、下落、普攻3、大招3、远攻3
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad2)) {
+	if (sf::Keyboard::isKeyPressed(key[real]["S"])) { // S：防御、下落、普攻3、大招3、远攻3
+		if (sf::Keyboard::isKeyPressed(key[real]["K"])) {
 			down();
 		}
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad1)) {
+		else if (sf::Keyboard::isKeyPressed(key[real]["J"])) {
 			if (currentState == CharacterState::Stand ||
 				currentState == CharacterState::Running ||
 				currentState == CharacterState::Landed ||
@@ -32,7 +32,7 @@ void NarutoS::handleMove() {
 				sj();
 			}
 		}
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad5)) {
+		else if (sf::Keyboard::isKeyPressed(key[real]["I"])) {
 			// 大招3
 			if (currentState == CharacterState::Stand ||
 				currentState == CharacterState::Running ||
@@ -42,7 +42,7 @@ void NarutoS::handleMove() {
 				si();
 			}
 		}
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad4)) {
+		else if (sf::Keyboard::isKeyPressed(key[real]["U"])) {
 			if (currentState == CharacterState::Stand ||
 				currentState == CharacterState::Running ||
 				currentState == CharacterState::Landed ||
@@ -64,7 +64,7 @@ void NarutoS::handleMove() {
 			}
 		}
 	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad2)) { // 没按S 有K 则跳跃
+	else if (sf::Keyboard::isKeyPressed(key[real]["K"])) { // 没按S 有K 则跳跃
 		jump();
 	}
 	else if (currentState == CharacterState::S) { // 没按S，但在防御，表明松开S
@@ -72,22 +72,22 @@ void NarutoS::handleMove() {
 	}
 
 	// W系列
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad1)) {
+	if (sf::Keyboard::isKeyPressed(key[real]["W"])) {
+		if (sf::Keyboard::isKeyPressed(key[real]["J"])) {
 			if (currentState == CharacterState::Stand ||
 				currentState == CharacterState::Running ||
 				currentState == CharacterState::Landed ||
 				currentState == CharacterState::S_Release)
 				wj();
 		}
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad5)) {
+		else if (sf::Keyboard::isKeyPressed(key[real]["I"])) {
 			if (currentState == CharacterState::Stand ||
 				currentState == CharacterState::Running ||
 				currentState == CharacterState::Landed ||
 				currentState == CharacterState::S_Release)
 				wi();
 		}
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad4)) {
+		else if (sf::Keyboard::isKeyPressed(key[real]["U"])) {
 			if (currentState == CharacterState::Stand ||
 				currentState == CharacterState::Running ||
 				currentState == CharacterState::Landed ||
@@ -99,7 +99,7 @@ void NarutoS::handleMove() {
 		}
 	}
 	else { // 没按W
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad4)) {
+		if (sf::Keyboard::isKeyPressed(key[real]["U"])) {
 			if (currentState == CharacterState::Stand ||
 				currentState == CharacterState::Running ||
 				currentState == CharacterState::Landed ||
@@ -111,7 +111,7 @@ void NarutoS::handleMove() {
 				ku();
 			}
 		}
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad5)) {
+		else if (sf::Keyboard::isKeyPressed(key[real]["I"])) {
 			if (currentState == CharacterState::Stand ||
 				currentState == CharacterState::Running ||
 				currentState == CharacterState::Landed ||
@@ -124,9 +124,9 @@ void NarutoS::handleMove() {
 	}
 
 
-	if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Down) &&
-		!sf::Keyboard::isKeyPressed(sf::Keyboard::Up) &&
-		sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad1) &&
+	if (!sf::Keyboard::isKeyPressed(key[real]["S"]) &&
+		!sf::Keyboard::isKeyPressed(key[real]["W"]) &&
+		sf::Keyboard::isKeyPressed(key[real]["J"]) &&
 		(currentState == CharacterState::J1 ||
 			currentState == CharacterState::J2 ||
 			currentState == CharacterState::Stand ||
@@ -184,15 +184,15 @@ void NarutoS::handleMove() {
 		return;
 
 	// AD 经常被屏蔽，放后面
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+	if (sf::Keyboard::isKeyPressed(key[real]["A"])) {
 		moveLeft();
 		//return;
 	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+	else if (sf::Keyboard::isKeyPressed(key[real]["D"])) {
 		moveRight();
 		//return;
 	}
-	if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+	if (!sf::Keyboard::isKeyPressed(key[real]["A"]) && !sf::Keyboard::isKeyPressed(key[real]["D"])) {
 		velocity.x = 0;  // 停止水平移动
 		if (currentState == CharacterState::Running) {
 			currentState = CharacterState::Stand;

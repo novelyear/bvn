@@ -8,6 +8,7 @@ Gaara::Gaara() : Character() {
 	left = false;
 	position = { 100.f, GROUND };
     effects = std::make_unique<EffectPool>(CharacterType::Gaara);
+    defaultEffects = std::make_unique<EffectPool>(CharacterType::Default);
 	loadResources(
 		"D:\\D1\\code\\bvn\\access\\gaaraS\\texture_atlas.png",
 		"D:\\D1\\code\\bvn\\access\\gaaraS\\config\\section.txt",
@@ -26,6 +27,7 @@ Gaara::Gaara(int flag) : Character() {
 		"D:\\D1\\code\\bvn\\access\\gaaraS\\config\\origins.txt",
 		"D:\\D1\\code\\bvn\\access\\gaaraS\\anchors.txt");
     effects = std::make_unique<EffectPool>(CharacterType::Gaara);
+    defaultEffects = std::make_unique<EffectPool>(CharacterType::Default);
 }
 
 bool Gaara::canTouch() {

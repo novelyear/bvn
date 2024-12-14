@@ -32,7 +32,7 @@ void Character::updatePosition(sf::View view) {
 
 	if ((currentState == CharacterState::Jumping ||
 		currentState == CharacterState::Fall ||
-		currentState == CharacterState::Flash || 
+		currentState == CharacterState::Flash ||
 		currentState == CharacterState::Hit ||
 		currentState == CharacterState::Kick)
 		&& velocity.y <= MAX_FALLING_VELOCITY) {

@@ -5,7 +5,7 @@
 CameraShake::CameraShake() : offset(0.f, 0.f), intensity(0.f), duration(0.f) {}
 
 sf::Vector2f CameraShake::generateRandomOffset() const {
-    // 生成范围内的随机偏移
+    // 鐢熸垚鑼冨洿鍐呯殑闅忔満鍋忕Щ
     float y = (std::rand() / (float)RAND_MAX - 0.5f) * 2 * intensity;
     return sf::Vector2f(0.f, y);
 }
@@ -18,7 +18,7 @@ void CameraShake::startShake(float shakeIntensity, float shakeDuration) {
 
 sf::Vector2f CameraShake::update() {
     if (duration <= 0.f) {
-        offset = sf::Vector2f(0.f, 0.f); // 停止震动时偏移为0
+        offset = sf::Vector2f(0.f, 0.f); // 鍋滄闇囧姩鏃跺亸绉讳负0
     }
     else {
         offset = generateRandomOffset();

@@ -3,23 +3,22 @@
 
 class CameraShake {
 private:
-    sf::Vector2f offset;      // µ±Ç°µÄÕğ¶¯Æ«ÒÆ
-    float intensity;          // Õğ¶¯Ç¿¶È
-    float duration;           // Ê£ÓàµÄÕğ¶¯Ê±¼ä
-    sf::Clock timer;          // ¼ÆÊ±Æ÷
+    sf::Vector2f offset;      // å½“å‰çš„éœ‡åŠ¨åç§»
+    float intensity;          // éœ‡åŠ¨å¼ºåº¦
+    float duration;           // å‰©ä½™çš„éœ‡åŠ¨æ—¶é—´
+    sf::Clock timer;          // è®¡æ—¶å™¨
 
-    sf::Vector2f generateRandomOffset() const; // Éú³ÉËæ»úÆ«ÒÆÁ¿
+    sf::Vector2f generateRandomOffset() const; // ç”Ÿæˆéšæœºåç§»é‡
 
 public:
     CameraShake();
 
-    // ÉèÖÃÕğ¶¯²ÎÊı²¢¿ªÊ¼Õğ¶¯
+    // è®¾ç½®éœ‡åŠ¨å‚æ•°å¹¶å¼€å§‹éœ‡åŠ¨
     void startShake(float shakeIntensity, float shakeDuration);
 
-    // ¸üĞÂÕğ¶¯Ğ§¹û£¬·µ»Øµ±Ç°µÄÆ«ÒÆÁ¿
+    // æ›´æ–°éœ‡åŠ¨æ•ˆæœï¼Œè¿”å›å½“å‰çš„åç§»é‡
     sf::Vector2f update();
 
-    // ¼ì²éÕğ¶¯ÊÇ·ñ½áÊø
+    // æ£€æŸ¥éœ‡åŠ¨æ˜¯å¦ç»“æŸ
     bool isShaking() const;
 };
-

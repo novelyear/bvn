@@ -11,6 +11,7 @@ void Gaara::update(float deltaTime, sf::View view, Character* enemy, std::vector
 	updatePosition(view);
 	updateDirection(enemy->position);
 	effects->update(deltaTime, view);
+	defaultEffects->update(deltaTime, view);
 	cUI->update(this, view);
 	// chakra更新，暂时写在这里
 	if (currentState != CharacterState::Flash && currentState != CharacterState::S) {
@@ -126,6 +127,9 @@ void Gaara::updateSprite(float deltaTime, sf::Vector2f enemyPosition) {
 		case CharacterState::Landed:
 			sprite.setTextureRect(anchors[landed.first + currentFrame]);
 			sprite.setOrigin(origins[landed.first + currentFrame]);
+			if (currentFrame == 0) {
+				defaultEffects->run(this->position, EffectState::Landed_ash, true);
+			}
 			currentFrame++;
 			if (currentFrame + landed.first > landed.second) {
 				currentState = CharacterState::Stand;
@@ -135,6 +139,9 @@ void Gaara::updateSprite(float deltaTime, sf::Vector2f enemyPosition) {
 		case CharacterState::Flash:
 			sprite.setTextureRect(anchors[flashing.first + currentFrame]);
 			sprite.setOrigin(origins[flashing.first + currentFrame]);
+			if (currentFrame == 0) {
+				defaultEffects->run(this->position, this->onBoard ? EffectState::Flash_ash : EffectState::Flash_air, this->left);
+			}
 			currentFrame++;
 			if (currentFrame + flashing.first > flashing.second) {
 				currentState = CharacterState::Fall;
@@ -293,6 +300,7 @@ void Gaara::updateSprite(float deltaTime, sf::Vector2f enemyPosition) {
 			if (currentFrame == 5) { // 5帧后触发特效
 				effects->run(enemyPosition, EffectState::SI_after, left);
 			}
+			if (currentFrame == 98) audioEventQueue.push("gaara_SI_Boom");
 			if (currentFrame + SI_after.first > SI_after.second) {
 				currentState = CharacterState::Stand;
 				currentFrame = 0;
@@ -323,6 +331,7 @@ void Gaara::updateSprite(float deltaTime, sf::Vector2f enemyPosition) {
 		case CharacterState::U:
 			sprite.setTextureRect(anchors[U.first + currentFrame]);
 			sprite.setOrigin(origins[U.first + currentFrame]);
+			if (currentFrame == 0) audioEventQueue.push("gaara_U");
 			currentFrame++;
 			if (currentFrame == 11) { // 第11帧后，特效离体
 				sf::Vector2f offset = { left ? -36.f : 36.f, -58.f }; // 水平偏移量左右对称
