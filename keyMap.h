@@ -5,7 +5,7 @@
 #include <unordered_map>
 #include <string>
 
-// 全局变量 key
+// 鍏ㄥ眬鍙橀噺 key
 extern std::unordered_map<bool, std::unordered_map<std::string, sf::Keyboard::Key>> key;
 
 void initializeKeyMapping();

@@ -226,15 +226,15 @@ void Game::gameover() {
 
     sf::Text gameOverText;
     gameOverText.setFont(font);
-    gameOverText.setCharacterSize(50); // 设置字体大小
+    gameOverText.setCharacterSize(25); // 设置字体大小
     gameOverText.setFillColor(sf::Color::Red); // 设置字体颜色
-    gameOverText.setStyle(sf::Text::Bold); // 设置字体样式
+    gameOverText.setStyle(sf::Text::Regular); // 设置字体样式
 
     if (player->health < 0) {
-        gameOverText.setString("You Lose!");
+        gameOverText.setString("2P win");
     }
     else {
-        gameOverText.setString("You Win!");
+        gameOverText.setString("1P win");
     }
 
     // 获取窗口大小
@@ -296,16 +296,8 @@ void Game::run() {
             processEvents();
             update(deltaTime.asSeconds());
             render();
-
-            gameAudio.playMusic("bgm", true);
             break;
         case GameState::Over:
-            /*state = GameState::Init;
-            currentViewLeft = 0.f;
-            currentViewTop = 0.f;
-            currentViewWidth = minimumViewWidth;
-            currentViewHeight = minimumViewWidth * 0.75f;
-            view.reset(sf::FloatRect(0, 0, 1000.f, 1000.f));*/
             window.close();
             break;
         }
@@ -464,7 +456,7 @@ sf::FloatRect Game::getView(sf::Vector2f playerPosition, sf::Vector2f enemyPosit
     if (targetTop + targetHeight > Map::GROUND) targetTop = Map::GROUND - targetHeight;
 
     // 平滑调整视图位置
-    float smoothingFactor = 5.f; // 调整速度，值越大调整越快
+    float smoothingFactor = 5.f; // 平滑速度
     currentViewLeft += (targetLeft - currentViewLeft) * smoothingFactor * deltaTime;
     currentViewTop += (targetTop - currentViewTop) * smoothingFactor * deltaTime;
     currentViewWidth += (targetWidth - currentViewWidth) * smoothingFactor * deltaTime;

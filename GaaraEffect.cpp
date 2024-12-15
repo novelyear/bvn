@@ -78,7 +78,7 @@ void GaaraEffect::updateSprite(float deltaTime) {
         case EffectState::U:
             sprite.setTextureRect(anchors[rangeMap[EffectState::U].first + currentFrame]);
             sprite.setOrigin(origins[rangeMap[EffectState::U].first + currentFrame]);
-            currentFrame = (currentFrame + 1) % (rangeMap[EffectState::U].second - rangeMap[EffectState::U].first + 1); // TODO 有点问题
+            currentFrame = (currentFrame + 1) % (rangeMap[EffectState::U].second - rangeMap[EffectState::U].first + 1);
             break;
         case EffectState::WU:
             sprite.setTextureRect(anchors[rangeMap[EffectState::WU].first + currentFrame]);

@@ -74,7 +74,7 @@ void CharacterUI::update(Character* c, const sf::View& view) {
     sf::Vector2f viewTopLeft = getViewTopLeft(view);
     float viewWidth = getViewWidth(view);
     sf::Vector2f xy = { 100.f, 100.f };
-    float scale = view.getSize().x / 800.f; // 660是最大视图宽度
+    float scale = view.getSize().x / 800.f; // 800是最大宽度
     // 固定UI元件的位置
     xy = { 0.f, 0.f };
     fixedSprites["avatar_box"].setPosition({ viewTopLeft.x + (c->real ? 0.f : viewWidth) + xy.x * scale, viewTopLeft.y + xy.y * scale });

@@ -69,7 +69,7 @@ void Character::jump() {
 	if (jumpTimes >= 2) {
 		return;
 	}
-	else if (jumpTimes >= 1 && velocity.y <= LIMIT_V) return;
+	else if (jumpTimes >= 1 && velocity.y <= LIMIT_V) return; // 二段触发过早，屏蔽
 	jumpTimes++;
 	velocity.y = JUMP_VELOCITY;
 	inAir = true;

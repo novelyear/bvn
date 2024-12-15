@@ -102,17 +102,17 @@ void Gaara::updateCollisionWithEnemy(Character* enemy) {
 
 void Gaara::updateSprite(float deltaTime, sf::Vector2f enemyPosition) {
 	if (origins.empty()) return;
-	elapsedTime += deltaTime;
+	elapsedTime += deltaTime; // 记录时间
 	if (elapsedTime > PLAYER_FRAME) {
 		switch (currentState) {
 		case CharacterState::Default:
-			sprite.setTextureRect(anchors[0]);
+			sprite.setTextureRect(anchors[0]); 
 			sprite.setOrigin(origins[0]);
 			break;
 		case CharacterState::Stand:
-			sprite.setTextureRect(anchors[stand.first + currentFrame]);
-			sprite.setOrigin(origins[stand.first + currentFrame]);
-			currentFrame = (currentFrame + 1) % (stand.second - stand.first);
+			sprite.setTextureRect(anchors[stand.first + currentFrame]); // 切换锚框
+			sprite.setOrigin(origins[stand.first + currentFrame]);		// 切换源点
+			currentFrame = (currentFrame + 1) % (stand.second - stand.first);// 自增帧号
 			break;
 		case CharacterState::Running:
 			sprite.setTextureRect(anchors[run.first + currentFrame]);

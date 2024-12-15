@@ -73,7 +73,9 @@
     <ClCompile Include="GameAudio.cpp">
       <Filter>源文件\Game</Filter>
     </ClCompile>
-    <ClCompile Include="keyMap.cpp" />
+    <ClCompile Include="keyMap.cpp">
+      <Filter>源文件\Game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CameraShake.h">
@@ -118,7 +120,9 @@
     <ClInclude Include="GameAudio.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="keyMap.h" />
+    <ClInclude Include="keyMap.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="access\bg.png" />
@@ -146,5 +150,8 @@
     <Filter Include="源文件\Controller">
       <UniqueIdentifier>{364e4b41-af24-4309-8b4c-53db31267890}</UniqueIdentifier>
     </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
 </Project>
