@@ -1,5 +1,7 @@
 # 仿《死神vs火影》
 
+视频演示链接： https://www.bilibili.com/video/BV16gCaYBE8u/?share_source=copy_web&vd_source=e7385d4618ca5d19b02c5fd56d72182c
+
 # 目录
 
 [一、 游戏概述 3](#_Toc185173544)
